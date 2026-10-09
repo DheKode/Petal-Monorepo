@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { listUnresolvedDoses, localDateIn, selectTakenNowTarget, type ScheduledDose } from '@petal/domain';
 import type { PetalState, RecordIntakeInput } from '../../shared/ipc';
-import { dayParts, doseLabel, doseTime, shortStatus, statusLabel, tabletTypeLabel } from './format';
+import { dayParts, friendlyDate, doseLabel, doseTime, shortStatus, statusLabel, tabletTypeLabel } from './format';
 import { Guidance } from './Guidance';
 import { Repair } from './Repair';
 import { Button, Card, Feedback, StatusBadge } from '@petal/ui/components';
@@ -40,7 +40,7 @@ export function Today({ state, onState, view }: { state: PetalState; onState: (s
   const anchorIndex = todayIndex >= 0 ? todayIndex : Math.max(0, state.doses.findIndex(d => d.id === dose?.id));
   const stripStart = Math.min(Math.max(0, anchorIndex - 3), Math.max(0, state.doses.length - 7));
   const strip = state.doses.slice(stripStart, stripStart + 7);
-  const why = selectedId ? 'selected' : target.reason === 'todays-dose' ? "today's tablet" : 'an earlier tablet that still has no entry';
+  const why = selectedId ? 'Selected tablet' : target.reason === 'todays-dose' ? "Today's tablet" : 'Earliest tablet without an entry';
 
   function closeRepair(message?: string) {
     setRepairing(false);
@@ -110,19 +110,23 @@ export function Today({ state, onState, view }: { state: PetalState; onState: (s
       <div className="app-hero-body">
       {dose ? (
         <>
-          <p className="app-eyebrow">Recording for {why}</p>
+          <p className="app-eyebrow">{why}</p>
           <h2 id="record-heading" className="app-hero-title">Tablet {dose.position}</h2>
-          <p className="app-hero-meta"><Icon name="calendar" size="small" /> {dose.localDate} <Icon name="clock" size="small" /> {doseTime(dose)} · {tabletTypeLabel(dose.tabletKind)}</p>
+          <p className="app-hero-meta">
+            <span><Icon name="calendar" size="small" /> {friendlyDate(dose.localDate)}</span>
+            <span><Icon name="clock" size="small" /> {doseTime(dose)}</span>
+            {dose.tabletKind !== 'unverified' && <span>{tabletTypeLabel(dose.tabletKind)} tablet</span>}
+          </p>
           <div><StatusBadge label={`Status: ${statusLabel(dose, eventOf(dose))}`} /></div>
           <div className="app-hero-actions">
             <IconLabelButton icon="taken" label="Taken now" onPress={() => record({ doseId: dose.id, status: 'taken', actualAt: new Date().toISOString() }, `Recorded ${doseLabel(dose)} as taken now.`)} />
           </div>
-          <Stack direction="row" wrap space="related">
+          <div className="app-hero-more">
             <IconLabelButton icon="clock" label="Taken earlier" variant="secondary" onPress={() => setEarlier(open => !open)} expanded={earlier} />
             <IconLabelButton icon="taken" label="Taken, time unknown" variant="secondary" onPress={() => record({ doseId: dose.id, status: 'taken' }, `Recorded ${doseLabel(dose)} as taken, time unknown.`)} />
             <IconLabelButton icon="missed" label="Confirmed missed" variant="secondary" onPress={() => record({ doseId: dose.id, status: 'confirmed-missed' }, `Recorded ${doseLabel(dose)} as confirmed missed.`)} />
             <IconLabelButton icon="unsure" label="Unsure" variant="secondary" onPress={() => record({ doseId: dose.id, status: 'unsure' }, `Recorded ${doseLabel(dose)} as unsure.`)} />
-          </Stack>
+          </div>
           {earlier && (
             <form onSubmit={submitEarlier} className="app-form">
               <label className="app-field">
@@ -138,6 +142,9 @@ export function Today({ state, onState, view }: { state: PetalState; onState: (s
               </label>
               <div><IconLabelButton icon="check" label="Save time" submit /></div>
             </form>
+          )}
+          {target.nextUpcoming && !selectedId && (
+            <p className="app-hero-next">Next: Tablet {target.nextUpcoming.position}, {friendlyDate(target.nextUpcoming.localDate)} at {doseTime(target.nextUpcoming)}</p>
           )}
           {selectedId && <div><IconLabelButton icon="back" label="Back to suggested tablet" variant="tertiary" onPress={() => setSelectedId(null)} /></div>}
         </>
@@ -242,11 +249,6 @@ export function Today({ state, onState, view }: { state: PetalState; onState: (s
                       <Button key={d.id} label={`Tablet ${d.position}, ${d.localDate}`} variant="secondary" onPress={() => setSelectedId(d.id)} />
                     ))}
                   </Stack>
-                </Card>
-              )}
-              {target.nextUpcoming && (
-                <Card title="Next tablet">
-                  <p className="app-card-text">{doseLabel(target.nextUpcoming)}</p>
                 </Card>
               )}
             </div>

@@ -43,3 +43,9 @@ export function dayParts(localDate: string): { weekday: string; day: string; mon
     month: date.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' }),
   };
 }
+
+/** Readable date for a local date like 2026-10-09, for example "Fri, Oct 9". */
+export function friendlyDate(localDate: string): string {
+  const { weekday, day, month } = dayParts(localDate);
+  return `${weekday}, ${month} ${day}`;
+}
