@@ -10,6 +10,7 @@ const host = (kind, tag) => forwardRef(function Host(props, ref) {
     'aria-pressed':state.selected, disabled:state.disabled || props.editable === false || undefined,
     value:tag === 'input' ? props.value : undefined, readOnly:tag === 'input' ? true : undefined,
     'data-hint':props.accessibilityHint, 'data-live':props.accessibilityLiveRegion,
+    'data-accessible':props.accessible, 'data-important':props.importantForAccessibility,
   }, children);
 });
 export const View = host('View','div');
@@ -24,3 +25,13 @@ export const AccessibilityInfo = {
   sendAccessibilityEvent(){},
 };
 export const useWindowDimensions = () => ({width:1080,height:1920,fontScale:2,scale:3});
+class AnimatedValue {
+  constructor(value) { this.value = value; }
+  setValue(value) { this.value = value; }
+}
+export const Animated = {
+  View, Value: AnimatedValue,
+  timing: () => ({ start() {}, stop() {} }),
+  sequence: () => ({ start() {}, stop() {} }),
+};
+export const Easing = { inOut: value => value, ease: value => value };
