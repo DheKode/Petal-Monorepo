@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, type IpcMainInvokeEvent } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, type IpcMainInvokeEvent } from 'electron';
 import { join } from 'node:path';
 import {
   IPC_APP_INFO, IPC_GET_STATE, IPC_SAVE_SETUP, IPC_RECORD_INTAKE, IPC_UNDO_INTAKE,
@@ -60,6 +60,11 @@ handle(IPC_RECORD_INTAKE, (input: RecordIntakeInput) => service.recordIntake(inp
 handle(IPC_UNDO_INTAKE, (doseId: string) => service.undoIntake(doseId));
 
 app.whenReady().then(() => {
+  // No File/Edit/View/Window menu bar. macOS always shows a system menu bar and needs the Edit roles for
+  // copy/paste shortcuts, so it keeps only the app and edit menus.
+  Menu.setApplicationMenu(
+    process.platform === 'darwin' ? Menu.buildFromTemplate([{ role: 'appMenu' }, { role: 'editMenu' }]) : null,
+  );
   createWindow();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
