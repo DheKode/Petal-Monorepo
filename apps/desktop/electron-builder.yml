@@ -25,6 +25,10 @@ mac:
   target:
     - target: dmg
       arch: arm64
+  # No Apple Developer ID, so sign ad hoc: a consistent signature lets macOS offer "Open Anyway" for the downloaded app
+  # instead of reporting it as damaged. Hardened runtime only matters for notarization and would block the native modules.
+  identity: '-'
+  hardenedRuntime: false
 
 # Native inference binaries must remain outside the asar; model weights are user-selected, not bundled.
 asarUnpack:
