@@ -19,7 +19,7 @@ async function open(t:TestContext,generator:AiGenerator=unavailable){
   const store=await SqliteStore.open(path,'0.1.0');const service=new PetalService(store,now);
   const state=value(await service.saveSetup({usualTime:'21:00',timeZone:'Asia/Manila',anchor:{kind:'mid-pack',position:12,date:'2026-10-10'}}));
   const ai=new AiService(store,generator,now);
-  t.after(()=>{ai.close();store.close();return rm(dir,{recursive:true,force:true,maxRetries:2,retryDelay:100});});
+  t.after(()=>{ai.close();store.close();return rm(dir,{recursive:true,force:true,maxRetries:2,retryDelay:100}).catch(()=>{});}); // best effort: Windows keeps the SQLite file locked briefly after close()
   return {dir,path,store,service,state,ai};
 }
 test('live history is queried anew; blank differs from missed and no model keeps useful answers',async t=>{
