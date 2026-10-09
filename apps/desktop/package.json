@@ -5,10 +5,10 @@
   "description": "Petal desktop app (Electron)",
   "main": "./out/main/index.js",
   "scripts": {
-    "dev": "pnpm --filter @petal/storage build && electron-vite dev",
-    "build": "pnpm --filter @petal/storage build && electron-vite build",
+    "dev": "pnpm --filter @petal/storage build && pnpm --filter @petal/ui build && electron-vite dev",
+    "build": "pnpm --filter @petal/storage build && pnpm --filter @petal/ui build && electron-vite build",
     "preview": "electron-vite preview",
-    "typecheck": "pnpm --filter @petal/storage build && tsc",
+    "typecheck": "pnpm --filter @petal/storage build && pnpm --filter @petal/ui build && tsc",
     "package:dir": "pnpm run build && electron-builder --dir",
     "package:win": "pnpm run build && electron-builder --win --x64",
     "demo:seed": "pnpm --filter @petal/storage build && tsx scripts/demo-seed.ts",
@@ -18,6 +18,7 @@
   "devDependencies": {
     "@petal/domain": "workspace:*",
     "@petal/storage": "workspace:*",
+    "@petal/ui": "workspace:*",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "5.2.0",
