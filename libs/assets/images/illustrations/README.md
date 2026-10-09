@@ -8,6 +8,21 @@ Flat, modern editorial illustration: expressive rounded silhouettes, minimal fac
 
 The first collection contains six adult characters, two blossom companion poses, four everyday objects, and four abstract compositions. The companion is a proposal distinct from the approved logo. It never wilts, judges missed doses, or implies protection. All imagery is illustrative rather than a medical diagram or instruction.
 
+### Character distinction
+
+The designer flagged repetitive silhouettes in the original standing characters. The refinement changes reading, reminders, and organizing beyond their props: body shape, hair, clothing, and action each contribute to recognition at small sizes. Welcome, journaling, and reflecting remain the style anchors.
+
+| Character | Silhouette and action | Distinguishing details |
+| --- | --- | --- |
+| Welcome · v1 | Tall, upright, one hand waving | High bun, open rose overshirt, blush trousers |
+| Journaling · v1 | Seated on a stool, writing across the lap | Rounded curls, muted-plum blouse, rose trousers |
+| Reflecting · v1 | Seated on the floor, bent knees, hand near chin | Bob, white blouse, rose trousers |
+| Reading · v2 brief | Compact, fuller seated figure, book on lap | Short afro, round glasses, long white skirt |
+| Reminders · v2 brief | Side-facing step, checking a wristwatch | Pixie cut, rose shirt dress |
+| Organizing · v2 brief | Low kneeling figure, sorting pages at a table | Low ponytail, blush jumpsuit over white T-shirt |
+
+These differences are artwork choices, not indicators of a person's health or recorded status. Keep the shared palette, rounded shapes, and restrained faces consistent while varying people and poses. Do not use a single character body with interchangeable props for future subjects.
+
 ## Usage
 
 Treat assets as decorative alongside readable application text. Web decorative images use `alt=""`; meaningful use needs a contextual description. Native consumers set decorative images inaccessible and verify rendering/scaling on device. Keep the full canvas, preserve aspect ratio and alpha, and avoid stretching. Do not use illustration state in place of recorded-status labels or fixed guidance.
