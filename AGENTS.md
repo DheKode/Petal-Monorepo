@@ -76,6 +76,15 @@ Do not post noisy token-by-token progress. Do not contact other people or chats 
 - JSON import requires validation, preview, confirmation, recovery backup, and transactional replacement; invalid files must preserve current data. Do not log sensitive records or commit real health data, secrets, model binaries, or machine-local databases.
 - Respect designer ownership of visual direction. Keep controls accessible, language neutral, reminders discreet, and bleeding estimates conditional on reviewed evidence.
 
+## Approved brand identity and design handoff
+
+- Read [DESIGN.md](DESIGN.md) before visual work. It follows Google's DESIGN.md structure and distinguishes approved Petal decisions from exploratory UI proposals. Flo and the community UI kit are study references; do not copy their identity or treat uninspected Figma measurements as verified.
+- Preserve the approved flat, modern, UX-driven direction. The palette is Rose `#B83D70`, White `#FFFFFF`, Soft white `#FFF7FA`, Blush `#FCE8EF`, Deep plum `#33252D`, and Muted plum `#745D69`. Geist Mono is the approved UI typeface; font sizing, spacing, component tokens, and actual-device accessibility checks remain separate design tasks.
+- The final logo is a three-petal open blossom with a custom lowercase `petal` wordmark. The primary lockup uses a rose blossom and deep plum lettering. The circular icon uses a white blossom on a rose disk. Preserve the supplied outlines; do not replace the wordmark with typed text or reintroduce rejected P-monogram or pill-shaped alternatives without designer approval.
+- Use the versioned assets in [lib/brand/petal](lib/brand/petal/README.md). The bundle contains 21 SVG/transparent-PNG variations, six additional icon sizes, shared vector masters, a manifest, usage guidance, provenance, and an optional export script. This user-approved asset location extends `lib/` to standalone brand assets; shared workspace code still belongs in `packages/`.
+- Read the bundle's naming, clearspace, and sizing guidance before integration. Keep the artwork flat and its aspect ratio intact. Treat exported circular icons as artwork requiring platform-specific packaging, rather than completed native installer/adaptive-icon sets.
+- Track progress and handoffs for designer assets and the remaining U01/L01 work on [issue #11](https://github.com/DheKode/Petal-Monorepo/issues/11). An approved identity or verified asset export does not satisfy the full phone UI or working-download acceptance checks. Keep live completion status in the issue and Kanban, not in this file.
+
 ## Verification, review, and merge
 
 - Run checks appropriate to the changed behavior and PRD section 13. Record exact commands or manual flows and results; never report unrun checks as passing.
