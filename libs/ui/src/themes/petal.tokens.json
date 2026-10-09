@@ -1,10 +1,10 @@
 {
   "$extensions": {
     "org.petal": {
-      "version": "0.1.0",
+      "version": "0.2.0",
       "appearance": "light",
       "format": "DTCG 2025.10",
-      "status": "Approved brand colors/family; new dimensions, functional colors, and states are initial baseline for review."
+      "status": "Approved brand palette/family; original component and motion exploration for designer review."
     }
   },
   "primitive": {
@@ -217,7 +217,33 @@
           "hex": "#EAF4EF"
         }
       },
-      "$description": "First six colors are human-approved brand values. Remaining colors are baseline interaction/support colors; feedback is not a dose or protection state."
+      "$description": "First six colors are human-approved brand values. Remaining colors are baseline interaction/support colors; feedback is not a dose or protection state.",
+      "transparent": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 0,
+          "hex": "#FFFFFF"
+        }
+      },
+      "scrim": {
+        "$type": "color",
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.2,
+            0.1450980392156863,
+            0.17647058823529413
+          ],
+          "alpha": 0.18,
+          "hex": "#33252D"
+        }
+      }
     },
     "spacing": {
       "s0": {
@@ -352,6 +378,13 @@
         "$type": "dimension",
         "$value": {
           "value": 9999,
+          "unit": "px"
+        }
+      },
+      "tight": {
+        "$type": "dimension",
+        "$value": {
+          "value": 10,
           "unit": "px"
         }
       }
@@ -493,6 +526,51 @@
           1
         ]
       }
+    },
+    "icon": {
+      "size": {
+        "small": {
+          "$type": "dimension",
+          "$value": {
+            "value": 20,
+            "unit": "px"
+          }
+        },
+        "default": {
+          "$type": "dimension",
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          }
+        },
+        "large": {
+          "$type": "dimension",
+          "$value": {
+            "value": 32,
+            "unit": "px"
+          }
+        }
+      },
+      "strokeWidth": {
+        "$type": "dimension",
+        "$value": {
+          "value": 1.75,
+          "unit": "px"
+        }
+      }
+    },
+    "motion": {
+      "pressScale": {
+        "$type": "number",
+        "$value": 0.98
+      },
+      "enterOffset": {
+        "$type": "dimension",
+        "$value": {
+          "value": 8,
+          "unit": "px"
+        }
+      }
     }
   },
   "semantic": {
@@ -596,6 +674,10 @@
             "$value": "{primitive.color.successSurface}"
           }
         }
+      },
+      "scrim": {
+        "$type": "color",
+        "$value": "{primitive.color.scrim}"
       }
     },
     "type": {
@@ -827,6 +909,35 @@
       "easing": {
         "$type": "cubicBezier",
         "$value": "{primitive.easing.standard}"
+      },
+      "pressScale": {
+        "$type": "number",
+        "$value": "{primitive.motion.pressScale}"
+      },
+      "enterOffset": {
+        "$type": "dimension",
+        "$value": "{primitive.motion.enterOffset}"
+      }
+    },
+    "icon": {
+      "size": {
+        "small": {
+          "$type": "dimension",
+          "$value": "{primitive.icon.size.small}"
+        },
+        "default": {
+          "$type": "dimension",
+          "$value": "{primitive.icon.size.default}"
+        },
+        "large": {
+          "$type": "dimension",
+          "$value": "{primitive.icon.size.large}"
+        }
+      },
+      "strokeWidth": {
+        "$type": "dimension",
+        "$value": "{primitive.icon.strokeWidth}",
+        "$description": "Outline measurement candidate; the final icon family is not selected."
       }
     }
   },
@@ -890,6 +1001,14 @@
         "border": {
           "$type": "color",
           "$value": "{semantic.color.border.control}"
+        },
+        "hover": {
+          "$type": "color",
+          "$value": "{semantic.color.surfaceSubtle}"
+        },
+        "pressed": {
+          "$type": "color",
+          "$value": "{semantic.color.surfaceSubtle}"
         }
       },
       "disabled": {
@@ -900,6 +1019,50 @@
         "foreground": {
           "$type": "color",
           "$value": "{semantic.color.action.disabledText}"
+        }
+      },
+      "borderWidth": {
+        "$type": "dimension",
+        "$value": "{semantic.border.width}"
+      },
+      "iconSize": {
+        "$type": "dimension",
+        "$value": "{semantic.icon.size.small}"
+      },
+      "pressScale": {
+        "$type": "number",
+        "$value": "{semantic.motion.pressScale}"
+      },
+      "focusWidth": {
+        "$type": "dimension",
+        "$value": "{semantic.focus.width}"
+      },
+      "focusOffset": {
+        "$type": "dimension",
+        "$value": "{semantic.focus.offset}"
+      },
+      "tertiary": {
+        "background": {
+          "$type": "color",
+          "$value": "{primitive.color.transparent}"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "{semantic.color.text.link}"
+        },
+        "hover": {
+          "$type": "color",
+          "$value": "{semantic.color.surfaceSubtle}"
+        }
+      },
+      "danger": {
+        "background": {
+          "$type": "color",
+          "$value": "{semantic.color.feedback.error.text}"
+        },
+        "foreground": {
+          "$type": "color",
+          "$value": "{semantic.color.text.onAction}"
         }
       }
     },
@@ -947,6 +1110,34 @@
       "type": {
         "$type": "typography",
         "$value": "{semantic.type.body}"
+      },
+      "focusBorder": {
+        "$type": "color",
+        "$value": "{semantic.color.focus}"
+      },
+      "disabledBackground": {
+        "$type": "color",
+        "$value": "{semantic.color.background}"
+      },
+      "disabledForeground": {
+        "$type": "color",
+        "$value": "{semantic.color.text.secondary}"
+      },
+      "labelType": {
+        "$type": "typography",
+        "$value": "{semantic.type.label}"
+      },
+      "helperType": {
+        "$type": "typography",
+        "$value": "{semantic.type.label}"
+      },
+      "gap": {
+        "$type": "dimension",
+        "$value": "{primitive.spacing.s8}"
+      },
+      "transition": {
+        "$type": "duration",
+        "$value": "{semantic.motion.duration.fast}"
       }
     },
     "card": {
@@ -973,6 +1164,18 @@
       "borderWidth": {
         "$type": "dimension",
         "$value": "{semantic.border.width}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{semantic.color.text.primary}"
+      },
+      "mutedForeground": {
+        "$type": "color",
+        "$value": "{semantic.color.text.secondary}"
+      },
+      "titleType": {
+        "$type": "typography",
+        "$value": "{semantic.type.title}"
       }
     },
     "navigation": {
@@ -995,6 +1198,22 @@
       "type": {
         "$type": "typography",
         "$value": "{semantic.type.label}"
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}"
+      },
+      "gap": {
+        "$type": "dimension",
+        "$value": "{semantic.space.inline}"
+      },
+      "paddingInline": {
+        "$type": "dimension",
+        "$value": "{primitive.spacing.s16}"
+      },
+      "transition": {
+        "$type": "duration",
+        "$value": "{semantic.motion.duration.normal}"
       }
     },
     "status": {
@@ -1022,7 +1241,15 @@
         "$type": "typography",
         "$value": "{semantic.type.label}"
       },
-      "$description": "Neutral visual container. Taken, no-entry, unsure, and confirmed-missed still require distinct text and icons; no success/protection encoding."
+      "$description": "Neutral visual container. Taken, no-entry, unsure, and confirmed-missed still require distinct text and icons; no success/protection encoding.",
+      "gap": {
+        "$type": "dimension",
+        "$value": "{primitive.spacing.s8}"
+      },
+      "iconSize": {
+        "$type": "dimension",
+        "$value": "{semantic.icon.size.small}"
+      }
     },
     "dialog": {
       "background": {
@@ -1040,6 +1267,112 @@
       "gap": {
         "$type": "dimension",
         "$value": "{primitive.spacing.s16}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{semantic.color.text.primary}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.subtle}"
+      },
+      "backdrop": {
+        "$type": "color",
+        "$value": "{semantic.color.scrim}"
+      },
+      "maxWidth": {
+        "$type": "dimension",
+        "$value": "{semantic.layout.readingMax}"
+      },
+      "transition": {
+        "$type": "duration",
+        "$value": "{semantic.motion.duration.slow}"
+      },
+      "enterOffset": {
+        "$type": "dimension",
+        "$value": "{semantic.motion.enterOffset}"
+      }
+    },
+    "selection": {
+      "minTarget": {
+        "$type": "dimension",
+        "$value": "{semantic.size.touchTarget}"
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}"
+      },
+      "background": {
+        "$type": "color",
+        "$value": "{semantic.color.surface}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{semantic.color.text.primary}"
+      },
+      "selectedBackground": {
+        "$type": "color",
+        "$value": "{semantic.color.action.primary}"
+      },
+      "selectedForeground": {
+        "$type": "color",
+        "$value": "{semantic.color.text.onAction}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.border.control}"
+      },
+      "gap": {
+        "$type": "dimension",
+        "$value": "{semantic.space.inline}"
+      },
+      "transition": {
+        "$type": "duration",
+        "$value": "{semantic.motion.duration.normal}"
+      }
+    },
+    "proposal": {
+      "background": {
+        "$type": "color",
+        "$value": "{semantic.color.surfaceSubtle}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{semantic.color.text.primary}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{semantic.color.action.primary}"
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.container}"
+      },
+      "padding": {
+        "$type": "dimension",
+        "$value": "{primitive.spacing.s20}"
+      }
+    },
+    "feedback": {
+      "radius": {
+        "$type": "dimension",
+        "$value": "{semantic.radius.control}"
+      },
+      "padding": {
+        "$type": "dimension",
+        "$value": "{primitive.spacing.s16}"
+      },
+      "gap": {
+        "$type": "dimension",
+        "$value": "{semantic.space.inline}"
+      },
+      "type": {
+        "$type": "typography",
+        "$value": "{semantic.type.label}"
+      },
+      "transition": {
+        "$type": "duration",
+        "$value": "{semantic.motion.duration.normal}"
       }
     }
   }

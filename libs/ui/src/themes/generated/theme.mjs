@@ -18,7 +18,9 @@ export const petalTheme = freeze({
       "warning": "#835C17",
       "warningSurface": "#FFF3D9",
       "success": "#2B6B59",
-      "successSurface": "#EAF4EF"
+      "successSurface": "#EAF4EF",
+      "transparent": "rgba(255, 255, 255, 0)",
+      "scrim": "rgba(51, 37, 45, 0.18)"
     },
     "spacing": {
       "s0": 0,
@@ -41,7 +43,8 @@ export const petalTheme = freeze({
       "control": 12,
       "container": 16,
       "sheet": 24,
-      "round": 9999
+      "round": 9999,
+      "tight": 10
     },
     "border": {
       "thin": 1,
@@ -81,6 +84,18 @@ export const petalTheme = freeze({
         0,
         1
       ]
+    },
+    "icon": {
+      "size": {
+        "small": 20,
+        "default": 24,
+        "large": 32
+      },
+      "strokeWidth": 1.75
+    },
+    "motion": {
+      "pressScale": 0.98,
+      "enterOffset": 8
     }
   },
   "semantic": {
@@ -119,7 +134,8 @@ export const petalTheme = freeze({
           "text": "#2B6B59",
           "surface": "#EAF4EF"
         }
-      }
+      },
+      "scrim": "rgba(51, 37, 45, 0.18)"
     },
     "type": {
       "caption": {
@@ -245,7 +261,17 @@ export const petalTheme = freeze({
         0,
         0,
         1
-      ]
+      ],
+      "pressScale": 0.98,
+      "enterOffset": 8
+    },
+    "icon": {
+      "size": {
+        "small": 20,
+        "default": 24,
+        "large": 32
+      },
+      "strokeWidth": 1.75
     }
   },
   "component": {
@@ -275,11 +301,27 @@ export const petalTheme = freeze({
       "secondary": {
         "background": "#FFFFFF",
         "foreground": "#B83D70",
-        "border": "#917584"
+        "border": "#917584",
+        "hover": "#FCE8EF",
+        "pressed": "#FCE8EF"
       },
       "disabled": {
         "background": "#FCE8EF",
         "foreground": "#745D69"
+      },
+      "borderWidth": 1,
+      "iconSize": 20,
+      "pressScale": 0.98,
+      "focusWidth": 2,
+      "focusOffset": 2,
+      "tertiary": {
+        "background": "rgba(255, 255, 255, 0)",
+        "foreground": "#B83D70",
+        "hover": "#FCE8EF"
+      },
+      "danger": {
+        "background": "#A32640",
+        "foreground": "#FFFFFF"
       }
     },
     "field": {
@@ -302,7 +344,32 @@ export const petalTheme = freeze({
         "fontWeight": 400,
         "letterSpacing": 0,
         "lineHeight": 1.5
-      }
+      },
+      "focusBorder": "#B83D70",
+      "disabledBackground": "#FFF7FA",
+      "disabledForeground": "#745D69",
+      "labelType": {
+        "fontFamily": [
+          "Geist Mono",
+          "monospace"
+        ],
+        "fontSize": 14,
+        "fontWeight": 500,
+        "letterSpacing": 0,
+        "lineHeight": 1.4285714285714286
+      },
+      "helperType": {
+        "fontFamily": [
+          "Geist Mono",
+          "monospace"
+        ],
+        "fontSize": 14,
+        "fontWeight": 500,
+        "letterSpacing": 0,
+        "lineHeight": 1.4285714285714286
+      },
+      "gap": 8,
+      "transition": 120
     },
     "card": {
       "background": "#FFFFFF",
@@ -310,7 +377,19 @@ export const petalTheme = freeze({
       "padding": 20,
       "gap": 16,
       "border": "#E7D5DE",
-      "borderWidth": 1
+      "borderWidth": 1,
+      "foreground": "#33252D",
+      "mutedForeground": "#745D69",
+      "titleType": {
+        "fontFamily": [
+          "Geist Mono",
+          "monospace"
+        ],
+        "fontSize": 20,
+        "fontWeight": 600,
+        "letterSpacing": 0,
+        "lineHeight": 1.4
+      }
     },
     "navigation": {
       "minTarget": 48,
@@ -326,7 +405,11 @@ export const petalTheme = freeze({
         "fontWeight": 500,
         "letterSpacing": 0,
         "lineHeight": 1.4285714285714286
-      }
+      },
+      "radius": 12,
+      "gap": 8,
+      "paddingInline": 16,
+      "transition": 180
     },
     "status": {
       "background": "#FCE8EF",
@@ -343,21 +426,63 @@ export const petalTheme = freeze({
         "fontWeight": 500,
         "letterSpacing": 0,
         "lineHeight": 1.4285714285714286
-      }
+      },
+      "gap": 8,
+      "iconSize": 20
     },
     "dialog": {
       "background": "#FFFFFF",
       "radius": 24,
       "padding": 24,
-      "gap": 16
+      "gap": 16,
+      "foreground": "#33252D",
+      "border": "#E7D5DE",
+      "backdrop": "rgba(51, 37, 45, 0.18)",
+      "maxWidth": 720,
+      "transition": 240,
+      "enterOffset": 8
+    },
+    "selection": {
+      "minTarget": 48,
+      "radius": 12,
+      "background": "#FFFFFF",
+      "foreground": "#33252D",
+      "selectedBackground": "#B83D70",
+      "selectedForeground": "#FFFFFF",
+      "border": "#917584",
+      "gap": 8,
+      "transition": 180
+    },
+    "proposal": {
+      "background": "#FCE8EF",
+      "foreground": "#33252D",
+      "border": "#B83D70",
+      "radius": 16,
+      "padding": 20
+    },
+    "feedback": {
+      "radius": 12,
+      "padding": 16,
+      "gap": 8,
+      "type": {
+        "fontFamily": [
+          "Geist Mono",
+          "monospace"
+        ],
+        "fontSize": 14,
+        "fontWeight": 500,
+        "letterSpacing": 0,
+        "lineHeight": 1.4285714285714286
+      },
+      "transition": 180
     }
   }
 });
-export const petalThemeMetadata = freeze({"version":"0.1.0","appearance":"light","format":"DTCG 2025.10","status":"Approved brand colors/family; new dimensions, functional colors, and states are initial baseline for review."});
+export const petalThemeMetadata = freeze({"version":"0.2.0","appearance":"light","format":"DTCG 2025.10","status":"Approved brand palette/family; original component and motion exploration for designer review."});
 export function getPetalTheme({ reduceMotion = false } = {}) {
   if (!reduceMotion) return petalTheme;
   const theme = JSON.parse(JSON.stringify(petalTheme));
-  for (const segments of [["primitive","duration","none"],["primitive","duration","fast"],["primitive","duration","normal"],["primitive","duration","slow"],["semantic","motion","duration","fast"],["semantic","motion","duration","normal"],["semantic","motion","duration","slow"],["component","button","transition"]]) {
+  for (const segments of [["primitive","duration","none"],["primitive","duration","fast"],["primitive","duration","normal"],["primitive","duration","slow"],["semantic","motion","duration","fast"],["semantic","motion","duration","normal"],["semantic","motion","duration","slow"],["component","button","transition"],["component","field","transition"],["component","navigation","transition"],["component","dialog","transition"],["component","selection","transition"],["component","feedback","transition"]]) {
     let parent = theme;
     for (const key of segments.slice(0, -1)) parent = parent[key];
     parent[segments.at(-1)] = 0;

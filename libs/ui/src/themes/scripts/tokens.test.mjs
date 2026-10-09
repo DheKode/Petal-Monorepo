@@ -74,6 +74,7 @@ test('declared essential text, action, feedback, control and focus color pairs m
   for(const bg of [c.surface,c.background,c.surfaceSubtle])for(const fg of [c.text.primary,c.text.secondary,c.text.link])pairs.push([fg,bg,4.5]);
   for(const bg of [c.action.primary,c.action.hover,c.action.pressed])pairs.push([c.text.onAction,bg,4.5]);
   for(const status of Object.values(c.feedback))pairs.push([status.text,status.surface,4.5]);
+  pairs.push([petalTheme.component.button.danger.foreground,petalTheme.component.button.danger.background,4.5]);
   pairs.push([c.action.disabledText,c.action.disabled,4.5]);
   for(const bg of [c.surface,c.background,c.surfaceSubtle])pairs.push([c.border.control,bg,3],[c.focus,bg,3]);
   for(const [fg,bg,min] of pairs)assert(contrast(fg,bg)>=min,`${fg} on ${bg}: ${contrast(fg,bg).toFixed(2)} < ${min}`);

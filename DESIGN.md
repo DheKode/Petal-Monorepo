@@ -150,6 +150,10 @@ The shared theme defines initial radii: 12 for controls, 16 for containers, and 
 
 Shared defaults for buttons, fields, cards, navigation, neutral status containers, and dialogs are in `libs/ui/src/themes/petal.tokens.json`. These are reusable appearance values; implementing components and validating screens remain separate tasks. Future shared component, hook, layout, and helper code belongs in the corresponding `libs/ui/src/` folders.
 
+The [offline HTML preview](libs/ui/preview.html) shows every canonical token, original component specimens, source aliases, and web/native values. It embeds the approved artwork and locally bundled Geist Mono. Buttons explore a 12-unit rounded rectangle, with 10/16-unit comparisons; selections and proposed changes use explicit labels. Shared web styling lives in `libs/ui/src/styles/`, exposed as `@petal/ui/styles.css`. These specimens remain an exploration for designer review. No reference component library is installed or copied.
+
+Use [AnimateIcons](https://animateicons.in/) to study icon legibility and purposeful icon motion, and [Animata](https://animata.design/) for restrained custom feedback. Icon slots are 20/24/32 with a 1.75 px outline candidate; the icon family is unselected. Component studies include [Untitled UI](https://www.untitledui.com/react/components/buttons), [HeroUI](https://heroui.com/en/docs/react/components/button), and [shadcn](https://ui.shadcn.com/docs/components/button). Study interaction hierarchy, then design Petal’s own values and controls. Motion proposals use 120/180/240 ms, scale 0.98, and an 8-unit entry offset; respect reduced motion and avoid automatic loops.
+
 ### Study considerations
 
 - **Actions:** Explore a clear hierarchy for the primary logging action and its alternatives.
