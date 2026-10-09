@@ -1,24 +1,31 @@
 import { useEffect, useState } from 'react';
-import { getIntakeState } from '@petal/domain';
-import type { AppInfo } from '../../shared/ipc';
+import type { AppInfo, PetalState } from '../../shared/ipc';
+import { Setup } from './Setup';
+import { Today } from './Today';
 
-// Scaffold placeholder only. Visual direction belongs to the designer (#11).
+// Functional screens only. Visual direction belongs to the designer (#11); do not add styling decisions here.
 export function App() {
+  const [state, setState] = useState<PetalState | null>(null);
   const [info, setInfo] = useState<AppInfo | null>(null);
 
   useEffect(() => {
+    window.petal.getState().then(setState);
     window.petal.getAppInfo().then(setInfo);
   }, []);
+
+  if (!state) {
+    return <main><p>Loading…</p></main>;
+  }
 
   return (
     <main>
       <h1>Petal</h1>
-      <p>Desktop scaffold. Renderer domain check: {getIntakeState('scaffold-check', [])}</p>
-      {info && (
-        <p>
-          App {info.appVersion} on {info.platform}. Main-process domain check: {info.domainCheck}
-        </p>
+      {state.persistence === 'memory' && (
+        <p role="status">Temporary storage: your records are lost when the app closes. Saving to your device is not connected yet.</p>
       )}
+      <p>Product details are not verified yet, so Petal is tracking only and shows no guidance.</p>
+      {state.pack ? <Today state={state} onState={setState} /> : <Setup onSaved={setState} />}
+      {info && <footer><small>Petal {info.appVersion} · {info.platform}</small></footer>}
     </main>
   );
 }

@@ -1,9 +1,17 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, type IpcMainInvokeEvent } from 'electron';
 import { join } from 'node:path';
-import { getIntakeState } from '@petal/domain';
-import { IPC_APP_INFO, type AppInfo } from '../shared/ipc';
+import {
+  IPC_APP_INFO, IPC_GET_STATE, IPC_SAVE_SETUP, IPC_RECORD_INTAKE, IPC_UNDO_INTAKE,
+  type AppInfo, type RecordIntakeInput, type SetupInput,
+} from '../shared/ipc';
+import { MemoryStore } from './store';
+import { PetalService } from './service';
 // Same artwork electron-builder uses for installers (build/icon.png); ?asset bundles it and returns its path.
 import icon from '../../build/icon.png?asset';
+
+// Temporary non-persistent store until the SQLite adapter (#6) is merged; see store.ts.
+const service = new PetalService(new MemoryStore());
+let mainWindow: BrowserWindow | null = null;
 
 function createWindow(): void {
   const win = new BrowserWindow({
@@ -20,6 +28,10 @@ function createWindow(): void {
     },
   });
 
+  mainWindow = win;
+  win.on('closed', () => {
+    mainWindow = null;
+  });
   win.once('ready-to-show', () => win.show());
 
   // Petal is offline-first: never open new windows or navigate away from the bundled UI.
@@ -33,11 +45,19 @@ function createWindow(): void {
   }
 }
 
-ipcMain.handle(IPC_APP_INFO, (): AppInfo => ({
-  appVersion: app.getVersion(),
-  domainCheck: getIntakeState('scaffold-check', []),
-  platform: process.platform,
-}));
+/** Only the app window may call the main process. */
+function handle<A extends unknown[], R>(channel: string, fn: (...args: A) => R): void {
+  ipcMain.handle(channel, (event: IpcMainInvokeEvent, ...args: unknown[]) => {
+    if (!mainWindow || event.sender !== mainWindow.webContents) throw new Error('Untrusted caller');
+    return fn(...(args as A));
+  });
+}
+
+handle(IPC_APP_INFO, (): AppInfo => ({ appVersion: app.getVersion(), platform: process.platform }));
+handle(IPC_GET_STATE, () => service.getState());
+handle(IPC_SAVE_SETUP, (input: SetupInput) => service.saveSetup(input));
+handle(IPC_RECORD_INTAKE, (input: RecordIntakeInput) => service.recordIntake(input));
+handle(IPC_UNDO_INTAKE, (doseId: string) => service.undoIntake(doseId));
 
 app.whenReady().then(() => {
   createWindow();

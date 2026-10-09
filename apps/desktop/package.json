@@ -9,7 +9,8 @@
     "build": "pnpm --filter @petal/domain build && electron-vite build",
     "preview": "electron-vite preview",
     "typecheck": "pnpm --filter @petal/domain build && tsc",
-    "package:dir": "pnpm run build && electron-builder --dir"
+    "package:dir": "pnpm run build && electron-builder --dir",
+    "test": "pnpm --filter @petal/domain build && tsx --test test/*.test.ts"
   },
   "devDependencies": {
     "@petal/domain": "workspace:*",
