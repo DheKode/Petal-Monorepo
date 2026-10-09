@@ -5,7 +5,8 @@
 // Usage (needs the GitHub CLI, logged in with project read access):
 //   node scripts/gate-status.mjs                    # print a markdown report
 //   node scripts/gate-status.mjs --json             # machine-readable report
-//   node scripts/gate-status.mjs --update-issue 28  # rewrite that issue's body with the report
+//   node scripts/gate-status.mjs --update-issue 30  # rewrite that issue's body with the report
+//   node scripts/gate-status.mjs --update-issue 30 --assessment notes.md  # put a written assessment above it
 //   node scripts/gate-status.mjs --now 2026-10-10T02:30+08:00   # evaluate at another time
 //
 // Status is tracked per issue on the board, not per task. A task counts as done
@@ -26,6 +27,7 @@ const {values: args} = parseArgs({
         now: {type: "string"},
         json: {type: "boolean", default: false},
         "update-issue": {type: "string"},
+        assessment: {type: "string"},
         "stale-hours": {type: "string", default: "2"}
     }
 });
@@ -176,6 +178,7 @@ function buildReport(plan, issues, at) {
     const usedIssues = new Set(plan.gates.flatMap((gate) => gate.tasks.flatMap((task) => task.issues)));
     const warnings = [];
     for (const issue of issues.values()) {
+        if (String(issue.number) === args["update-issue"]) continue;
         if (!usedIssues.has(issue.number) && issue.state === "CLOSED") continue;
         if (issue.state === "CLOSED" && issue.status !== "Done")
             warnings.push(`#${issue.number} is closed but the board says ${issue.status ?? "nothing"} (Done needs integrated verification).`);
@@ -293,7 +296,8 @@ const report = buildReport(plan, board, now);
 if (args.json)
     console.log(JSON.stringify(report, null, 2));
 else {
-    const markdown = renderMarkdown(report);
+    const assessment = args.assessment ? readFileSync(args.assessment, "utf8").trim() : "";
+    const markdown = assessment ? `${assessment}\n\n---\n\n${renderMarkdown(report)}` : renderMarkdown(report);
     if (args["update-issue"]) {
         gh(["issue", "edit", args["update-issue"], "--repo", args.repo, "--body-file", "-"], markdown);
         console.log(`Updated issue #${args["update-issue"]}`);
