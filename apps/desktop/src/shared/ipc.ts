@@ -5,6 +5,7 @@ export const IPC_GET_STATE = 'petal:get-state';
 export const IPC_SAVE_SETUP = 'petal:save-setup';
 export const IPC_RECORD_INTAKE = 'petal:record-intake';
 export const IPC_UNDO_INTAKE = 'petal:undo-intake';
+export const IPC_RECORD_BATCH = 'petal:record-intake-batch';
 
 export interface AppInfo {
   appVersion: string;
@@ -47,6 +48,18 @@ export interface IntakeOutcome {
   undoable: boolean;
 }
 
+/** Result of saving several entries at once (history repair). */
+export interface BatchOutcome {
+  state: PetalState;
+  /** Entries that were new or changed. */
+  applied: number;
+  /** Entries that already matched the records and were skipped. */
+  unchanged: number;
+}
+
+/** Most entries one batch may carry (a pack has 28 tablets). */
+export const MAX_BATCH = 56;
+
 export interface PetalBridge {
   getAppInfo(): Promise<AppInfo>;
   getState(): Promise<PetalState>;
@@ -54,4 +67,6 @@ export interface PetalBridge {
   recordIntake(input: RecordIntakeInput): Promise<Result<IntakeOutcome>>;
   /** Restore the dose's record to what it was before its most recent correction in this session. */
   undoIntake(doseId: string): Promise<Result<PetalState>>;
+  /** Save several entries after the user confirmed a preview. All are validated before any is written. */
+  recordIntakeBatch(inputs: RecordIntakeInput[]): Promise<Result<BatchOutcome>>;
 }

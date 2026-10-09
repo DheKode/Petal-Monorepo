@@ -3,7 +3,7 @@ import {
   type IntakeEvent,
 } from '@petal/domain';
 import { deriveFromSetupInput } from '../shared/setup';
-import type { IntakeOutcome, PetalState, RecordIntakeInput, Result, SetupInput } from '../shared/ipc';
+import { MAX_BATCH, type BatchOutcome, type IntakeOutcome, type PetalState, type RecordIntakeInput, type Result, type SetupInput } from '../shared/ipc';
 import { SetupExistsError, type PetalStore } from './store';
 
 const fail = (message: string): { ok: false; message: string } => ({ ok: false, message });
@@ -62,19 +62,26 @@ export class PetalService {
     });
   }
 
+  /** Validate one renderer entry. Returns `null` when any field is malformed. */
+  private parseEntry(input: RecordIntakeInput) {
+    const status = IntakeStatusSchema.safeParse(input?.status);
+    const doseId = IdSchema.safeParse(input?.doseId);
+    const actualAt = TimestampSchema.nullable().optional().safeParse(input?.actualAt);
+    const precision = TimePrecisionSchema.optional().safeParse(input?.timePrecision);
+    if (!status.success || !doseId.success || !actualAt.success || !precision.success) return null;
+    return { doseId: doseId.data, intake: { status: status.data, actualAt: actualAt.data, timePrecision: precision.data } };
+  }
+
   recordIntake(input: RecordIntakeInput): Promise<Result<IntakeOutcome>> {
     return this.exclusive(async () => {
       try {
-        const status = IntakeStatusSchema.safeParse(input?.status);
-        const doseId = IdSchema.safeParse(input?.doseId);
-        const actualAt = TimestampSchema.nullable().optional().safeParse(input?.actualAt);
-        const precision = TimePrecisionSchema.optional().safeParse(input?.timePrecision);
-        if (!status.success || !doseId.success || !actualAt.success || !precision.success) return fail('Invalid intake entry.');
+        const entry = this.parseEntry(input);
+        if (!entry) return fail('Invalid intake entry.');
         const state = await this.store.load();
-        const dose = state.doses.find(d => d.id === doseId.data);
+        const dose = state.doses.find(d => d.id === entry.doseId);
         if (!dose) return fail('That tablet is not part of the current pack.');
         const existing = state.events.find(e => e.doseId === dose.id);
-        const { event, change } = applyIntake(dose, existing, { status: status.data, actualAt: actualAt.data, timePrecision: precision.data }, this.now());
+        const { event, change } = applyIntake(dose, existing, entry.intake, this.now());
         if (change === 'unchanged') return ok({ state, change, undoable: false });
         const saved = await this.store.putIntakeEvent(event);
         // Undo bookkeeping changes only after the write succeeded. Only corrections can be undone: the storage adapter
@@ -82,6 +89,47 @@ export class PetalService {
         if (existing) this.undo.set(dose.id, { previous: existing, correctedAt: event.updatedAt });
         else this.undo.delete(dose.id);
         return ok({ state: saved, change, undoable: existing !== undefined });
+      } catch (error) {
+        return fail(messageOf(error));
+      }
+    });
+  }
+
+  /** Save several entries the user has already reviewed and confirmed (history repair). Every entry is validated and planned
+      against the current records first, and nothing is written unless all of them are valid. A storage failure part-way
+      reports how many were saved; the screen then reloads the records. Batch entries are not offered an Undo. */
+  recordIntakeBatch(inputs: RecordIntakeInput[]): Promise<Result<BatchOutcome>> {
+    return this.exclusive(async () => {
+      try {
+        if (!Array.isArray(inputs) || inputs.length === 0 || inputs.length > MAX_BATCH) return fail('Invalid set of entries.');
+        const state = await this.store.load();
+        const now = this.now();
+        const seen = new Set<string>();
+        const planned: IntakeEvent[] = [];
+        let unchanged = 0;
+        for (const input of inputs) {
+          const entry = this.parseEntry(input);
+          if (!entry) return fail('Invalid intake entry.');
+          if (seen.has(entry.doseId)) return fail('A tablet appears more than once in this set of entries.');
+          seen.add(entry.doseId);
+          const dose = state.doses.find(d => d.id === entry.doseId);
+          if (!dose) return fail('That tablet is not part of the current pack.');
+          const { event, change } = applyIntake(dose, state.events.find(e => e.doseId === dose.id), entry.intake, now);
+          if (change === 'unchanged') unchanged += 1;
+          else planned.push(event);
+        }
+        let latest = state;
+        let applied = 0;
+        for (const event of planned) {
+          try {
+            latest = await this.store.putIntakeEvent(event);
+          } catch {
+            return fail(`Saved ${applied} of ${planned.length} changes before a problem stopped it. Open the pack to see what was saved, then try again.`);
+          }
+          this.undo.delete(event.doseId);
+          applied += 1;
+        }
+        return ok({ state: latest, applied, unchanged });
       } catch (error) {
         return fail(messageOf(error));
       }

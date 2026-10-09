@@ -1,7 +1,7 @@
 import { app, BrowserWindow, dialog, ipcMain, Menu, type IpcMainInvokeEvent } from 'electron';
 import { join } from 'node:path';
 import {
-  IPC_APP_INFO, IPC_GET_STATE, IPC_SAVE_SETUP, IPC_RECORD_INTAKE, IPC_UNDO_INTAKE,
+  IPC_APP_INFO, IPC_GET_STATE, IPC_SAVE_SETUP, IPC_RECORD_INTAKE, IPC_UNDO_INTAKE, IPC_RECORD_BATCH,
   type AppInfo, type RecordIntakeInput, type SetupInput,
 } from '../shared/ipc';
 import { SqliteStore } from './sqliteStore';
@@ -80,6 +80,7 @@ handle(IPC_GET_STATE, () => requireService().getState());
 handle(IPC_SAVE_SETUP, (input: SetupInput) => requireService().saveSetup(input));
 handle(IPC_RECORD_INTAKE, (input: RecordIntakeInput) => requireService().recordIntake(input));
 handle(IPC_UNDO_INTAKE, (doseId: string) => requireService().undoIntake(doseId));
+handle(IPC_RECORD_BATCH, (inputs: RecordIntakeInput[]) => requireService().recordIntakeBatch(inputs));
 
 app.whenReady().then(async () => {
   if (!hasInstanceLock) return;
