@@ -1,0 +1,391 @@
+{
+  "schemaVersion": 1,
+  "collection": "Petal illustration proposals",
+  "version": "0.1.0",
+  "assets": [
+    {
+      "id": "character-welcome",
+      "family": "characters",
+      "title": "A gentle hello",
+      "description": "An adult woman with a rose overshirt and blush trousers giving a small wave.",
+      "path": "characters/petal-character-welcome-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1356757,
+      "contentBounds": [
+        428,
+        154,
+        808,
+        1133
+      ],
+      "sha256": "a9ac45361f1d6e5aa54aaccd9968dc4b6bb905207b8bbdde92588c38963f60d5",
+      "bytes": 312482,
+      "approval": "proposal"
+    },
+    {
+      "id": "character-journaling",
+      "family": "characters",
+      "title": "Room to write",
+      "description": "An adult with rounded curly hair seated on a blush stool, writing in an open journal.",
+      "path": "characters/petal-character-journaling-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1273752,
+      "contentBounds": [
+        411,
+        141,
+        985,
+        1130
+      ],
+      "sha256": "db7523bc17149d45053e3c0edf9df7295a36105b73aec50d0191ac24cb0e0a63",
+      "bytes": 418013,
+      "approval": "proposal"
+    },
+    {
+      "id": "character-reflecting",
+      "family": "characters",
+      "title": "A moment to think",
+      "description": "A tan-skinned adult with a plum bob seated thoughtfully, with an open relaxed posture.",
+      "path": "characters/petal-character-reflecting-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1233383,
+      "contentBounds": [
+        348,
+        176,
+        944,
+        1102
+      ],
+      "sha256": "2505358cb859c5cbdd2de1dcca7a7420baf8000f05bfd26c8a568421dae4a608",
+      "bytes": 440257,
+      "approval": "proposal"
+    },
+    {
+      "id": "character-reading",
+      "family": "characters",
+      "title": "Take a closer look",
+      "description": "An adult with shoulder-length wavy hair reading a blank open book.",
+      "path": "characters/petal-character-reading-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1334416,
+      "contentBounds": [
+        435,
+        142,
+        844,
+        1148
+      ],
+      "sha256": "b9577baf0450358e3295300f2d11149e9e20f14af23057cc5a87fcdff68b7dd1",
+      "bytes": 339865,
+      "approval": "proposal"
+    },
+    {
+      "id": "character-reminders",
+      "family": "characters",
+      "title": "At your own pace",
+      "description": "A short-haired adult holding a simple round clock with an understated smile.",
+      "path": "characters/petal-character-reminders-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1352069,
+      "contentBounds": [
+        455,
+        155,
+        806,
+        1135
+      ],
+      "sha256": "4c2713ea526fc565018c74540b3b5d5ca3da3c5a536a409c3b6be88754928840",
+      "bytes": 310370,
+      "approval": "proposal"
+    },
+    {
+      "id": "character-organizing",
+      "family": "characters",
+      "title": "Keep things together",
+      "description": "An adult with a long plum braid holding a simple rose folder.",
+      "path": "characters/petal-character-organizing-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1354854,
+      "contentBounds": [
+        452,
+        155,
+        800,
+        1135
+      ],
+      "sha256": "4dc09477d369c0f6dc1d37c822dadbc5a3ce7f26b1530dbc01bdf751bab7b6d8",
+      "bytes": 310365,
+      "approval": "proposal"
+    },
+    {
+      "id": "companion-hello",
+      "family": "companion",
+      "title": "Blossom says hello",
+      "description": "An original three-petal blossom companion with tiny eyes and one leaf arm raised.",
+      "path": "companion/petal-companion-hello-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1279304,
+      "contentBounds": [
+        265,
+        223,
+        1009,
+        1056
+      ],
+      "sha256": "0a7f91ac422a76f2632a992815fdd340ff0e6085493e8fa50c5912c91d2472e2",
+      "bytes": 413584,
+      "approval": "proposal"
+    },
+    {
+      "id": "companion-thinking",
+      "family": "companion",
+      "title": "Blossom takes a moment",
+      "description": "The same blossom companion with a gentle head tilt and a leaf arm beside its face.",
+      "path": "companion/petal-companion-thinking-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1312130,
+      "contentBounds": [
+        314,
+        259,
+        1036,
+        1053
+      ],
+      "sha256": "0963a1c1787bebb13ae64a5a060493e5c3065d826f8fd68e4298269fb58817fa",
+      "bytes": 363102,
+      "approval": "proposal"
+    },
+    {
+      "id": "object-journal",
+      "family": "objects",
+      "title": "Open journal",
+      "description": "A rose-covered journal with blank soft-white pages and a simple pencil.",
+      "path": "objects/petal-object-journal-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1078473,
+      "contentBounds": [
+        115,
+        282,
+        1138,
+        974
+      ],
+      "sha256": "17b0afbcd9f87405cd10b059ebe4f468b5e9e587156117d712db8ed8d61e63a9",
+      "bytes": 554019,
+      "approval": "proposal"
+    },
+    {
+      "id": "object-calendar",
+      "family": "objects",
+      "title": "Blank calendar",
+      "description": "A rounded calendar with rose header, blank blush panels, and plum binding loops.",
+      "path": "objects/petal-object-calendar-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 923967,
+      "contentBounds": [
+        200,
+        202,
+        1099,
+        1042
+      ],
+      "sha256": "8f7930ec0bdc27874d2c88fea962b08a682bce5cf27e76dc42f0ad87a6559659",
+      "bytes": 644410,
+      "approval": "proposal"
+    },
+    {
+      "id": "object-clock",
+      "family": "objects",
+      "title": "Quiet clock",
+      "description": "A simple rose clock with two plum hands and no numbers.",
+      "path": "objects/petal-object-clock-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 786330,
+      "contentBounds": [
+        132,
+        148,
+        1121,
+        1127
+      ],
+      "sha256": "56f199b70617bebe349f93e5734c144493fe05eb01b928b4f20d0765a422b9a7",
+      "bytes": 776937,
+      "approval": "proposal"
+    },
+    {
+      "id": "object-folder",
+      "family": "objects",
+      "title": "Personal folder",
+      "description": "A blush folder holding two blank soft-white sheets, with a rose front panel.",
+      "path": "objects/petal-object-folder-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 965380,
+      "contentBounds": [
+        223,
+        203,
+        1074,
+        1059
+      ],
+      "sha256": "51ae1c2764ef49a622353a2ba616c7b3d61331a1917946bebbaa843eb4f36002",
+      "bytes": 629477,
+      "approval": "proposal"
+    },
+    {
+      "id": "abstract-petal-orbit",
+      "family": "abstract",
+      "title": "Petal orbit",
+      "description": "An open ring of three large rose and blush soft petal shapes with two tiny plum oval accents; decorative, without diagram meaning.",
+      "path": "abstract/petal-abstract-petal-orbit-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1239025,
+      "contentBounds": [
+        200,
+        164,
+        1103,
+        1082
+      ],
+      "sha256": "8bca476fef36b60c6435c7c35c32c33aa09940a5b99548eb7cf654fd9be3eb52",
+      "bytes": 433372,
+      "approval": "proposal"
+    },
+    {
+      "id": "abstract-ribbon-loop",
+      "family": "abstract",
+      "title": "Ribbon loop",
+      "description": "A single loose rose ribbon with a blush reverse, forming a relaxed open loop.",
+      "path": "abstract/petal-abstract-ribbon-loop-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1259813,
+      "contentBounds": [
+        250,
+        164,
+        1013,
+        1084
+      ],
+      "sha256": "06f122bbcc73da831eec015b550a57ef9687a4a0f8b4ec9980299527797224a9",
+      "bytes": 426884,
+      "approval": "proposal"
+    },
+    {
+      "id": "abstract-leaf-cluster",
+      "family": "abstract",
+      "title": "Leaf cluster",
+      "description": "Three rounded rose, blush, and muted-plum leaves branching from one plum stem.",
+      "path": "abstract/petal-abstract-leaf-cluster-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1229490,
+      "contentBounds": [
+        177,
+        116,
+        1104,
+        1158
+      ],
+      "sha256": "8fa50eaebbb0cca0895cf565668cc64dcd250e6e31f4edb1994d41f073d33018",
+      "bytes": 462655,
+      "approval": "proposal"
+    },
+    {
+      "id": "abstract-pebble-stack",
+      "family": "abstract",
+      "title": "Pebble stack",
+      "description": "Four soft geometric forms in a balanced rose-and-plum composition.",
+      "path": "abstract/petal-abstract-pebble-stack-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1069347,
+      "contentBounds": [
+        251,
+        192,
+        1004,
+        1080
+      ],
+      "sha256": "67b5b9c922240d31485051d8832d191ccaefdd7e6e668828e70027bec78de83b",
+      "bytes": 555066,
+      "approval": "proposal"
+    }
+  ]
+}
