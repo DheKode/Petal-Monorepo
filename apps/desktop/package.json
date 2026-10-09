@@ -10,7 +10,7 @@
     "preview": "electron-vite preview",
     "typecheck": "pnpm --filter @petal/storage build && tsc",
     "package:dir": "pnpm run build && electron-builder --dir",
-    "test": "pnpm --filter @petal/storage build && tsx --conditions=import --test test/*.test.ts"
+    "test": "pnpm --filter @petal/storage build && tsx --test test/*.test.ts"
   },
   "devDependencies": {
     "@petal/domain": "workspace:*",

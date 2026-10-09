@@ -19,11 +19,13 @@ export interface SavedSetup {
 
 /** Storage port for the desktop app. The app uses `SqliteStore` (the `@petal/storage` adapter, which also writes the audit
     trail). `MemoryStore` below is only for tests and must never be wired into the running app: nothing it holds survives
-    a restart. There is deliberately no removal operation, because the adapter cannot remove an intake event (#37). */
+    a restart. */
 export interface PetalStore {
   load(): Promise<PetalState>;
   saveSetup(setup: SavedSetup): Promise<PetalState>;
   putIntakeEvent(event: IntakeEvent): Promise<PetalState>;
+  /** Remove the current intake event of a dose (used to undo a mistaken new entry). The removal is audited. */
+  removeIntakeEvent(doseId: string): Promise<PetalState>;
   /** Full backup as JSON text (plaintext, not encrypted). */
   exportJson(): Promise<{ json: string; sensitivityNotice: string }>;
   /** Validate backup text and hold it as a pending preview. Changes nothing stored. Throws if the text is not a valid backup. */
@@ -54,6 +56,11 @@ export class MemoryStore implements PetalStore {
   async putIntakeEvent(event: IntakeEvent): Promise<PetalState> {
     const others = this.state.events.filter(e => e.doseId !== event.doseId);
     this.state = { ...this.state, events: [...others, structuredClone(event)] };
+    return this.load();
+  }
+
+  async removeIntakeEvent(doseId: string): Promise<PetalState> {
+    this.state = { ...this.state, events: this.state.events.filter(e => e.doseId !== doseId) };
     return this.load();
   }
 

@@ -94,4 +94,11 @@ export class SqliteStore implements PetalStore {
     await this.db.confirm(preview.token);
     return this.load();
   }
+
+  /** Undo of a mistaken new entry. The adapter keeps the removed values in the audit trail. */
+  async removeIntakeEvent(doseId: string): Promise<PetalState> {
+    const preview = await this.db.previewIntakeRemoval(doseId, 'manual');
+    await this.db.confirm(preview.token);
+    return this.load();
+  }
 }

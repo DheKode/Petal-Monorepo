@@ -58,18 +58,21 @@ test('taken now records one event; repeating it is a no-op', async () => {
   assert.equal(again.state.events.length, 1);
 });
 
-test('only corrections can be undone: a new entry cannot be removed, a correction restores the earlier values', async () => {
+test('a new entry is undone by removing it, and a correction is undone by restoring the earlier values', async () => {
   const { service, ready } = setup();
   const dose = value(await ready).doses[8];
   const created = value(await service.recordIntake({ doseId: dose.id, status: 'taken', actualAt: NOW.toISOString() }));
-  assert.equal(created.undoable, false);
-  assert.equal((await service.undoIntake(dose.id)).ok, false);
+  assert.equal(created.undoable, true);
+  assert.deepEqual(value(await service.undoIntake(dose.id)).events, [], 'undoing a new entry returns the tablet to "no entry"');
+  assert.equal((await service.undoIntake(dose.id)).ok, false, 'nothing left to undo');
+
+  const again = value(await service.recordIntake({ doseId: dose.id, status: 'taken', actualAt: NOW.toISOString() }));
   const corrected = value(await service.recordIntake({ doseId: dose.id, status: 'confirmed-missed' }));
   assert.equal(corrected.undoable, true);
   const state = value(await service.undoIntake(dose.id));
   assert.equal(state.events[0].status, 'taken');
   assert.equal(state.events[0].actualAt, NOW.toISOString());
-  assert.equal(state.events[0].createdAt, created.state.events[0].createdAt);
+  assert.equal(state.events[0].createdAt, again.state.events[0].createdAt);
   assert.equal((await service.undoIntake(dose.id)).ok, false);
 });
 
@@ -123,18 +126,19 @@ class FlakyStore extends MemoryStore {
   }
 }
 
-test('a failed correction leaves no undo entry, and a failed undo can be retried', async () => {
+test('a failed change does not disturb the undo entry, and a failed undo can be retried', async () => {
   const store = new FlakyStore();
   const service = new PetalService(store, () => NOW);
   const dose = value(await service.saveSetup(firstPack)).doses[8];
   value(await service.recordIntake({ doseId: dose.id, status: 'taken', actualAt: NOW.toISOString() }));
 
+  // A correction that fails to save must not replace the undo entry of the earlier, successful change.
   store.failNext = true;
-  const failed = await service.recordIntake({ doseId: dose.id, status: 'confirmed-missed' });
-  assert.equal(failed.ok, false);
-  assert.equal((await service.undoIntake(dose.id)).ok, false, 'no undo entry for a change that never happened');
+  assert.equal((await service.recordIntake({ doseId: dose.id, status: 'confirmed-missed' })).ok, false);
   assert.equal((await service.getState()).events[0].status, 'taken');
+  assert.deepEqual(value(await service.undoIntake(dose.id)).events, [], 'undo still refers to the creation, not to the change that never happened');
 
+  value(await service.recordIntake({ doseId: dose.id, status: 'taken', actualAt: NOW.toISOString() }));
   value(await service.recordIntake({ doseId: dose.id, status: 'confirmed-missed' }));
   store.failNext = true;
   assert.equal((await service.undoIntake(dose.id)).ok, false);

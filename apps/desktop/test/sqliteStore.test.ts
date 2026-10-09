@@ -171,3 +171,25 @@ test('closing waits for requests already accepted', async t => {
   await service.idle();
   assert.equal((await pending).ok, true);
 });
+
+test('undoing a new entry removes it from the database with an audit entry, and it survives a restart', async t => {
+  const path = await tempDb(t);
+  const first = await open(path, t);
+  const dose = value(await first.service.saveSetup(setupInput)).doses[9];
+  const created = value(await first.service.recordIntake({ doseId: dose.id, status: 'taken', actualAt: NOW.toISOString() }));
+  assert.equal(created.undoable, true);
+  assert.deepEqual(value(await first.service.undoIntake(dose.id)).events, []);
+  first.store.close();
+
+  const second = await open(path, t);
+  assert.deepEqual((await second.service.getState()).events, [], 'the removal is durable');
+  const again = value(await second.service.recordIntake({ doseId: dose.id, status: 'unsure' }));
+  assert.equal(again.change, 'created', 'the tablet can be recorded again after an undo');
+  second.store.close();
+
+  const raw = await LocalStore.open(path);
+  t.after(() => raw.close());
+  const audits = (await raw.read()).backup.auditEntries.filter(a => a.entityType === 'intake-event');
+  assert.deepEqual(audits.map(a => [a.priorValue === null, a.newValue === null]), [[true, false], [false, true], [true, false]], 'create, removal and re-create are all audited');
+  assert.equal((audits[1].priorValue as { status: string }).status, 'taken', 'the removed values stay in the audit trail');
+});

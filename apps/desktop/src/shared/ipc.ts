@@ -50,7 +50,7 @@ export type Result<T> = { ok: true; value: T } | { ok: false; message: string };
 export interface IntakeOutcome {
   state: PetalState;
   change: IntakeChange;
-  /** True when this change was a correction that can be undone. New entries cannot be undone (#37). */
+  /** True when this change can be undone (a correction is restored; a new entry is removed). */
   undoable: boolean;
 }
 
@@ -94,7 +94,7 @@ export interface PetalBridge {
   getState(): Promise<PetalState>;
   saveSetup(input: SetupInput): Promise<Result<PetalState>>;
   recordIntake(input: RecordIntakeInput): Promise<Result<IntakeOutcome>>;
-  /** Restore the dose's record to what it was before its most recent correction in this session. */
+  /** Restore the dose's record to what it was before its most recent single change in this session (a new entry is removed). */
   undoIntake(doseId: string): Promise<Result<PetalState>>;
   /** Save several entries after the user confirmed a preview. All are validated before any is written. */
   recordIntakeBatch(inputs: RecordIntakeInput[]): Promise<Result<BatchOutcome>>;

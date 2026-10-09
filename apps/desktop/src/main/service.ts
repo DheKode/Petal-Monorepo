@@ -34,9 +34,9 @@ function importMessageOf(error: unknown): string {
 }
 
 interface UndoEntry {
-  /** The record as it was before the correction. */
-  previous: IntakeEvent;
-  /** `updatedAt` of the correction that replaced it. A restore must not be dated earlier than this. */
+  /** The record as it was before the change, or `null` when the change created it (undo then removes it). */
+  previous: IntakeEvent | null;
+  /** `updatedAt` of the change being undone. A restore must not be dated earlier than this. */
   correctedAt: string;
 }
 
@@ -44,7 +44,7 @@ interface UndoEntry {
     input is re-validated here, and every change goes through `applyIntake`. Operations run one at a time, so a double
     click or overlapping requests cannot race each other into a stale-revision failure. */
 export class PetalService {
-  /** Each dose's record before its most recent correction in this session, for undo. New entries are not stored here. */
+  /** Each dose's record before its most recent single change in this session, for undo. Batch saves are not undoable. */
   private readonly undo = new Map<string, UndoEntry>();
   private queue: Promise<unknown> = Promise.resolve();
 
@@ -101,11 +101,9 @@ export class PetalService {
         const { event, change } = applyIntake(dose, existing, entry.intake, this.now());
         if (change === 'unchanged') return ok({ state, change, undoable: false });
         const saved = await this.store.putIntakeEvent(event);
-        // Undo bookkeeping changes only after the write succeeded. Only corrections can be undone: the storage adapter
-        // cannot remove a newly created event (#37).
-        if (existing) this.undo.set(dose.id, { previous: existing, correctedAt: event.updatedAt });
-        else this.undo.delete(dose.id);
-        return ok({ state: saved, change, undoable: existing !== undefined });
+        // Undo bookkeeping changes only after the write succeeded.
+        this.undo.set(dose.id, { previous: existing ?? null, correctedAt: event.updatedAt });
+        return ok({ state: saved, change, undoable: true });
       } catch (error) {
         return fail(messageOf(error));
       }
@@ -158,10 +156,14 @@ export class PetalService {
       try {
         const entry = this.undo.get(doseId);
         if (!entry) return fail('There is nothing to undo for that tablet.');
-        // Restoring is itself a correction: the earlier values with a new update time, so the audit trail keeps both
-        // changes. The time is never earlier than the correction being undone, even if the system clock moved back.
+        // Undoing a new entry removes it. Undoing a correction restores the earlier values as a new correction with a new
+        // update time, so the audit trail keeps both changes. The time is never earlier than the change being undone, even
+        // if the system clock moved back.
+        const { previous } = entry;
         const at = new Date(Math.max(this.now().getTime(), Date.parse(entry.correctedAt)));
-        const state = await this.store.putIntakeEvent({ ...entry.previous, updatedAt: toZonedIso(at, entry.previous.timeZone) });
+        const state = previous === null
+          ? await this.store.removeIntakeEvent(doseId)
+          : await this.store.putIntakeEvent({ ...previous, updatedAt: toZonedIso(at, previous.timeZone) });
         this.undo.delete(doseId);
         return ok(state);
       } catch (error) {
