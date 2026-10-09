@@ -45,7 +45,7 @@ export function buildContext(snapshot, question, {currentLocalDate, session = {}
     settings: snapshot.settings, packs: snapshot.packs.filter(p => doses.some(d => d.packId === p.id)), doses,
     truncated: relevant.length > 40, bleeding: snapshot.bleeding.filter(b => b.startDate <= endDate && (b.endDate ?? b.startDate) >= startDate).slice(-10),
     guidance: snapshot.guidance, approvedEvidence, session: {discussedDoseId: session.discussedDoseId ?? null, pendingProposal: session.pendingProposal ?? null, actionResult: action, recentTurns: history},
-    facts: {takenYesterday: [...events.values()].filter(e => e.status === 'taken' && actualDate(e) === yesterday).map(e => e.doseId),
+    facts: {takenUnknownTime: [...events.values()].filter(e => e.status === 'taken' && e.actualAt === null).map(e => e.doseId), takenYesterday: [...events.values()].filter(e => e.status === 'taken' && actualDate(e) === yesterday).map(e => e.doseId),
       confirmedMisses: doses.filter(d => d.status === 'confirmed-missed').map(d => d.id), unknown: doses.filter(d => d.status === 'no-entry' || d.status === 'unsure').map(d => d.id)}};
 }
 
@@ -89,6 +89,9 @@ export function planResponse(c) {
     ask('dose-association', "Which scheduled tablet did you take—the one scheduled for yesterday or today's? A time after midnight alone does not identify the dose.");
   } else if (/two yesterday|how many.*yesterday/.test(q)) {
     mode = 'history'; add('actual-count', `Your records show ${c.facts.takenYesterday.length} separate doses taken on ${c.yesterday}${c.facts.takenYesterday.length ? `: ${c.facts.takenYesterday.join(', ')}` : ''}. This is a count of recorded intakes, not independent confirmation of what happened.`);
+    if (c.facts.takenUnknownTime.length) add('unknown-actual-date', `${c.facts.takenUnknownTime.length} taken records have unknown actual times, so their actual intake dates cannot be counted reliably.`);
+  } else if (/last week|this week|every day|whole week/.test(q)) {
+    ask('date-range', 'Which start and end dates would you like to check? I need a precise range before claiming a complete week of intake history.');
   } else if (/pill \d+|position|tablet \d+/.test(q)) {
     mode = 'history'; const d = /yesterday/.test(q) ? yesterday[0] : today[0];
     if (d) add('scheduled-position', `The scheduled tablet position for ${d.localDate} was ${d.position}. ${summary(d)} Scheduled position does not establish that it was taken.`);
@@ -131,7 +134,7 @@ export const SYSTEM = 'You are Petal, speaking to the user. Select the relevant 
 export function promptContext(context, plan) {
   return JSON.stringify({clock: context.currentLocalDate, timeZone: context.settings.timeZone, verification: context.profile.verificationState,
     records: context.doses.map(d => ({id: d.id, date: d.localDate, position: d.position, status: d.status, actualAt: d.event?.actualAt ?? null, precision: d.event?.timePrecision ?? 'unknown'})),
-    computedFacts: context.facts, conversation: context.session, guidanceStatus: context.guidance.status,
+    computedFacts: Object.fromEntries(Object.entries(context.facts).filter(([key, value]) => key !== 'takenUnknownTime' || value.length)), conversation: context.session, guidanceStatus: context.guidance.status,
     approvedEvidence: context.approvedEvidence.map(e => ({id: e.id, title: e.title, excerpt: e.excerpt.slice(0, 800)})),
     statementChoices: plan.statements.map(s => ({id: s.id, text: s.plain})), requiredIds: plan.requiredIds, allowedEvidenceIds: plan.evidenceIds});
 }

@@ -70,3 +70,9 @@ test('load failure or truncated JSON renders useful fixed fallback', () => {
 test('missing source refusal does not invent a clinical citation', () => assert.match(deliver(setup('P24')), /No applicable approved source/));
 test('question and conversation input are bounded', () => {const x = setup('P01'); assert.throws(() => buildContext(x.f.snapshot, 'a'.repeat(4001), x.f)); assert.doesNotThrow(() => JSON.parse(promptContext(x.ctx, x.plan)));});
 test('duplicate event cannot produce double-counted intake', () => {const x = setup('P07'); x.f.snapshot.events.push({...x.f.snapshot.events[0]}); assert.throws(() => buildContext(x.f.snapshot, x.ctx.question, x.f), /duplicate current intake/);});
+test('taken with unknown actual time does not establish the actual intake date', () => {
+  const x = setup('P07'); x.f.snapshot.events[0].actualAt = null; x.f.snapshot.events[0].timePrecision = 'unknown';
+  const c = buildContext(x.f.snapshot, x.ctx.question, x.f); const p = planResponse(c);
+  assert.equal(c.facts.takenYesterday.length, 1); assert.match(renderResponse(c, p, null).text, /actual intake dates cannot be counted reliably/);
+});
+test('ambiguous weekly language asks for dates rather than answering only yesterday', () => assert.match(deliver(setup('P01', 'Did I take one every day last week?')), /Which start and end dates/));
