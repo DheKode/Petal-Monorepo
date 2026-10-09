@@ -11,7 +11,8 @@
     "build": "pnpm -r build",
     "dev:sync": "pnpm --filter @petal/sync-api dev",
     "dev:sync-demo": "pnpm --filter @petal/sync-demo dev",
-    "db:migrate": "pnpm --filter @petal/sync-api db:migrate"
+    "db:migrate": "pnpm --filter @petal/sync-api db:migrate",
+    "dev:desktop": "pnpm --filter @petal/desktop dev"
   },
   "devDependencies": {
     "typescript": "7.0.2",

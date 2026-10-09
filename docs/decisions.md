@@ -22,3 +22,13 @@ User assigned Codex D01/D06-D08 under #2 while Claude owns the desktop inference
 Dose identity is separate from calendar date; absence means no-entry, and the explicit missed status is confirmed-missed. One canonical current event per dose is corrected with an audit trail. Version-1 backup excludes credentials/keys/derived guidance and preserves all durable records. Evidence corpus starts empty; the guidance stub always returns unsupported pending #4/#5. See docs/domain-contracts.md.
 
 Issue #20 owns desktop scaffold/root configuration and must consume this package rather than replace its manifest or exports. The domain task changes only root lockfile dependency entries, not root manifests, workspace configuration or desktop paths. Native scaffold acceptance under S01-S03 remains pending.
+
+## Desktop app tooling — October 9, 2026
+
+Issue #20 (sub-issue of #2), approved by @Kiko915.
+
+- `apps/desktop` uses **electron-vite 5** for dev/build and **electron-builder 26** for installers (NSIS on Windows, arm64 DMG on macOS).
+- Desktop pins **Vite 7.3.6** and **@vitejs/plugin-react 5.2.0** because electron-vite 5 (stable) does not support Vite 8. `apps/sync-demo` stays on Vite 8; pnpm keeps both. Upgrade when a stable electron-vite supports Vite 8.
+- Electron 44.4.5. Windows use `contextIsolation`, `sandbox`, no Node integration, deny new windows and navigation, and a strict CSP; the renderer reaches the main process only through the typed preload bridge.
+- The desktop app consumes the compiled `@petal/domain` package (no alias to its source). Desktop `dev`, `build` and `typecheck` build `@petal/domain` first.
+- `pnpm-workspace.yaml` allows the Electron install script (downloads its binary) and denies `electron-winstaller` (Squirrel, unused).
