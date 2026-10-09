@@ -20,6 +20,16 @@ let store: SqliteStore | null = null;
 let service: PetalService | null = null;
 let mainWindow: BrowserWindow | null = null;
 
+// One copy per data folder: two copies would write to the same database and fail each other's saves.
+const hasInstanceLock = app.requestSingleInstanceLock();
+if (!hasInstanceLock) app.quit();
+app.on('second-instance', () => {
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    mainWindow.focus();
+  }
+});
+
 function requireService(): PetalService {
   if (!service) throw new Error('Storage is not open');
   return service;
@@ -72,6 +82,7 @@ handle(IPC_RECORD_INTAKE, (input: RecordIntakeInput) => requireService().recordI
 handle(IPC_UNDO_INTAKE, (doseId: string) => requireService().undoIntake(doseId));
 
 app.whenReady().then(async () => {
+  if (!hasInstanceLock) return;
   // No File/Edit/View/Window menu bar. macOS always shows a system menu bar and needs the Edit roles for
   // copy/paste shortcuts, so it keeps only the app and edit menus.
   Menu.setApplicationMenu(
@@ -80,9 +91,17 @@ app.whenReady().then(async () => {
   try {
     store = await SqliteStore.open(join(app.getPath('userData'), 'petal.db'), app.getVersion());
     service = new PetalService(store);
-  } catch {
+  } catch (error) {
     // Never start with an empty in-memory fallback: the user would think their records were lost or keep logging into nothing.
-    dialog.showErrorBox('Petal could not open its data file', 'Nothing was changed or deleted. Close other copies of Petal and try again.');
+    // Only the error code is logged (never record contents).
+    const code = typeof (error as { code?: unknown })?.code === 'string' ? (error as { code: string }).code : 'unknown';
+    console.error(`Petal could not open its data file (${code})`);
+    dialog.showErrorBox(
+      'Petal could not open its data file',
+      code === 'unsupported-storage-version'
+        ? 'This data file was created by a newer version of Petal, so this version will not open it. Nothing was changed or deleted.'
+        : `Nothing was changed or deleted. Close other copies of Petal and try again. (Error: ${code})`,
+    );
     app.quit();
     return;
   }
@@ -92,9 +111,19 @@ app.whenReady().then(async () => {
   });
 });
 
-app.on('before-quit', () => {
-  store?.close();
-  store = null;
+// Let in-flight saves finish before the database is closed; otherwise the last tap could be lost on quit.
+let closing = false;
+app.on('before-quit', event => {
+  if (closing || !service) return;
+  closing = true;
+  event.preventDefault();
+  const pending = service;
+  service = null;
+  void pending.idle().finally(() => {
+    store?.close();
+    store = null;
+    app.quit();
+  });
 });
 
 app.on('window-all-closed', () => {
