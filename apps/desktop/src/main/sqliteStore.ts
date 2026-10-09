@@ -1,7 +1,7 @@
 import { LocalStore } from '@petal/storage';
 import { BACKUP_VERSION, serializeBackup, type Backup, type IntakeEvent } from '@petal/domain';
 import type { PetalState } from '../shared/ipc';
-import type { PetalStore, SavedSetup } from './store';
+import { SetupExistsError, type PetalStore, type SavedSetup } from './store';
 
 /** Durable store backed by `@petal/storage` (local SQLite file, plaintext, not encrypted at rest). Must only be used in the
     main process: the renderer reaches it through the narrow IPC operations in `service.ts`, never directly.
@@ -30,9 +30,13 @@ export class SqliteStore implements PetalStore {
     };
   }
 
-  /** Setup has no dedicated adapter call, so it goes through the adapter's validated replace-all import. The service
-      refuses to run setup when a pack already exists, so this never replaces user records. */
+  /** Setup has no dedicated adapter call, so it goes through the adapter's validated replace-all import. That would erase
+      anything already stored, so it refuses unless the database is empty. */
   async saveSetup(setup: SavedSetup): Promise<PetalState> {
+    const current = (await this.db.read()).backup;
+    if (current.packs.length || current.intakeEvents.length || current.auditEntries.length || current.bleedingEntries.length) {
+      throw new SetupExistsError();
+    }
     const backup: Backup = {
       schemaVersion: BACKUP_VERSION,
       appVersion: this.appVersion,

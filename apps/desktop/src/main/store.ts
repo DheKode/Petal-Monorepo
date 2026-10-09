@@ -1,6 +1,15 @@
 import type { IntakeEvent, Pack, PillProfile, ScheduledDose, Settings } from '@petal/domain';
 import type { PetalState } from '../shared/ipc';
 
+/** Thrown when setup is attempted on a database that already holds a pack, intake events or audit history. Setup is
+    first-time only: the adapter implements it as a replace-all import, which would silently erase those records. */
+export class SetupExistsError extends Error {
+  constructor() {
+    super('Setup already exists');
+    this.name = 'SetupExistsError';
+  }
+}
+
 export interface SavedSetup {
   profile: PillProfile;
   settings: Settings;
@@ -30,6 +39,7 @@ export class MemoryStore implements PetalStore {
   }
 
   async saveSetup(setup: SavedSetup): Promise<PetalState> {
+    if (this.state.pack) throw new SetupExistsError();
     this.state = { ...structuredClone(setup), events: [], persistence: 'memory' };
     return this.load();
   }

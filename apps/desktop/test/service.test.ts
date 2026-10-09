@@ -114,3 +114,30 @@ test('bad renderer input is rejected without changing records', async () => {
   const message = await service.recordIntake({ doseId: doses[0].id, status: 'taken', actualAt: '2026-10-10T21:00:00+08:00' });
   assert.ok(!message.ok && !message.message.includes('Error:'));
 });
+
+class FlakyStore extends MemoryStore {
+  failNext = false;
+  override async putIntakeEvent(event: Parameters<MemoryStore['putIntakeEvent']>[0]) {
+    if (this.failNext) { this.failNext = false; throw new Error('simulated storage failure'); }
+    return super.putIntakeEvent(event);
+  }
+}
+
+test('a failed correction leaves no undo entry, and a failed undo can be retried', async () => {
+  const store = new FlakyStore();
+  const service = new PetalService(store, () => NOW);
+  const dose = value(await service.saveSetup(firstPack)).doses[8];
+  value(await service.recordIntake({ doseId: dose.id, status: 'taken', actualAt: NOW.toISOString() }));
+
+  store.failNext = true;
+  const failed = await service.recordIntake({ doseId: dose.id, status: 'confirmed-missed' });
+  assert.equal(failed.ok, false);
+  assert.equal((await service.undoIntake(dose.id)).ok, false, 'no undo entry for a change that never happened');
+  assert.equal((await service.getState()).events[0].status, 'taken');
+
+  value(await service.recordIntake({ doseId: dose.id, status: 'confirmed-missed' }));
+  store.failNext = true;
+  assert.equal((await service.undoIntake(dose.id)).ok, false);
+  const retried = value(await service.undoIntake(dose.id));
+  assert.equal(retried.events[0].status, 'taken', 'the undo entry survived the failed attempt');
+});
