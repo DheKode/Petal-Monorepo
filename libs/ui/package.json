@@ -1,0 +1,35 @@
+{
+  "name": "@petal/ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": ["**/*.css"],
+  "files": ["dist", "src/themes/petal.tokens.json"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./theme": {
+      "types": "./dist/src/themes/generated/theme.d.mts",
+      "import": "./dist/src/themes/generated/theme.mjs",
+      "default": "./dist/src/themes/generated/theme.mjs"
+    },
+    "./theme/native": {
+      "types": "./dist/src/themes/generated/native-theme.d.mts",
+      "import": "./dist/src/themes/generated/native-theme.mjs",
+      "default": "./dist/src/themes/generated/native-theme.mjs"
+    },
+    "./theme.css": "./dist/src/themes/generated/theme.css",
+    "./tokens.json": "./src/themes/petal.tokens.json"
+  },
+  "scripts": {
+    "build": "node src/themes/scripts/build.mjs && tsc -p tsconfig.build.json && node scripts/copy-theme.mjs",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "pnpm build && node --test src/themes/scripts/tokens.test.mjs test/package.test.mjs",
+    "theme:check": "node src/themes/scripts/build.mjs --check"
+  }
+}
