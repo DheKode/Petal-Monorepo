@@ -16,3 +16,17 @@ pnpm --filter @petal/landing test
 - The build uses a relative base, so `dist/` works from any static host path, including GitHub Pages.
 
 Still pending for L01: real tested release links, the final model-download size (DEC4), designer review, and checks on real devices.
+
+## Deploy (Cloudflare Pages: petal.necookie.dev)
+
+Project `petal-landing` on Cloudflare Pages, custom domain `petal.necookie.dev`. Pages limits each file to 25 MiB, so the APK is split into parts at deploy time and `functions/download/[name].js` streams them back as one attachment (`/download/<name>.apk`, exact `Content-Length`). APKs are never committed.
+
+```sh
+pnpm --filter @petal/landing build
+cd apps/landing
+node scripts/stage-apk.mjs <path/to/app-release.apk> petal-ai-preview-0.1.0.apk   # prints size + SHA-256 for src/downloads.ts
+npx wrangler@4.139.0 login                                                        # once
+pnpm deploy
+```
+
+Verify after deploying: `curl -s https://petal.necookie.dev/download/<name>.apk | shasum -a 256` must equal the SHA-256 shown on the page.
