@@ -20,6 +20,8 @@ libs/ui/src/themes/
   scripts/
     compile.mjs              # Dependency-free compiler for our documented subset
     build.mjs                # Generate or check exports
+    preview.mjs              # Offline HTML specimen/inventory generator
+    preview.test.mjs          # Coverage, resource, and variable checks
     tokens.test.mjs          # Reference, conversion, contrast, and drift checks
 ```
 
@@ -32,13 +34,15 @@ The JSON uses DTCG 2025.10 color objects, dimensions, numeric weights, typograph
 | Foundation | Initial baseline |
 | --- | --- |
 | Spacing | 0, 2, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 96 logical units |
-| Radii | 0 flat; 8 small; 12 controls; 16 containers; 24 sheets; 9999 fully rounded |
+| Radii | 0 flat; 8 small; 10 tighter comparison; 12 controls; 16 containers; 24 sheets; 9999 fully rounded |
 | Control target | At least 48 × 48 logical units, including icon-only controls |
 | Control border | 1 logical unit with `color.border.control` |
 | Focus | Rose ring, 2 px width and 2 px offset on web; native integration provides an equivalent visible treatment |
 | Layout | Compact gutter 20; wide gutter 32; reading max 720; content max 1200; wide breakpoint 768 |
 | Elevation | Flat, level 0; use whitespace and borders rather than decorative shadows |
 | Motion | 120 / 180 / 240 ms; easing `(0.2, 0, 0, 1)`; reduced-motion durations 0 |
+| Icon measurements | 20 / 24 / 32; outline candidate 1.75 px; final icon family unselected |
+| Motion distances | Press scale 0.98; entry offset 8; suppress transforms with reduced motion |
 
 Layout values guide composition; they do not detect a device or force a navigation layout. Token minimum heights are floors, not fixed heights: allow wrapping, multiline content, and large text to increase control size. Keep readable text independent of viewport width. The 48-unit target is Petal's chosen baseline; WCAG 2.2's [minimum target-size criterion](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html) has its own thresholds and exceptions.
 
@@ -52,7 +56,7 @@ Layout values guide composition; they do not detect a device or force a navigati
 | Heading | 24 / 32 | 600 | Screen headings |
 | Display | 32 / 40 | 600 | Brief prominent text |
 
-All roles use Geist Mono, zero added letter spacing, and sentence case. Caption is not for essential instructions. The font files are not bundled by this theme; each application must bundle/register the selected weights locally for offline use. Web includes a monospace fallback. Native exports use the family name `Geist Mono`; the app's font adapter must map that to the actual registered family and weights on each target. Keep native font scaling enabled and verify it on actual devices.
+All roles use Geist Mono, zero added letter spacing, and sentence case. Caption is not for essential instructions. The original variable WOFF2, SIL license, and provenance live in `libs/assets/fonts/geist-mono/`. The preview embeds the font offline. Runtime exports do not register fonts; each app must bundle/register a supported format. Web includes a monospace fallback. Native exports use the family name `Geist Mono`; the app's font adapter must map that to the actual registered family and weights on each target. Keep native font scaling enabled and verify it on actual devices.
 
 The six brand colors are approved and unchanged. The source additionally defines rose hover/pressed shades, decorative/control borders, and error, warning, and save-success feedback colors as initial functional baseline values. Success means a save/export acknowledgement, never health, protection, or adherence. Taken, confirmed-missed, unsure, and no-entry states need explicit wording and distinct icons; the shared status container is neutral. `color.border.subtle` is decorative separation, not an essential input boundary.
 
@@ -84,7 +88,7 @@ import '@petal/ui/theme.css';
 }
 ```
 
-CSS dimensions use `rem` at a 16 px reference size; border/focus thickness and letter spacing use px. Do not force the user's root font size. The CSS defines variables only, without a reset, component selectors, external font download, or app behavior. Its reduced-motion media query zeros all duration tokens, including component aliases. CSS custom properties cannot be used as media-query conditions; use the numeric layout export when building responsive behavior.
+CSS dimensions use `rem` at a 16 px reference size; border/focus/stroke thickness and letter spacing use px. Do not force the user's root font size. `theme.css` defines variables only. The separate `styles.css` export adds original opt-in web specimens from `src/styles/`, without application behavior or external font requests. Its reduced-motion media query zeros all duration tokens, including component aliases. CSS custom properties cannot be used as media-query conditions; use the numeric layout export when building responsive behavior.
 
 ```ts
 import { petalTheme, getPetalTheme } from '@petal/ui/theme';
@@ -126,6 +130,6 @@ pnpm --filter @petal/ui typecheck
 pnpm --filter @petal/ui test
 ```
 
-Edit only `petal.tokens.json`, regenerate, and commit source and generated exports together. `--check` fails on missing/stale output. The tests reject missing/cyclic references, mismatched types, malformed values, unsafe keys, and exported-name collisions; check contrast and unit conversions; and prove reduced motion and source/export parity.
+Edit `petal.tokens.json`, regenerate, and commit source, exports, and `libs/ui/preview.html` together. Specimen layout lives in `scripts/preview.mjs`; shared web styling lives in `src/styles/`. `--check` fails on missing/stale exports or HTML. Preview checks cover every canonical token, embedded rendering resources, and referenced CSS variables. The tests reject missing/cyclic references, mismatched types, malformed values, unsafe keys, and exported-name collisions; check contrast and unit conversions; and prove reduced motion and source/export parity.
 
 Built runtime exports have no package dependencies. The workspace package uses the pinned repository TypeScript toolchain to emit its entry point and declarations, then copies the generated theme exports into `dist/`. Root recursive build, typecheck, and test commands include it. Package checks verify typed imports and runtime resolution from a separate application. Actual Vite/Metro application integration remains with the application owners.

@@ -41,6 +41,10 @@ Issue #20 (sub-issue of #2), approved by @Kiko915.
 - The desktop app consumes the compiled `@petal/domain` package (no alias to its source). Desktop `dev`, `build` and `typecheck` build `@petal/domain` first.
 - `pnpm-workspace.yaml` allows the Electron install script (downloads its binary) and denies `electron-winstaller` (Squirrel, unused).
 
+## Original token specimens and offline preview
+
+For U01 / issue #11 and PRD §4, the human requested Petal’s own tokens and an HTML preview of every token, using component/icon/motion references only for study. `libs/ui/src/styles/` holds original shared web styling; `@petal/ui/styles.css` exports it. `libs/ui/preview.html` is generated from the same canonical source as web/native themes and embeds artwork, Geist Mono, and all rendering code for offline review. Font provenance and the SIL license live in `libs/assets/fonts/geist-mono/`. No UI library dependency is added. Button radius 12, icon slots 20/24/32, outline weight 1.75, and restrained motion are candidates pending designer/device review. This does not complete application integration or U01/L01 acceptance.
+
 ## Desktop persistence — October 10, 2026
 
 Issue #8, approved by @Kiko915.

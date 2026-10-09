@@ -27,6 +27,12 @@ test('a separate application can import the built root, web/native themes, CSS p
       assert.equal(getPetalNativeTheme({reduceMotion:true}).component.button.transition, 0);
       const css = await readFile(new URL(import.meta.resolve('@petal/ui/theme.css')), 'utf8');
       assert(css.includes('--petal-color-action-primary'));
+      const stylesUrl = new URL(import.meta.resolve('@petal/ui/styles.css'));
+      const styles = await readFile(stylesUrl, 'utf8');
+      for (const match of styles.matchAll(/@import '([^']+)'/g)) {
+        const imported = await readFile(new URL(match[1], stylesUrl), 'utf8');
+        assert(imported.length > 0);
+      }
       const source = JSON.parse(await readFile(new URL(import.meta.resolve('@petal/ui/tokens.json')), 'utf8'));
       assert.equal(source.primitive.color.rose.$value.hex, '#B83D70');
     `);
