@@ -1,8 +1,13 @@
-/* Geist Mono, the approved Petal typeface, bundled from libs/assets/fonts/geist-mono (SIL OFL 1.1). No network request. */
+/* Geist Sans, the desktop UI typeface (libs/assets/fonts/geist-sans, SIL OFL 1.1). No network request. */
 @font-face {
-  font-family: 'Geist Mono';
-  src: url('../../../../../libs/assets/fonts/geist-mono/GeistMono-Variable.woff2') format('woff2');
+  font-family: 'Geist';
+  src: url('../../../../../libs/assets/fonts/geist-sans/Geist-Variable.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
+
+/* Desktop exception (#8): the UI uses Geist Sans instead of the shared Geist Mono. Overriding the primitive on :root, where
+   every type and component token resolves, switches all text at once. Remove this if the designer keeps Geist Mono, or move
+   it into libs/ui/src/themes/petal.tokens.json if Geist Sans is adopted for all apps. */
+:root { --petal-primitive-font-family: 'Geist', 'Segoe UI', system-ui, sans-serif; }
