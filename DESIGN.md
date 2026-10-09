@@ -15,18 +15,18 @@ typography:
     fontFamily: Geist Mono
 omitted:
   - section: spacing
-    reason: Petal's original spacing system has not been designed.
+    reason: The initial spacing baseline is maintained in libs/ui/themes/petal.tokens.json.
   - section: rounded
-    reason: Petal's original shape language has not been designed.
+    reason: The initial radius baseline is maintained in libs/ui/themes/petal.tokens.json.
   - section: components
-    reason: Component appearance and tokens will be defined in Petal's own design system.
+    reason: Initial control tokens live in libs/ui/themes/petal.tokens.json; screen-level component design remains pending.
 ---
 
 # Petal Brand Identity and Design Study
 
 ## Overview
 
-This document uses the section structure from [Google's DESIGN.md specification](https://github.com/google-labs-code/design.md/blob/main/docs/spec.md) to record Petal's original brand decisions alongside reference research. The rose-and-white palette and Geist Mono font family are approved. Typography sizing, spacing, shapes, illustrations, and component styling are still being developed. Flo and the community kit remain reference material.
+This document uses the section structure from [Google's DESIGN.md specification](https://github.com/google-labs-code/design.md/blob/main/docs/spec.md) to record Petal's original brand decisions alongside reference research. The rose-and-white palette and Geist Mono font family are approved. The [shared theme](libs/ui/themes/README.md) provides an initial baseline for typography sizing, spacing, radii, control states, focus, and motion. Screen layouts, illustrations, and actual-device checks remain to be completed. Flo and the community kit remain reference material.
 
 The selected direction is flat, modern, and UX-driven: clear hierarchy, readable content, and purposeful color use. Brand expression should support daily logging and history review.
 
@@ -34,7 +34,7 @@ The selected direction is flat, modern, and UX-driven: clear hierarchy, readable
 
 Petal's final logo pairs a three-petal **open blossom** with a bespoke lowercase **petal** wordmark. The blossom is an independent symbol; the wordmark uses custom outlined lettering with almond-shaped counters and tight spacing. Keep both flat, with a rose symbol and deep plum lettering in the primary horizontal lockup. A white blossom inside a rose circle is the approved circular icon treatment.
 
-The asset bundle lives in [lib/brand/petal](lib/brand/petal/README.md), with horizontal and stacked lockups, standalone wordmarks and symbols, circular icons, monochrome and reversed versions, SVG masters, and transparent PNG exports. Use the supplied outlines rather than reconstructing the wordmark with a font. Naming, initial minimum-size recommendations, and usage guidance are recorded in the bundle README.
+The asset bundle lives in [libs/assets/brands](libs/assets/brands/README.md), with horizontal and stacked lockups, standalone wordmarks and symbols, circular icons, monochrome and reversed versions, SVG masters, and transparent PNG exports. Use the supplied outlines rather than reconstructing the wordmark with a font. Naming, initial minimum-size recommendations, and usage guidance are recorded in the bundle README.
 
 A possible experience goal to explore is helping Petal feel calm, personal, and easy to return to. Its central promise is helping someone record what happened and understand their own history without feeling judged.
 
@@ -108,7 +108,7 @@ The design intent is a precise, contemporary type voice balanced by the warm ros
 
 Keep sentence case, natural spacing, and a clear hierarchy. Monospaced text can require more horizontal space; allow labels to wrap and keep explanations concise. Essential instructions must remain readable, and text scaling must preserve the main task and its actions.
 
-The type scale, role-specific weights, line heights, and letter spacing are still to be defined and checked at mobile sizes. Bundle the chosen font files with the eventual app so typography remains available offline.
+The initial type scale and role-specific weights, line heights, and letter spacing are defined in [the theme source](libs/ui/themes/petal.tokens.json), with usage guidance in its README. Body starts at 16/24 and screen headings at 24/32 logical units. Verify the scale at mobile sizes and with text scaling. Bundle the chosen font files with the eventual app so typography remains available offline.
 
 ### Reference lesson
 
@@ -118,7 +118,7 @@ Flo's platform-specific type styles and real-device line-height checks are usefu
 
 Study Flo's daily hierarchy: compact date navigation, one prominent status, a clear logging action, and supporting content beneath. Evaluate which hierarchy best serves Petal's daily logging and history review.
 
-Petal's grid, spacing scale, gutters, safe-area treatment, and responsive behavior remain to be designed. The following navigation is an exploration grounded in the PRD, not an approved layout.
+The shared theme defines initial spacing and gutter values. Grid composition, safe-area treatment, and responsive behavior still require screen design. The following navigation is an exploration grounded in the PRD, not an approved layout.
 
 ### Navigation and platform adaptation
 
@@ -144,9 +144,11 @@ Petal's selected direction is flat. Use whitespace, typography, restrained surfa
 
 The references use rounded surfaces and selected-date markers. Study how those shapes help group information and indicate selection without adopting them as Petal's shape language.
 
-Petal's corner radii, icon family, control shapes, mascot, and illustration style remain to be designed. Controls need accessible targets and labels. Pack cells must not use shape or color alone to identify formulation or recorded status.
+The shared theme defines initial radii: 12 for controls, 16 for containers, and 24 for sheets. The icon family, mascot, illustration style, and complete control compositions remain to be designed. Controls need accessible targets and labels; the theme sets a 48-unit minimum target baseline. Pack cells must not use shape or color alone to identify formulation or recorded status.
 
 ## Components
+
+Shared defaults for buttons, fields, cards, navigation, neutral status containers, and dialogs are in `libs/ui/themes/petal.tokens.json`. These are reusable appearance values; implementing components and validating screens remain separate tasks. Future shared component, hook, layout, and helper code belongs in the corresponding `libs/ui/` folders.
 
 ### Study considerations
 

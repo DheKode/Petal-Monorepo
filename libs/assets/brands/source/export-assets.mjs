@@ -1,5 +1,5 @@
 // Optional asset exporter. Supply an existing Sharp installation; no app dependency.
-// node lib/brand/petal/source/export-assets.mjs --sharp /absolute/path/to/sharp
+// node libs/assets/brands/source/export-assets.mjs --sharp /absolute/path/to/sharp
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createRequire } from 'node:module';

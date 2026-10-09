@@ -38,7 +38,8 @@ The API binds localhost:3001; the development UI uses localhost:5173. Configure 
 - `apps/sync-demo`: optional account and opt-in sync development interface.
 - `packages/domain`: shared records, validation, evidence and backup contracts.
 - `packages/encrypted-sync`: portable Web Crypto encryption and explicit-action sync client.
-- `lib`: standalone utilities not published as workspace packages; shared versioned interfaces belong in `packages`.
+- `libs/ui`: [shared theme](libs/ui/themes/README.md), with reserved components, hooks, layouts, and UI utilities.
+- `libs/assets`: [brand artwork](libs/assets/brands/README.md) and reserved image assets.
 - `docs`: decisions and integration contracts.
 - `scripts`: maintenance tooling.
 

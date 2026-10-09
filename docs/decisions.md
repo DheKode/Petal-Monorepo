@@ -5,7 +5,7 @@
 User explicitly approved optional Clerk login and encrypted Turso sync now, overriding the earlier deferral, and selected **pnpm + Express**. This does not change the offline core or React Native/Electron direction.
 
 - Package manager: pinned pnpm workspaces; Node.js 22+; TypeScript.
-- `packages/` contains shared workspace packages and versioned interfaces. `lib/` is for standalone utilities. Root configuration is coordinated by the human owner for this bootstrap task.
+- `packages/` contains shared workspace packages and versioned interfaces. The later human-approved shared UI/assets layout below defines `libs/`. Root configuration is coordinated by the human owner for this bootstrap task.
 - `apps/sync-api` verifies Clerk session tokens and scopes storage to the verified user ID; no client-selected owner.
 - `packages/encrypted-sync` encrypts snapshots with a random 256-bit user-held recovery key before upload. Server has no decryption keys.
 - One snapshot per account, versioned optimistic concurrency. Conflicts require review; no automatic merging of health records.
@@ -22,6 +22,14 @@ User assigned Codex D01/D06-D08 under #2 while Claude owns the desktop inference
 Dose identity is separate from calendar date; absence means no-entry, and the explicit missed status is confirmed-missed. One canonical current event per dose is corrected with an audit trail. Version-1 backup excludes credentials/keys/derived guidance and preserves all durable records. Evidence corpus starts empty; the guidance stub always returns unsupported pending #4/#5. See docs/domain-contracts.md.
 
 Issue #20 owns desktop scaffold/root configuration and must consume this package rather than replace its manifest or exports. The domain task changes only root lockfile dependency entries, not root manifests, workspace configuration or desktop paths. Native scaffold acceptance under S01-S03 remains pending.
+
+## Shared UI themes and assets
+
+The human selected `libs/ui/themes/` for the shared Petal appearance, with sibling `components/`, `hooks/`, `layouts/`, and `utils/`. The human moved the existing artwork to `libs/assets/brands/`, reserved `libs/assets/images/`, removed the extra `petal/` folder wrappers, and removed the old `lib/` root. Preserve that layout.
+
+`libs/ui/themes/petal.tokens.json` is the canonical DTCG-format source. Generated CSS and typed JavaScript/native exports share its values. Approved palette/font identity is preserved; new type, spacing, radius, functional-color, and motion values are an initial baseline pending screen/device review. The appearance is light only. Fonts must be bundled and registered by the application owners.
+
+This U01/#11 work introduces no workspace package, root tooling, app dependencies, or component/hook/layout implementations. The UI sibling directories are placeholders; consumers use relative imports until app owners agree on package exports and bundler integration. Existing `packages/` domain/service contracts remain unchanged. App integration, accessibility checks on the phone, and the L01 landing page remain separate acceptance work.
 
 ## Desktop app tooling — October 9, 2026
 

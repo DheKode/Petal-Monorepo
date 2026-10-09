@@ -19,7 +19,7 @@ Use `svg/` for scalable, editable vector artwork. Use `png/` for transparent ras
 ## Folder and naming convention
 
 ```text
-lib/brand/petal/
+libs/assets/brands/
   README.md
   manifest.json
   petal-logo-variations.svg
@@ -56,7 +56,7 @@ The vector master was traced from the approved reference's upper horizontal logo
 The master JSON contains the shared outlines; the master SVG is the default horizontal logo. To regenerate exports, use an existing Sharp installation with Node.js:
 
 ```sh
-node lib/brand/petal/source/export-assets.mjs --sharp "/absolute/path/to/sharp"
+node libs/assets/brands/source/export-assets.mjs --sharp "/absolute/path/to/sharp"
 ```
 
 The script is cross-platform; use an absolute Windows path on Windows. If Sharp is already resolvable by Node, omit `--sharp`. No package manifest or app dependency was added for this handoff. Regeneration replaces this bundle's exported SVGs, PNGs, manifest, and variation sheet.
