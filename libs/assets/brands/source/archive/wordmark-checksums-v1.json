@@ -1,0 +1,36 @@
+{
+  "assets": [
+    {
+      "path": "svg/petal-wordmark-plum.svg",
+      "sha256": "3ea7742a9dd6811bb957ce195c13d0206891bf71de20569718932eace5ce1d8a"
+    },
+    {
+      "path": "png/petal-wordmark-plum.png",
+      "sha256": "0c5bd86c4829434ad51322e0e8183c706da3d78f0971800ece24bf55ec75331a"
+    },
+    {
+      "path": "svg/petal-wordmark-rose.svg",
+      "sha256": "38ea3a6041c8f8ff5e9a51fc8ac1e8f74e91e0d67391b9e7a8a4c2cf38286dd1"
+    },
+    {
+      "path": "png/petal-wordmark-rose.png",
+      "sha256": "5ebf5af10695748d13dad6a364183ddb230c5a012286844f75a1e0a458c5b773"
+    },
+    {
+      "path": "svg/petal-wordmark-white.svg",
+      "sha256": "06aef36c7b734d678ef700619b26b906906787e8c0fe98f4672aec29c398cf80"
+    },
+    {
+      "path": "png/petal-wordmark-white.png",
+      "sha256": "e9eaf4ac002979a8af4c6a96034c2c94f9a071f54b09791f5a448a38a38a9825"
+    },
+    {
+      "path": "svg/petal-wordmark-black.svg",
+      "sha256": "e708d5a633f96214e4bd1d32c5fb03cb0e815eb375bdee47568667c2d544ea71"
+    },
+    {
+      "path": "png/petal-wordmark-black.png",
+      "sha256": "736b58c7ebc162701d49348141b0362bdd001bceaf3d14da646b53514a610c0f"
+    }
+  ]
+}
