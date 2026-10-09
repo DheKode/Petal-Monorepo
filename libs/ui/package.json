@@ -91,13 +91,25 @@
   },
   "peerDependencies": {
     "react": ">=19.2.3 <20",
-    "react-native": "0.86.3"
+    "react-native": "0.86.3",
+    "@animateicons/react": "0.12.0",
+    "lucide-react-native": "1.52.0",
+    "react-native-svg": "15.15.5"
   },
   "peerDependenciesMeta": {
     "react": {
       "optional": true
     },
     "react-native": {
+      "optional": true
+    },
+    "@animateicons/react": {
+      "optional": true
+    },
+    "lucide-react-native": {
+      "optional": true
+    },
+    "react-native-svg": {
       "optional": true
     }
   },
@@ -106,6 +118,9 @@
     "@types/react-dom": "19.3.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "react-native": "0.86.3"
+    "react-native": "0.86.3",
+    "@animateicons/react": "0.12.0",
+    "lucide-react-native": "1.52.0",
+    "react-native-svg": "15.15.5"
   }
 }
