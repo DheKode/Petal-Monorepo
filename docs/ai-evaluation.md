@@ -15,7 +15,7 @@ These are tracking-only statement templates, not medication protocols. Unsupport
 Node 22+ and the repository's pinned pnpm are required. From repository root:
 
 ```sh
-node --test scripts/ai-evaluation/context.test.mjs
+node --test scripts/ai-evaluation/*.test.mjs
 python3 scripts/ai-evaluation/seed-sqlite.py --output-dir /path/to/fresh-output
 ```
 
@@ -26,10 +26,10 @@ Python uses only standard-library SQLite. Use a fresh output directory; the seed
 First build the domain package with `pnpm --filter @petal/domain build`. Reuse the installed runtime from issue #3; this task installs no model/runtime dependency. Pass absolute paths; quote paths containing spaces. This command form works in macOS/Linux shells and PowerShell:
 
 ```sh
-node scripts/ai-evaluation/benchmark.mjs --runtime-entry "/absolute/spike/node_modules/node-llama-cpp/dist/index.js" --domain-entry "/absolute/repo/packages/domain/dist/index.js" --model "/absolute/models/Qwen3-0.6B-Q4_K_M.gguf" --family qwen3 --sha256 ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a --fixtures "/absolute/fresh-output/contexts.json" --output "/absolute/fresh-output/qwen-results.json"
+node scripts/ai-evaluation/benchmark.mjs --runtime-entry "/absolute/spike/node_modules/node-llama-cpp/dist/index.js" --domain-entry "/absolute/repo/packages/domain/dist/index.js" --fixtures "/absolute/fresh-output/contexts.json" --output "/absolute/fresh-output/gemma-results.json" --structured-only
 ```
 
-For Gemma use `--family gemma3`, `gemma-3-1b-it-Q4_K_M.gguf`, and SHA256 `8ccc5cd1f1b3602548715ae25a66ed73fd5dc68a210412eea643eb20eb75a135`. Runtime pinned to node-llama-cpp 3.22.1 by #3. Both runs verify the model hash, use 2048 context, 180 output tokens, temperature 0 and fresh history per case. `forceAddSystemPrompt:true` and an initial-history assertion prevent Gemma's wrapper from silently omitting the system prompt. Inputs over the reserved context budget fail explicitly rather than silently dropping constraints. Current runner requests Metal/automatic GPU support; actual target-device adapters remain separate.
+The user selected **Gemma 3 1B IT Q4_K_M** on October 10, 2026. It is now the default family, filename and pinned hash. Models are loaded from `PETAL_MODELS_DIR` or the user cache under `.cache/petal/models`; `--model` can specify another local path to the same verified artifact. Qwen remains available only for explicit comparisons with `--family qwen3`. The model selector rejects a hash that does not match its chosen family. This changes the standalone runner and integration recommendation; app runtime settings are not yet wired here. Runtime pinned to node-llama-cpp 3.22.1 by #3. Both runs verify the model hash, use 2048 context, 180 output tokens, temperature 0 and fresh history per case. `forceAddSystemPrompt:true` and an initial-history assertion prevent Gemma's wrapper from silently omitting the system prompt. Inputs over the reserved context budget fail explicitly rather than silently dropping constraints. Current runner requests Metal/automatic GPU support; actual target-device adapters remain separate.
 
 Each case captures constrained output and a separate **free-text diagnostic** using the new context. Only the constrained/validated path is eligible for delivery. Free-text diagnostics remain untrusted and expose the unresolved model failures. Logs/output files may contain fixture content: use fictional records only. No network requests or downloads are made by this runner, but airplane-mode operation of the actual app is not established here.
 

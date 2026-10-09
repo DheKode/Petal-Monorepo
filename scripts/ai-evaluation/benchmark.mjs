@@ -7,11 +7,13 @@ import {parseArgs} from 'node:util';
 import os from 'node:os';
 import {buildContext, planResponse, promptContext, SYSTEM, outputSchema, renderResponse} from './context.mjs';
 import {adaptFixture, validateSnapshot} from './fixture-adapter.mjs';
+import {selectModel} from './model-selection.mjs';
 const {values: a} = parseArgs({options: {
   'runtime-entry': {type: 'string'}, 'domain-entry': {type: 'string'}, model: {type: 'string'}, family: {type: 'string'}, sha256: {type: 'string'},
   fixtures: {type: 'string'}, output: {type: 'string'}, limit: {type: 'string'}, 'natural-only': {type: 'boolean', default: false}, 'structured-only': {type: 'boolean', default: false}
 }});
-for (const key of ['runtime-entry', 'domain-entry', 'model', 'family', 'sha256', 'fixtures', 'output']) if (!a[key]) throw new Error(`Missing --${key}`);
+Object.assign(a, selectModel(a));
+for (const key of ['runtime-entry', 'domain-entry', 'fixtures', 'output']) if (!a[key]) throw new Error(`Missing --${key}`);
 if (!['qwen3', 'gemma3'].includes(a.family)) throw new Error('Unknown family');
 const hash = createHash('sha256'); for await (const chunk of createReadStream(a.model)) hash.update(chunk);
 if (hash.digest('hex') !== a.sha256) throw new Error('Model artifact hash mismatch');
