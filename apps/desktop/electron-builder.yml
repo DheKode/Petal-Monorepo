@@ -1,0 +1,14 @@
+# Installer targets for P02 (#12). Builds are unsigned; disclose that in setup instructions.
+appId: app.petal.desktop
+productName: Petal
+directories:
+  output: release
+files:
+  - out/**
+  - package.json
+win:
+  target: nsis
+mac:
+  target:
+    - target: dmg
+      arch: arm64
