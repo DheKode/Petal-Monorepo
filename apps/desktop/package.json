@@ -10,6 +10,9 @@
     "preview": "electron-vite preview",
     "typecheck": "pnpm --filter @petal/storage build && tsc",
     "package:dir": "pnpm run build && electron-builder --dir",
+    "package:win": "pnpm run build && electron-builder --win --x64",
+    "demo:seed": "pnpm --filter @petal/storage build && tsx scripts/demo-seed.ts",
+    "demo": "pnpm run demo:seed && electron-vite dev -- --user-data-dir=.demo-data",
     "test": "pnpm --filter @petal/storage build && tsx --test test/*.test.ts"
   },
   "devDependencies": {

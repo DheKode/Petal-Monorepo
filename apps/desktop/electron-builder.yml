@@ -7,7 +7,15 @@ files:
   - out/**
   - package.json
 win:
-  target: nsis
+  target:
+    - target: nsis
+      arch: x64
+  artifactName: Petal-Setup-${version}-${arch}.${ext}
+nsis:
+  # Per-user install, no administrator rights needed. Not signed: Windows SmartScreen will warn (see docs/desktop-install.md).
+  oneClick: true
+  perMachine: false
+  deleteAppDataOnUninstall: false
 mac:
   target:
     - target: dmg
