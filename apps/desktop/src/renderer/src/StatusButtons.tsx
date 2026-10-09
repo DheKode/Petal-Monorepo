@@ -17,6 +17,7 @@ export function DayChip({ weekday, day, ...p }: Shared & { weekday: string; day:
     <button
       type="button"
       className="app-day"
+      data-status={p.icon}
       aria-pressed={p.pressed}
       aria-current={p.isToday ? 'date' : undefined}
       aria-label={p.ariaLabel}

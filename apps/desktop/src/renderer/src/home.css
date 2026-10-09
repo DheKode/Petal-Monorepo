@@ -13,9 +13,6 @@
   transition: background-color var(--petal-motion-duration-fast) var(--petal-motion-easing), border-color var(--petal-motion-duration-fast) var(--petal-motion-easing);
 }
 .app-day:hover, .app-cell:hover { background: var(--petal-color-surface-subtle); }
-.app-day[aria-pressed="true"] { color: var(--petal-color-text-on-action); background: var(--petal-color-action-primary); border-color: var(--petal-color-action-primary); }
-.app-day[aria-pressed="true"] .app-day-weekday, .app-day[aria-pressed="true"] .app-day-status { color: var(--petal-color-text-on-action); }
-.app-day[aria-current="date"]:not([aria-pressed="true"]) { border-color: var(--petal-color-action-primary); }
 .app-day-weekday, .app-day-status, .app-cell-tablet, .app-cell-status { font-size: var(--petal-type-caption-font-size); line-height: var(--petal-type-caption-line-height); color: var(--petal-color-text-secondary); overflow-wrap: normal; }
 .app-day { padding-inline: var(--petal-space-inline); }
 .app-day-number { font-size: var(--petal-type-title-font-size); line-height: var(--petal-type-title-line-height); font-weight: var(--petal-type-title-font-weight); }
@@ -42,7 +39,6 @@
 .app-art-right { float: right; width: 6rem; height: auto; margin: 0 0 var(--petal-space-related) var(--petal-space-group); }
 .app-hero-meta { display: flex; align-items: center; flex-wrap: wrap; gap: var(--petal-space-inline); }
 .app-day-status { display: inline-flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: var(--petal-space-inline); }
-.app-day[aria-pressed="true"] .petal-icon { color: var(--petal-color-text-on-action); }
 .app .petal-card::after { content: ""; display: block; clear: both; }
 
 /* Pack page: the grid beside the record card for the chosen tablet. */
@@ -72,14 +68,25 @@
 .app-cell-today { color: var(--petal-color-text-link); font-weight: var(--petal-type-title-font-weight); }
 .app-cell-status { display: grid; justify-items: center; gap: var(--petal-space-inline); text-align: center; color: var(--petal-color-text-primary); }
 .app-cell-status > span { white-space: nowrap; }
-.app-cell[data-status="taken"] { background: var(--petal-color-surface-subtle); border-color: var(--petal-color-surface-subtle); }
 .app-cell[data-status="no-entry"] { border-style: dashed; border-color: var(--petal-color-border-control); }
 .app-cell[data-status="no-entry"] .app-cell-status { color: var(--petal-color-text-secondary); }
 .app-cell[aria-current="date"] { border-style: solid; border-color: var(--petal-color-action-primary); }
-.app-cell[aria-pressed="true"] { border-style: solid; border-color: var(--petal-color-action-primary); box-shadow: inset 0 0 0 var(--petal-border-width) var(--petal-color-action-primary); }
 .app-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--petal-space-related) var(--petal-space-section); color: var(--petal-color-text-secondary); font-size: var(--petal-type-caption-font-size); line-height: var(--petal-type-caption-line-height); }
 .app-legend li { display: inline-flex; align-items: center; gap: var(--petal-space-inline); }
 @media (max-width: 48rem) {
   .app-cell { min-height: 5rem; }
   .app-cell-tablet { display: none; }
+}
+
+/* One visual language for the strip and the calendar:
+   - taken: solid rose fill with white text and icon (the strongest highlight; white on rose is 5.33:1)
+   - today: rose outline and a "Today" label
+   - selected (the tablet being recorded): a rose ring outside the cell, so it still shows on a filled day
+   Each state is also stated in words and icons, never by color alone. */
+.app-day[aria-current="date"] { border-color: var(--petal-color-action-primary); }
+:is(.app-day, .app-cell)[data-status="taken"] { color: var(--petal-color-text-on-action); background: var(--petal-color-action-primary); border-style: solid; border-color: var(--petal-color-action-primary); }
+:is(.app-day, .app-cell)[data-status="taken"]:hover { background: var(--petal-color-action-hover); }
+:is(.app-day, .app-cell)[data-status="taken"] :is(.app-day-weekday, .app-day-status, .app-cell-month, .app-cell-tablet, .app-cell-status, .app-cell-today, .petal-icon) { color: var(--petal-color-text-on-action); }
+:is(.app-day, .app-cell)[aria-pressed="true"] {
+  box-shadow: 0 0 0 var(--petal-focus-offset) var(--petal-color-background), 0 0 0 calc(var(--petal-focus-offset) + var(--petal-focus-width)) var(--petal-color-action-primary);
 }
