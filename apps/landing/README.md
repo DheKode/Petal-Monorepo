@@ -11,7 +11,8 @@ pnpm --filter @petal/landing test
 
 - **Styling** uses only `@petal/ui/theme.css` variables. Do not add raw colors or sizes in `src/style.css`; change the theme tokens instead.
 - **Logo and favicons** come straight from `libs/assets/brands/` (horizontal primary lockup, rose symbol, rose circular icon PNGs). Do not copy or redraw them.
-- **Geist Mono** is bundled from `@fontsource/geist-mono`, so the page loads no third-party fonts.
+- **Geist Sans** uses the approved locally bundled `@petal/ui/fonts.css` export, so the page loads no third-party fonts. The shared typography task owns this export; the landing page consumes it.
+- **Homepage** uses a responsive split hero, the existing Petal illustration proposals, a fictional journal specimen, and a three-step history-review walkthrough. The walkthrough writes no records. All page-specific styling stays in `src/style.css` and derives visual values from shared tokens; existing download metadata and publishing behavior remain authoritative.
 - **Downloads** live in `src/downloads.ts`. Each platform's `url` stays `null` (a disabled "Not yet available" button) until that build has been installed and tested on a real device. Then fill in `url`, `sizeLabel` and `sha256`. The tests reject a published link without an https URL, size and checksum.
 - The build uses a relative base, so `dist/` works from any static host path, including GitHub Pages.
 
