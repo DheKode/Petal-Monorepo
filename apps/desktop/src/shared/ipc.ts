@@ -1,5 +1,5 @@
-import type {AiQuestion,AiAnswer,AiModelInfo,AiCorrection,AiPreview,AiSaved} from './ai';
 import type { BleedingEntry, IntakeChange, IntakeEvent, Pack, PillProfile, ScheduledDose, Settings } from '@petal/domain';
+import type { AiAnswer, AiCorrection, AiModelInfo, AiPreview, AiQuestion, AiSaved } from './ai';
 
 export const IPC_APP_INFO = 'petal:app-info';
 export const IPC_GET_STATE = 'petal:get-state';
@@ -106,13 +106,6 @@ export interface ImportOutcome {
 }
 
 export interface PetalBridge {
-  askAi(input:AiQuestion):Promise<Result<AiAnswer>>;
-  cancelAi():Promise<void>;
-  getAiModelInfo():Promise<AiModelInfo>;
-  pickAiModel():Promise<Result<AiModelInfo>>;
-  previewAiCorrection(input:AiCorrection):Promise<Result<AiPreview>>;
-  confirmAiCorrection(token:string):Promise<Result<AiSaved>>;
-  discardAiCorrection(token:string):Promise<Result<null>>;
   getAppInfo(): Promise<AppInfo>;
   getState(): Promise<PetalState>;
   saveSetup(input: SetupInput): Promise<Result<PetalState>>;
@@ -135,4 +128,12 @@ export interface PetalBridge {
   confirmImport(token: string): Promise<Result<ImportOutcome>>;
   /** Discard a preview. Changes nothing. */
   cancelImport(token: string): Promise<Result<null>>;
+  // Ask Petal (#9)
+  askAi(input: AiQuestion): Promise<Result<AiAnswer>>;
+  cancelAi(): Promise<void>;
+  getAiModelInfo(): Promise<AiModelInfo>;
+  pickAiModel(): Promise<Result<AiModelInfo>>;
+  previewAiCorrection(input: AiCorrection): Promise<Result<AiPreview>>;
+  confirmAiCorrection(token: string): Promise<Result<AiSaved>>;
+  discardAiCorrection(token: string): Promise<Result<null>>;
 }

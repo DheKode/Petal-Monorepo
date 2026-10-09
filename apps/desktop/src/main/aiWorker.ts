@@ -1,33 +1,70 @@
-import {verifyGemma} from './aiArtifact';
-import type {Llama,LlamaModel,GbnfJsonObjectSchema} from 'node-llama-cpp';
-let llama:Llama|null=null;
-let model:LlamaModel|null=null;
-let selectedPath:string|null=null;
-let busy=false;
-/** Dedicated process: no DB access, networking, record writes, raw token streaming, or log forwarding. */
-process.parentPort.on('message', async ({data})=>{
-  if(busy)return;busy=true;
-  const {id,path,question,system,schema}=data;
-  let stage='import';
+import type { GbnfJsonObjectSchema, Llama, LlamaModel } from 'node-llama-cpp';
+import { verifyGemma } from './aiArtifact';
+
+/* Dedicated Electron utility process for local Gemma inference (#9). No database access, networking, record writes,
+   raw token streaming or log forwarding. The model stays loaded; every request gets a fresh context. */
+
+interface Request {
+  id: string;
+  path: string;
+  question: string;
+  system: string;
+  schema: Record<string, unknown>;
+}
+
+let llama: Llama | null = null;
+let model: LlamaModel | null = null;
+let selectedPath: string | null = null;
+
+const MAX_INPUT_TOKENS = 1500;
+
+async function generate(request: Request, setStage: (stage: string) => void): Promise<string> {
+  const { getLlama, LlamaChatSession, GemmaChatWrapper } = await import('node-llama-cpp');
+  if (!model || selectedPath !== request.path) {
+    setStage('artifact');
+    await verifyGemma(request.path);
+    if (model) await model.dispose();
+    model = null;
+    setStage('runtime');
+    // Local prebuilt binaries only: never build or download a runtime. Windows uses the CPU build.
+    llama ??= await getLlama({ gpu: process.platform === 'win32' ? false : 'auto', build: 'never', skipDownload: true, progressLogs: false, logger: () => {} });
+    setStage('model');
+    model = await llama.loadModel({ modelPath: request.path });
+    selectedPath = request.path;
+  }
+  setStage('context');
+  const context = await model.createContext({ contextSize: 2048, threads: 4 });
   try {
-    const {getLlama,LlamaChatSession,GemmaChatWrapper}=await import('node-llama-cpp');
-    if(!model || selectedPath!==path){
-      stage='artifact';await verifyGemma(path);
-      if(model)await model.dispose();
-      stage='runtime';llama??=await getLlama({gpu:process.platform==='win32'?false:'auto',build:'never',skipDownload:true,progressLogs:false,logger:()=>{}});
-      stage='model';model=await llama.loadModel({modelPath:path});selectedPath=path;
-    }
-    stage='context';const context=await model.createContext({contextSize:2048,threads:4});
+    setStage('session');
+    const session = new LlamaChatSession({ contextSequence: context.getSequence(), chatWrapper: new GemmaChatWrapper(), systemPrompt: request.system, forceAddSystemPrompt: true });
     try {
-      stage='session';const session=new LlamaChatSession({contextSequence:context.getSequence(),chatWrapper:new GemmaChatWrapper(),systemPrompt:system,forceAddSystemPrompt:true});
-      if(!session.getChatHistory().some(turn=>turn.type==='system' && JSON.stringify(turn).includes('PETAL CONTEXT')))throw new Error('context-missing');
-      if(model.tokenize(system+question).length>1500)throw new Error('context-too-large');
-      try {
-        stage='grammar';const grammar=await llama!.createGrammarForJsonSchema(schema as GbnfJsonObjectSchema);
-        stage='prompt';const raw=await session.prompt(question,{temperature:0,maxTokens:180,budgets:{thoughtTokens:0},grammar});
-        process.parentPort.postMessage({id,raw});
-      } finally {session.dispose();}
-    } finally {await context.dispose();}
-  }catch(error){process.parentPort.postMessage({id,error:stage,errorType:error instanceof Error?error.name:'unknown'});}
-  finally{busy=false;}
+      if (!session.getChatHistory().some(turn => turn.type === 'system' && JSON.stringify(turn).includes('PETAL CONTEXT'))) throw new Error('context-missing');
+      if (model.tokenize(request.system + request.question).length > MAX_INPUT_TOKENS) throw new Error('context-too-large');
+      setStage('grammar');
+      const grammar = await llama!.createGrammarForJsonSchema(request.schema as GbnfJsonObjectSchema);
+      setStage('prompt');
+      return await session.prompt(request.question, { temperature: 0, maxTokens: 180, budgets: { thoughtTokens: 0 }, grammar });
+    } finally {
+      session.dispose();
+    }
+  } finally {
+    await context.dispose();
+  }
+}
+
+// Requests run one at a time, and each reply is sent only after its context is disposed, so a fast follow-up request
+// queues behind cleanup instead of being dropped.
+let queue: Promise<void> = Promise.resolve();
+
+process.parentPort.on('message', ({ data }: { data: Request }) => {
+  queue = queue.then(async () => {
+    let stage = 'import';
+    let reply: { id: string; raw?: string; error?: string };
+    try {
+      reply = { id: data.id, raw: await generate(data, next => { stage = next; }) };
+    } catch {
+      reply = { id: data.id, error: stage };
+    }
+    process.parentPort.postMessage(reply);
+  });
 });

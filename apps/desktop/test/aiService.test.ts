@@ -39,7 +39,8 @@ test('draft medical passages remain withheld and urgent requests use the escalat
 });
 test('precise tablet questions use the intended tablet rather than today; inconsistent selections are refused',async t=>{
   const {ai,state,service}=await open(t);value(await service.recordIntake({doseId:state.doses[3].id,status:'unsure'}));
-  const answer=value(await ai.ask({question:'Was tablet 4 taken?'}));assert.match(answer.text,/tablet 4/);assert.match(answer.text,/unsure/);assert.doesNotMatch(answer.text,/was 12/);
+  const answer=value(await ai.ask({question:'Was tablet 4 taken?'}));assert.match(answer.text,/tablet 4/i);assert.match(answer.text,/unsure/);assert.doesNotMatch(answer.text,/was 12/);
+  assert.doesNotMatch(answer.text,/dose tablet/i,'readable wording');assert.ok(state.doses.every(d=>!answer.text.includes(d.id)),'no internal dose IDs shown');
   assert.equal((await ai.ask({question:'Was tablet 4 taken?',discussedDoseId:state.doses[11].id})).ok,false);
 });
 test('cancellation interrupts the request without accepting partial output or changing records',async t=>{
