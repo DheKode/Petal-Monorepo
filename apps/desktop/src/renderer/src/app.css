@@ -3,6 +3,23 @@
    lays out the desktop shell and styles plain elements (tables, lists, details) that the shared package has no class for. */
 body { margin: 0; background: var(--petal-color-background); }
 
+/* Heavier text for readability on the desktop. Only existing weight primitives are used (regular 400 -> medium 500,
+   medium 500 -> semibold 600). Component tokens are resolved at :root, so they are restated here too. If the designer keeps
+   this, move it into libs/ui/src/themes/petal.tokens.json and delete this block. */
+.app {
+  --petal-type-body-font-weight: var(--petal-primitive-font-weight-medium);
+  --petal-type-body-large-font-weight: var(--petal-primitive-font-weight-medium);
+  --petal-type-caption-font-weight: var(--petal-primitive-font-weight-medium);
+  --petal-type-label-font-weight: var(--petal-primitive-font-weight-semibold);
+  --petal-component-button-type-font-weight: var(--petal-primitive-font-weight-semibold);
+  --petal-component-field-type-font-weight: var(--petal-primitive-font-weight-medium);
+  --petal-component-field-label-type-font-weight: var(--petal-primitive-font-weight-semibold);
+  --petal-component-field-helper-type-font-weight: var(--petal-primitive-font-weight-medium);
+  --petal-component-status-type-font-weight: var(--petal-primitive-font-weight-semibold);
+  --petal-component-feedback-type-font-weight: var(--petal-primitive-font-weight-medium);
+  --petal-component-navigation-type-font-weight: var(--petal-primitive-font-weight-semibold);
+}
+
 .app {
   min-height: 100vh;
   width: 100%;

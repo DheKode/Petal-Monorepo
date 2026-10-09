@@ -55,5 +55,5 @@
 .app-day[aria-pressed="true"] .petal-icon { color: var(--petal-color-text-on-action); }
 .app .petal-card::after { content: ""; display: block; clear: both; }
 .app-review { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--petal-space-group); align-items: end; }
-.app-review-art { width: 8rem; height: auto; margin-bottom: calc(-1 * var(--petal-space-related)); }
+.app-review-art { width: 5rem; height: auto; margin-bottom: calc(-1 * var(--petal-space-related)); }
 .app > section.petal-card, .app > details { margin-top: var(--petal-space-section); }
