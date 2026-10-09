@@ -7,3 +7,5 @@ packages: []
 # win-x64 and win-arm64, so the script is not needed.
 allowBuilds:
   node-llama-cpp: false
+  # Electron's postinstall downloads its own prebuilt binary (smoke test only).
+  electron: true

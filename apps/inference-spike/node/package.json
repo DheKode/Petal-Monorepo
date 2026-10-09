@@ -11,9 +11,12 @@
     "fetch-model": "node src/fetch-model.mjs",
     "verify-model": "node src/verify-model.mjs",
     "generate": "node src/generate.mjs",
-    "bench": "node src/bench.mjs"
+    "electron-smoke": "electron src/electron-main.mjs"
   },
   "dependencies": {
     "node-llama-cpp": "3.22.1"
+  },
+  "devDependencies": {
+    "electron": "44.4.5"
   }
 }
