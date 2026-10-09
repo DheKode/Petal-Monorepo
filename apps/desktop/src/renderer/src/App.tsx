@@ -5,6 +5,7 @@ import { Journal } from './Journal';
 import { Privacy } from './Privacy';
 import { Setup } from './Setup';
 import { Today } from './Today';
+import { ZoneNotice } from './ZoneNotice';
 
 // Functional screens only. Visual direction belongs to the designer (#11); do not add styling decisions here.
 export function App() {
@@ -29,6 +30,7 @@ export function App() {
         <p role="status">Your records are saved on this device only. They are not encrypted, so anyone who can open your user account can read them.</p>
       )}
       <p>Product details are not verified yet, so Petal is tracking only and shows no guidance.</p>
+      <ZoneNotice state={state} />
       <Privacy info={info} />
       {state.pack ? <Today state={state} onState={setState} /> : <Setup onSaved={setState} />}
       {state.pack && <Journal state={state} onState={setState} />}

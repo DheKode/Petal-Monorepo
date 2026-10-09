@@ -9,16 +9,16 @@ pnpm install --frozen-lockfile
 pnpm --filter @petal/desktop package:win
 ```
 
-This produces `apps/desktop/release/Petal-Setup-0.1.0-x64.exe` (about 114 MB, per-user, no administrator rights). Run it; the app is installed under `%LOCALAPPDATA%\Programs\` and starts when the install finishes.
+This produces `apps/desktop/release/Petal-Setup-0.1.0-x64.exe` (about 114 MB, per-user, no administrator rights). Run it; the app is installed under `%LOCALAPPDATA%\Programs\petal` and does **not** start by itself, so the first launch is the user's choice (it opens on the real data folder).
 
 **The installer is not signed.** Windows SmartScreen will show "Windows protected your PC": choose **More info**, then **Run anyway**. Do not claim a signed or store-distributed build.
 
 Where records live: `%APPDATA%\Petal\petal.db`. The file is plaintext (not encrypted). Uninstalling does not delete it.
 
 What was and was not checked (Windows 11, October 10, 2026):
-- The installer builds; a silent install (`/S`) installs; the installed app starts and shows its screen.
-- **Not checked:** installing on a clean machine, the uninstaller (a silent uninstall did not remove the install folder in one test), upgrading over an older version, SmartScreen behavior, and macOS.
-- **Known issues:** the install folder is named `@petaldesktop` (taken from the scoped package name; it should be `Petal`), and the installer starts the app right after install using the real data folder.
+- The installer builds; a silent install (`/S`) installs into `...\Programs\petal` without starting the app or touching the real data folder; the installed app starts and shows its screen; the uninstaller (silent) removed the app and its registry entry once, and keeps the records file on purpose.
+- **Not checked:** installing on a clean machine, upgrading over an older version, SmartScreen behavior, the interactive (non-silent) install and uninstall, shortcuts, and macOS. One earlier uninstall test, run while the app was still open, did not remove the folder: close Petal before uninstalling.
+- **Known issue:** the install folder is lower-case `petal` (it is named after the package, now overridden to a plain name); the app and window are still called Petal.
 
 ## Demo data (fictional, repeatable)
 

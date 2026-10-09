@@ -11,7 +11,12 @@ win:
     - target: nsis
       arch: x64
   artifactName: Petal-Setup-${version}-${arch}.${ext}
+# The per-user install folder is named after the package name, which is scoped (@petal/desktop); give the installer a plain one.
+extraMetadata:
+  name: petal
 nsis:
+  # Do not start the app after install: that would open it on the real data folder before the user chose to.
+  runAfterFinish: false
   # Per-user install, no administrator rights needed. Not signed: Windows SmartScreen will warn (see docs/desktop-install.md).
   oneClick: true
   perMachine: false
