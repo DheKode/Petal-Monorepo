@@ -5,8 +5,13 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "sideEffects": ["**/*.css"],
-  "files": ["dist", "src/themes/petal.tokens.json"],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist",
+    "src/themes/petal.tokens.json"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -25,12 +30,82 @@
     },
     "./theme.css": "./dist/src/themes/generated/theme.css",
     "./styles.css": "./dist/src/styles/index.css",
-    "./tokens.json": "./src/themes/petal.tokens.json"
+    "./tokens.json": "./src/themes/petal.tokens.json",
+    "./components": {
+      "react-native": {
+        "types": "./dist/src/components/index.native.d.ts",
+        "import": "./dist/src/components/index.native.js",
+        "default": "./dist/src/components/index.native.js"
+      },
+      "types": "./dist/src/components/index.d.ts",
+      "import": "./dist/src/components/index.js",
+      "default": "./dist/src/components/index.js"
+    },
+    "./components/native": {
+      "types": "./dist/src/components/index.native.d.ts",
+      "import": "./dist/src/components/index.native.js",
+      "default": "./dist/src/components/index.native.js"
+    },
+    "./hooks": {
+      "react-native": {
+        "types": "./dist/src/hooks/index.native.d.ts",
+        "import": "./dist/src/hooks/index.native.js",
+        "default": "./dist/src/hooks/index.native.js"
+      },
+      "types": "./dist/src/hooks/index.d.ts",
+      "import": "./dist/src/hooks/index.js",
+      "default": "./dist/src/hooks/index.js"
+    },
+    "./hooks/native": {
+      "types": "./dist/src/hooks/index.native.d.ts",
+      "import": "./dist/src/hooks/index.native.js",
+      "default": "./dist/src/hooks/index.native.js"
+    },
+    "./layouts": {
+      "react-native": {
+        "types": "./dist/src/layouts/index.native.d.ts",
+        "import": "./dist/src/layouts/index.native.js",
+        "default": "./dist/src/layouts/index.native.js"
+      },
+      "types": "./dist/src/layouts/index.d.ts",
+      "import": "./dist/src/layouts/index.js",
+      "default": "./dist/src/layouts/index.js"
+    },
+    "./layouts/native": {
+      "types": "./dist/src/layouts/index.native.d.ts",
+      "import": "./dist/src/layouts/index.native.js",
+      "default": "./dist/src/layouts/index.native.js"
+    },
+    "./utils": {
+      "types": "./dist/src/utils/index.d.ts",
+      "import": "./dist/src/utils/index.js",
+      "default": "./dist/src/utils/index.js"
+    }
   },
   "scripts": {
     "build": "node src/themes/scripts/build.mjs && tsc -p tsconfig.build.json && node scripts/copy-theme.mjs",
     "typecheck": "pnpm build && tsc -p tsconfig.json",
-    "test": "pnpm build && node --test src/themes/scripts/tokens.test.mjs src/themes/scripts/preview.test.mjs test/package.test.mjs",
-    "theme:check": "node src/themes/scripts/build.mjs --check"
+    "test": "pnpm build && node --test src/themes/scripts/tokens.test.mjs src/themes/scripts/preview.test.mjs test/*.test.mjs",
+    "theme:check": "node src/themes/scripts/build.mjs --check",
+    "preview:components": "node scripts/preview-components.mjs"
+  },
+  "peerDependencies": {
+    "react": ">=19.2.3 <20",
+    "react-native": "0.86.3"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-native": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.86.3"
   }
 }

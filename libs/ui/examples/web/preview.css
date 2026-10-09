@@ -1,0 +1,5 @@
+@font-face { font-family: 'Geist Mono'; src: url('../../../assets/fonts/geist-mono/GeistMono-Variable.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+body { margin: 0; background: var(--petal-color-background); }
+.preview-logo { width: 120px; height: auto; margin-bottom: var(--petal-space-section); }
+.preview-text { font-family: var(--petal-type-body-font-family); font-size: var(--petal-type-body-font-size); line-height: var(--petal-type-body-line-height); color: var(--petal-color-text-primary); margin: 0; }
+.preview-footer { font-size: var(--petal-type-label-font-size); }
