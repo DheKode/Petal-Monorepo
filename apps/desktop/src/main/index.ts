@@ -2,6 +2,8 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import { join } from 'node:path';
 import { getIntakeState } from '@petal/domain';
 import { IPC_APP_INFO, type AppInfo } from '../shared/ipc';
+// Same artwork electron-builder uses for installers (build/icon.png); ?asset bundles it and returns its path.
+import icon from '../../build/icon.png?asset';
 
 function createWindow(): void {
   const win = new BrowserWindow({
@@ -9,6 +11,7 @@ function createWindow(): void {
     height: 760,
     show: false,
     title: 'Petal',
+    icon,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       contextIsolation: true,
