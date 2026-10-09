@@ -79,3 +79,13 @@ Issues #3 and #9, decided by @Necookie.
 - TASKS.md asked for DEC3 to be chosen by the A01 result. The choice was made before A01. Gemma has only been measured on the M1 Mac, not yet on Android or Windows.
 - Gemma's free-text output had more critical failures than Qwen's in the 24-case evaluation. The validated renderer with fixed fallbacks (A08) is what makes it acceptable. Fixed actions never come from the model.
 - Shipping the model requires the Gemma Terms obligations: a `NOTICE` file, a copy of the Gemma Terms, and the §3.2 use restrictions passed on in Petal's terms. A team member must also review the Gemma Prohibited Use Policy's health-related clauses. Whether these apply in full depends on how the model is delivered (bundled or downloaded), so settle them alongside DEC4 (#15).
+
+## Desktop bleeding journal and Undo for new entries — October 10, 2026
+
+Issues #10 (desktop part, F10/B01) and #37, approved by @Kiko915.
+
+- The journal is the user's own record of bleeding and spotting. **Nothing is inferred, predicted or interpreted from it, and it is not linked to tablets or adherence.** The pack phase and any estimated window (B02/B03, F11) are not built: they need the verified product profile and reviewed evidence from #4.
+- Entries are validated with `BleedingEntrySchema` in the main process. Dates cannot be in the future in the schedule's own time zone. Error messages never repeat what the user typed. Saving an entry that did not change writes nothing. The journal needs a finished setup. Delete asks first and keeps the deleted values in the audit trail.
+- Storage: bleeding entries and intake removal use the `@petal/storage` operations added under #37 (`previewBleedingEntry`, `previewBleedingRemoval`, `previewIntakeRemoval`), each audited. `PetalState` gains `bleeding`. Bleeding entries are part of backups.
+- Undo now also works for a **new** intake entry: it removes the entry (audited, the removed values stay in the audit trail). Undoing a correction still restores the earlier values as a new correction. Batch saves from "Fix my history" are still not undoable.
+- Not done: bleeding entries are shown in their own list, not merged into the pack table (the screens are being restyled in parallel); Android has no journal yet.
