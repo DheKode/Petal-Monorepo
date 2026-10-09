@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { localDateIn, selectTakenNowTarget, type ScheduledDose } from '@petal/domain';
 import type { PetalState, RecordIntakeInput } from '../../shared/ipc';
 import { doseLabel, doseTime, statusLabel, tabletTypeLabel } from './format';
+import { Guidance } from './Guidance';
 
 interface Notice {
   text: string;
@@ -128,6 +129,8 @@ export function Today({ state, onState }: { state: PetalState; onState: (state: 
           </p>
         )}
       </section>
+
+      <Guidance state={state} />
 
       <section aria-labelledby="pack-heading">
         <h2 id="pack-heading">Pack</h2>
