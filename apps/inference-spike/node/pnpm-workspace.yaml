@@ -1,0 +1,9 @@
+# Standalone workspace root so the spike keeps its own lockfile and never
+# touches the root workspace (root globs apps/* and this dir is apps/*/node).
+packages: []
+
+# node-llama-cpp's postinstall only fetches/builds binaries when no prebuilt
+# one matches; the prebuilt @node-llama-cpp/<platform> package covers mac-arm64,
+# win-x64 and win-arm64, so the script is not needed.
+allowBuilds:
+  node-llama-cpp: false
