@@ -3,6 +3,7 @@ import { toZonedIso } from '@petal/domain';
 import type { PetalState } from '../../shared/ipc';
 import { doseLabel, statusLabel } from './format';
 import { ANSWER_LABEL, proposeChanges, questionsFor, type Answer } from './historyRepair';
+import { Feedback } from '@petal/ui/components';
 
 type Phase = 'questions' | 'review' | 'saving' | 'done';
 
@@ -94,21 +95,21 @@ export function Repair({ state, onState, onClose }: {
 
   if (asked.length === 0) {
     return (
-      <section aria-labelledby="repair-heading">
+      <section className="petal-card" aria-labelledby="repair-heading">
         <h2 id="repair-heading" ref={heading} tabIndex={-1}>Fix my history</h2>
         <p>Every tablet that is due already has an entry you have confirmed. There is nothing to fix.</p>
-        <p><button type="button" onClick={() => onClose()}>Back to Today</button></p>
+        <p><button type="button" className="petal-button" data-variant="secondary" onClick={() => onClose()}>Back to Today</button></p>
       </section>
     );
   }
 
   if (phase === 'done') {
     return (
-      <section aria-labelledby="repair-heading">
+      <section className="petal-card" aria-labelledby="repair-heading">
         <h2 id="repair-heading" ref={heading} tabIndex={-1}>Fix my history</h2>
-        <p role="status">{summary}</p>
+        <Feedback kind="success" message={summary} />
         <p>To change an entry later, choose that tablet in the pack list.</p>
-        <p><button type="button" onClick={() => onClose(summary)}>Back to Today</button></p>
+        <p><button type="button" className="petal-button" data-variant="secondary" onClick={() => onClose(summary)}>Back to Today</button></p>
       </section>
     );
   }
@@ -116,10 +117,10 @@ export function Repair({ state, onState, onClose }: {
   if (phase === 'review' || phase === 'saving') {
     const saving = phase === 'saving';
     return (
-      <section aria-labelledby="repair-heading">
+      <section className="petal-card" aria-labelledby="repair-heading">
         <h2 id="repair-heading" ref={heading} tabIndex={-1}>Review your changes</h2>
         <p><strong>Nothing is saved until you confirm.</strong> Tablets you skipped stay exactly as they are.</p>
-        {error && <p role="alert">{error}</p>}
+        {error && <Feedback kind="error" message={error} />}
         {proposal.problems.length > 0 && (
           <ul aria-label="Answers that cannot be saved">
             {proposal.problems.map(problem => <li key={problem.doseId}>{problem.label}: {problem.message}</li>)}
@@ -146,11 +147,11 @@ export function Repair({ state, onState, onClose }: {
         )}
         {proposal.unchanged > 0 && <p>{proposal.unchanged} answer{proposal.unchanged === 1 ? '' : 's'} already match your records and will not change anything.</p>}
         <p>
-          <button type="button" onClick={confirm} disabled={saving || proposal.changes.length === 0 || proposal.problems.length > 0}>
+          <button type="button" className="petal-button" onClick={confirm} disabled={saving || proposal.changes.length === 0 || proposal.problems.length > 0}>
             {saving ? 'Saving…' : `Confirm and save ${proposal.changes.length} change${proposal.changes.length === 1 ? '' : 's'}`}
           </button>{' '}
-          <button type="button" onClick={() => { setPhase('questions'); setStep(0); }} disabled={saving}>Back to the questions</button>{' '}
-          <button type="button" onClick={() => onClose()} disabled={saving}>Cancel and save nothing</button>
+          <button type="button" className="petal-button" data-variant="secondary" onClick={() => { setPhase('questions'); setStep(0); }} disabled={saving}>Back to the questions</button>{' '}
+          <button type="button" className="petal-button" data-variant="secondary" onClick={() => onClose()} disabled={saving}>Cancel and save nothing</button>
         </p>
       </section>
     );
@@ -159,35 +160,35 @@ export function Repair({ state, onState, onClose }: {
   const current = state.events.find(e => e.doseId === dose.id);
   const chosen = answers.get(dose.id);
   return (
-    <section aria-labelledby="repair-heading">
+    <section className="petal-card" aria-labelledby="repair-heading">
       <h2 id="repair-heading">Fix my history</h2>
       <p role="status">Question {step + 1} of {asked.length}, newest tablet first.</p>
       <h3 ref={heading} tabIndex={-1}>{doseLabel(dose)}</h3>
       <p>Current status: {statusLabel(dose, current)}. What do you remember about this tablet?</p>
       <p>If you do not remember, skip it. Skipping leaves it as it is; Petal never counts unknown history as missed.</p>
       {chosen && <p>Your answer so far: {ANSWER_LABEL[chosen.kind]}. Choose another answer to change it.</p>}
-      {error && <p role="alert">{error}</p>}
+      {error && <Feedback kind="error" message={error} />}
       <p>
-        <button type="button" onClick={() => answer({ kind: 'taken-usual' })}>{ANSWER_LABEL['taken-usual']}</button>{' '}
-        <button type="button" onClick={() => { setRemembered(open => !open); setRememberedAt(inputValueFor(dose.scheduledAt, dose.timeZone)); }} aria-expanded={remembered}>{ANSWER_LABEL['taken-time']}</button>{' '}
-        <button type="button" onClick={() => answer({ kind: 'taken-unknown' })}>{ANSWER_LABEL['taken-unknown']}</button>{' '}
-        <button type="button" onClick={() => answer({ kind: 'missed' })}>{ANSWER_LABEL.missed}</button>{' '}
-        <button type="button" onClick={() => answer({ kind: 'unsure' })}>{ANSWER_LABEL.unsure}</button>{' '}
-        <button type="button" onClick={skip}>Skip this tablet</button>
+        <button type="button" className="petal-button" data-variant="secondary" onClick={() => answer({ kind: 'taken-usual' })}>{ANSWER_LABEL['taken-usual']}</button>{' '}
+        <button type="button" className="petal-button" data-variant="secondary" onClick={() => { setRemembered(open => !open); setRememberedAt(inputValueFor(dose.scheduledAt, dose.timeZone)); }} aria-expanded={remembered}>{ANSWER_LABEL['taken-time']}</button>{' '}
+        <button type="button" className="petal-button" data-variant="secondary" onClick={() => answer({ kind: 'taken-unknown' })}>{ANSWER_LABEL['taken-unknown']}</button>{' '}
+        <button type="button" className="petal-button" data-variant="secondary" onClick={() => answer({ kind: 'missed' })}>{ANSWER_LABEL.missed}</button>{' '}
+        <button type="button" className="petal-button" data-variant="secondary" onClick={() => answer({ kind: 'unsure' })}>{ANSWER_LABEL.unsure}</button>{' '}
+        <button type="button" className="petal-button" data-variant="secondary" onClick={skip}>Skip this tablet</button>
       </p>
       {remembered && (
         <form onSubmit={useRememberedTime}>
           <p>
-            <label>About when did you take it? <input type="datetime-local" value={rememberedAt} onChange={e => setRememberedAt(e.target.value)} required /></label>
+            <label>About when did you take it? <input className="petal-input" type="datetime-local" value={rememberedAt} onChange={e => setRememberedAt(e.target.value)} required /></label>
           </p>
           <p><small>This is stored as an approximate time, not an exact one.</small></p>
-          <button type="submit">Use this time</button>
+          <button type="submit" className="petal-button">Use this time</button>
         </form>
       )}
       <p>
-        <button type="button" onClick={() => { setError(null); setRemembered(false); setStep(Math.max(0, step - 1)); }} disabled={step === 0}>Back</button>{' '}
-        <button type="button" onClick={() => setPhase('review')}>Skip the rest and review</button>{' '}
-        <button type="button" onClick={() => onClose()}>Cancel and save nothing</button>
+        <button type="button" className="petal-button" data-variant="secondary" onClick={() => { setError(null); setRemembered(false); setStep(Math.max(0, step - 1)); }} disabled={step === 0}>Back</button>{' '}
+        <button type="button" className="petal-button" data-variant="secondary" onClick={() => setPhase('review')}>Skip the rest and review</button>{' '}
+        <button type="button" className="petal-button" data-variant="secondary" onClick={() => onClose()}>Cancel and save nothing</button>
       </p>
     </section>
   );

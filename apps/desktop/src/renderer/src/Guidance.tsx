@@ -20,7 +20,7 @@ export function Guidance({ state }: { state: PetalState }) {
   if (!view) return null;
 
   return (
-    <section aria-labelledby="guidance-heading">
+    <section className="petal-card" aria-labelledby="guidance-heading">
       <h2 id="guidance-heading">Guidance</h2>
       <p>{view.headline}</p>
       {view.actions.length > 0 && (

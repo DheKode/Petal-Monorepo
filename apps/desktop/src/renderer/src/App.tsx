@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import type { AppInfo, PetalState } from '../../shared/ipc';
+import { Feedback } from '@petal/ui/components';
+import logo from '../../../../../libs/assets/brands/svg/petal-logo-horizontal-primary.svg';
 import { Setup } from './Setup';
 import { Today } from './Today';
 
-// Functional screens only. Visual direction belongs to the designer (#11); do not add styling decisions here.
+// Shell for the desktop screens. Appearance comes from @petal/ui tokens and the brand assets (see app.css); do not add raw brand values.
 export function App() {
   const [state, setState] = useState<PetalState | null>(null);
   const [info, setInfo] = useState<AppInfo | null>(null);
@@ -18,16 +20,22 @@ export function App() {
   }
 
   return (
-    <main>
-      <h1>Petal</h1>
-      {state.persistence === 'memory' ? (
-        <p role="status">Temporary storage: your records are lost when the app closes.</p>
-      ) : (
-        <p role="status">Your records are saved on this device only. They are not encrypted, so anyone who can open your user account can read them.</p>
-      )}
-      <p>Product details are not verified yet, so Petal is tracking only and shows no guidance.</p>
+    <main data-petal-ui className="app">
+      <header className="app-header">
+        <h1>
+          <img className="app-logo" src={logo} alt="Petal" />
+        </h1>
+      </header>
+      <div className="app-notes">
+        {state.persistence === 'memory' ? (
+          <Feedback kind="warning" message="Temporary storage: your records are lost when the app closes." />
+        ) : (
+          <p className="petal-muted">Your records are saved on this device only. They are not encrypted, so anyone who can open your user account can read them.</p>
+        )}
+        <Feedback kind="warning" message="Product details are not verified yet, so Petal is tracking only and shows no guidance." />
+      </div>
       {state.pack ? <Today state={state} onState={setState} /> : <Setup onSaved={setState} />}
-      {info && <footer><small>Petal {info.appVersion} · {info.platform}</small></footer>}
+      {info && <footer className="app-footer">Petal {info.appVersion} · {info.platform}</footer>}
     </main>
   );
 }
