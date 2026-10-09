@@ -10,9 +10,11 @@ import { serializeBackup, parseBackupJson, getIntakeState } from '@petal/domain'
 import { LocalStore, StorageError } from '../src/index.js';
 import { fixture } from './fixtures.js';
 
+// On Windows the SQLite driver keeps a file locked for a moment after close(), so cleanup is best effort (#37 item 1).
+const cleanup=(dir:string)=>rm(dir,{recursive:true,force:true,maxRetries:2,retryDelay:100}).catch(()=>{});
 async function setup(t:test.TestContext) {
   const dir=await mkdtemp(join(tmpdir(),'petal-storage-'));const path=join(dir,'records.db');const store=await LocalStore.open(path);
-  t.after(async()=>{store.close();await rm(dir,{recursive:true,force:true});});return {store,path};
+  t.after(async()=>{store.close();await cleanup(dir);});return {store,path};
 }
 async function seed(store:LocalStore) {return store.confirm((await store.previewImport(serializeBackup(fixture()))).token);}
 function code(expected:string) {return (e:unknown)=>e instanceof StorageError && e.code===expected;}
@@ -89,7 +91,7 @@ test('corrections cannot change dose identity, creation time, or reverse update 
 });
 test('remote/relative paths and newer storage schemas are rejected without downgrading',async t=>{
   for(const path of ['libsql://example.com','https://example.com','records.db']) await assert.rejects(LocalStore.open(path));
-  const dir=await mkdtemp(join(tmpdir(),'petal-version-'));t.after(()=>rm(dir,{recursive:true,force:true}));const path=join(dir,'future.db');
+  const dir=await mkdtemp(join(tmpdir(),'petal-version-'));t.after(()=>cleanup(dir));const path=join(dir,'future.db');
   const raw=createClient({url:pathToFileURL(path).href});await raw.execute('PRAGMA user_version=2');raw.close();
   await assert.rejects(LocalStore.open(path),code('unsupported-storage-version'));
 });
