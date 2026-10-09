@@ -205,7 +205,8 @@ app.whenReady().then(async () => {
   try {
     store = await SqliteStore.open(join(app.getPath('userData'), 'petal.db'), app.getVersion());
     service = new PetalService(store);
-    aiRuntime = new AiRuntime(app.getPath('userData'));
+    aiRuntime = new AiRuntime(app.getPath('userData'), undefined,
+      join(app.isPackaged ? process.resourcesPath : app.getAppPath(), app.isPackaged ? 'models' : '.model-bundle', 'gemma-3-1b-it-Q4_K_M.gguf'));
     ai = new AiService(store, aiRuntime);
     // Model verification runs off the startup path; tracking is immediately available.
     void aiRuntime.initialize();

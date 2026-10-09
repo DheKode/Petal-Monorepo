@@ -6,6 +6,18 @@ directories:
 files:
   - out/**
   - package.json
+beforePack: scripts/bundle-model.cjs
+extraResources:
+  - from: .model-bundle
+    to: models
+    filter:
+      - '*.gguf'
+  - from: build
+    to: model-licenses
+    filter:
+      - GEMMA-*.txt
+      - NOTICE
+      - license.txt
 win:
   target:
     - target: nsis
@@ -29,8 +41,10 @@ mac:
   # instead of reporting it as damaged. Hardened runtime only matters for notarization and would block the native modules.
   identity: '-'
   hardenedRuntime: false
+dmg:
+  license: build/license.txt
 
-# Native inference binaries must remain outside the asar; model weights are user-selected, not bundled.
+# Native inference binaries and the bundled model remain outside the asar.
 asarUnpack:
   - node_modules/node-llama-cpp/**
   - node_modules/@node-llama-cpp/**

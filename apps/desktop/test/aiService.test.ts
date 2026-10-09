@@ -91,6 +91,20 @@ test('knowledge queries send no personal records to the model context',async t=>
   value(await ai.ask({question:'What does an empty intake record mean?'}));const context=JSON.parse(captured.split('PETAL CONTEXT:\n')[1]);for(const key of ['records','computedFacts','conversation','clock'])assert.equal(key in context,false);assert.ok(context.passages.length);
 });
 
+test('greetings work without inference and do not change records',async t=>{
+  let calls=0;
+  const {ai,store}=await open(t,{generate:async()=>{calls++;throw new Error('model-unavailable');}});
+  const before=await store.load();
+  for(const question of ['hi','Hello!','Good evening.']) {
+    const answer=value(await ai.ask({question}));
+    assert.equal(answer.mode,'greeting');assert.equal(answer.fallback,false);
+    assert.match(answer.text,/Hi!/);assert.equal(answer.citations.length,0);
+  }
+  assert.equal(calls,0);assert.deepEqual(await store.load(),before);
+  const clinical=value(await ai.ask({question:'hi, I have chest pain'}));
+  assert.match(clinical.text,/urgent medical care/);
+});
+
 test('a malformed model file is rejected before native loading',async t=>{
   const {dir}=await open(t);const path=join(dir,'broken.gguf');await writeFile(path,'not a model');
   const {verifyGemma}=await import('../src/main/aiArtifact');

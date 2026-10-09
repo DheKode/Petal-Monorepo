@@ -181,11 +181,11 @@ export function Chat({ state, onState }: { state: PetalState; onState: (state: P
       <p>Check recorded history, review a correction, or read supported FAQs. Medical guidance is unavailable while Trust evidence awaits review. This conversation is kept only while this screen is open.</p>
       <p>{model?.message ?? 'Checking local model setup…'}</p>
       {model && <small>{model.title}</small>}
-      <p>
+      {!model?.available && <p>
         <button type="button" className="petal-button" data-variant="secondary" onClick={pickModel} disabled={busy || selecting}>
-          {selecting ? 'Verifying file…' : 'Choose downloaded Gemma model'}
+          {selecting ? 'Verifying file…' : 'Choose recovery Gemma model'}
         </button>
-      </p>
+      </p>}
       {error && <p role="alert">{error}</p>}
       {notice && <p role="status">{notice}</p>}
 
@@ -194,7 +194,7 @@ export function Chat({ state, onState }: { state: PetalState; onState: (state: P
           <li key={index}>
             <p><strong>You:</strong> {message.question}</p>
             <p><strong>Petal:</strong> {message.answer.text}</p>
-            <small>{message.answer.fallback ? 'Fixed response: the local model was unavailable or its answer was rejected.' : 'Checked local Gemma response.'}</small>
+            <small>{message.answer.mode === 'greeting' ? 'Petal greeting.' : message.answer.fallback ? 'Fixed response: the local model was unavailable or its answer was rejected.' : 'Checked local Gemma response.'}</small>
             {message.answer.citations.map(source => (
               <details key={source.id}>
                 <summary>Based on {source.publisher}: {source.title}</summary>

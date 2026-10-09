@@ -11,7 +11,7 @@ const CONFIG_FILE = 'ai-model.json';
 const COLD_TIMEOUT_MS = 120_000;
 const WARM_TIMEOUT_MS = 30_000;
 
-/** Hosts the inference worker. Model selection is a user-chosen local file only; first-run download and redistribution remain #15. */
+/** Hosts the inference worker. The shipped artifact is verified and selected automatically (#15). */
 export class AiRuntime implements AiGenerator {
   private path: string | null = null;
   private child: UtilityProcess | null = null;
@@ -19,12 +19,22 @@ export class AiRuntime implements AiGenerator {
   private initialization: Promise<void> = Promise.resolve();
   private revision = 0;
 
-  constructor(private folder: string, private workerPath = join(__dirname, 'aiWorker.js')) {}
+  constructor(private folder: string, private workerPath = join(__dirname, 'aiWorker.js'), private bundledPath?: string) {}
 
   /** Re-verifies the remembered model in the background so startup and tracking are never blocked. */
   initialize(): Promise<void> {
     const revision = this.revision;
     this.initialization = (async () => {
+      // Prefer the app-owned artifact, so moved legacy selections cannot break an updated installation.
+      if (this.bundledPath) {
+        try {
+          await verifyGemma(this.bundledPath);
+          if (revision === this.revision) this.path = this.bundledPath;
+          return;
+        } catch {
+          // A damaged installation may still use an explicitly selected verified recovery file.
+        }
+      }
       try {
         const config = JSON.parse(await readFile(join(this.folder, CONFIG_FILE), 'utf8'));
         if (config.version === 1 && typeof config.path === 'string') {
@@ -51,8 +61,8 @@ export class AiRuntime implements AiGenerator {
       available,
       title: 'Gemma 3 1B IT Q4_K_M · node-llama-cpp 3.22.1',
       message: available
-        ? 'Verified local model selected. Answers are checked before they are shown.'
-        : 'No verified local model selected. Recorded-history help and reviewed FAQ passages still work with fixed responses.',
+        ? 'Local Gemma is ready. Answers stay on this device and are checked before they are shown.'
+        : 'The included local model could not be verified. Reinstall Petal or choose a verified recovery model. Recorded-history help and reviewed FAQs still work with fixed responses.',
     };
   }
 

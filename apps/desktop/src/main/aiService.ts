@@ -67,6 +67,12 @@ export class AiService {
       if (controller.signal.aborted) return fail('Cancelled. Your records were not changed.');
       if (input.discussedDoseId != null && (!IdSchema.safeParse(input.discussedDoseId).success || !state.doses.some(d => d.id === input.discussedDoseId))) return fail('Choose a tablet from the current pack.');
       const question = input.question.trim();
+      // Greetings carry no personal/clinical facts and do not need retrieval or model availability.
+      if (/^(?:hi|hello|hey|good (?:morning|afternoon|evening))[!.\s]*$/i.test(question)) {
+        return ok({ text: 'Hi! I’m Petal. I can help you check recorded intake history, review a correction, or read supported FAQs.',
+          mode: 'greeting', fallback: false, fallbackReason: null, citations: [], recordsChanged: false,
+          generationMs: Math.round(performance.now() - started) });
+      }
       const position = question.match(/\b(?:pill|tablet)\s+(\d{1,2})\b/i)?.[1];
       const positioned = position ? state.doses.find(d => d.position === Number(position)) : undefined;
       if (position && !positioned) return fail('No matching tablet is in the current pack.');
