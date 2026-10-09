@@ -1,0 +1,395 @@
+{
+  "name": "Petal",
+  "version": 1,
+  "palette": {
+    "rose": "#B83D70",
+    "plum": "#33252D",
+    "white": "#FFFFFF",
+    "black": "#000000"
+  },
+  "variants": [
+    {
+      "name": "petal-logo-horizontal-primary",
+      "kind": "logo-horizontal",
+      "color": "primary",
+      "svg": "svg/petal-logo-horizontal-primary.svg",
+      "png": "png/petal-logo-horizontal-primary.png",
+      "viewBox": [
+        0,
+        0,
+        954,
+        322
+      ],
+      "pngSize": [
+        2048,
+        691
+      ]
+    },
+    {
+      "name": "petal-logo-stacked-primary",
+      "kind": "logo-stacked",
+      "color": "primary",
+      "svg": "svg/petal-logo-stacked-primary.svg",
+      "png": "png/petal-logo-stacked-primary.png",
+      "viewBox": [
+        0,
+        0,
+        466.6,
+        467.1
+      ],
+      "pngSize": [
+        1024,
+        1025
+      ]
+    },
+    {
+      "name": "petal-logo-horizontal-rose",
+      "kind": "logo-horizontal",
+      "color": "rose",
+      "svg": "svg/petal-logo-horizontal-rose.svg",
+      "png": "png/petal-logo-horizontal-rose.png",
+      "viewBox": [
+        0,
+        0,
+        954,
+        322
+      ],
+      "pngSize": [
+        2048,
+        691
+      ]
+    },
+    {
+      "name": "petal-logo-stacked-rose",
+      "kind": "logo-stacked",
+      "color": "rose",
+      "svg": "svg/petal-logo-stacked-rose.svg",
+      "png": "png/petal-logo-stacked-rose.png",
+      "viewBox": [
+        0,
+        0,
+        466.6,
+        467.1
+      ],
+      "pngSize": [
+        1024,
+        1025
+      ]
+    },
+    {
+      "name": "petal-logo-horizontal-plum",
+      "kind": "logo-horizontal",
+      "color": "plum",
+      "svg": "svg/petal-logo-horizontal-plum.svg",
+      "png": "png/petal-logo-horizontal-plum.png",
+      "viewBox": [
+        0,
+        0,
+        954,
+        322
+      ],
+      "pngSize": [
+        2048,
+        691
+      ]
+    },
+    {
+      "name": "petal-logo-stacked-plum",
+      "kind": "logo-stacked",
+      "color": "plum",
+      "svg": "svg/petal-logo-stacked-plum.svg",
+      "png": "png/petal-logo-stacked-plum.png",
+      "viewBox": [
+        0,
+        0,
+        466.6,
+        467.1
+      ],
+      "pngSize": [
+        1024,
+        1025
+      ]
+    },
+    {
+      "name": "petal-logo-horizontal-black",
+      "kind": "logo-horizontal",
+      "color": "black",
+      "svg": "svg/petal-logo-horizontal-black.svg",
+      "png": "png/petal-logo-horizontal-black.png",
+      "viewBox": [
+        0,
+        0,
+        954,
+        322
+      ],
+      "pngSize": [
+        2048,
+        691
+      ]
+    },
+    {
+      "name": "petal-logo-stacked-black",
+      "kind": "logo-stacked",
+      "color": "black",
+      "svg": "svg/petal-logo-stacked-black.svg",
+      "png": "png/petal-logo-stacked-black.png",
+      "viewBox": [
+        0,
+        0,
+        466.6,
+        467.1
+      ],
+      "pngSize": [
+        1024,
+        1025
+      ]
+    },
+    {
+      "name": "petal-logo-horizontal-white",
+      "kind": "logo-horizontal",
+      "color": "white",
+      "svg": "svg/petal-logo-horizontal-white.svg",
+      "png": "png/petal-logo-horizontal-white.png",
+      "viewBox": [
+        0,
+        0,
+        954,
+        322
+      ],
+      "pngSize": [
+        2048,
+        691
+      ]
+    },
+    {
+      "name": "petal-logo-stacked-white",
+      "kind": "logo-stacked",
+      "color": "white",
+      "svg": "svg/petal-logo-stacked-white.svg",
+      "png": "png/petal-logo-stacked-white.png",
+      "viewBox": [
+        0,
+        0,
+        466.6,
+        467.1
+      ],
+      "pngSize": [
+        1024,
+        1025
+      ]
+    },
+    {
+      "name": "petal-symbol-rose",
+      "kind": "symbol",
+      "color": "rose",
+      "svg": "svg/petal-symbol-rose.svg",
+      "png": "png/petal-symbol-rose.png",
+      "viewBox": [
+        0,
+        0,
+        287,
+        257
+      ],
+      "pngSize": [
+        1024,
+        917
+      ]
+    },
+    {
+      "name": "petal-wordmark-rose",
+      "kind": "wordmark",
+      "color": "rose",
+      "svg": "svg/petal-wordmark-rose.svg",
+      "png": "png/petal-wordmark-rose.png",
+      "viewBox": [
+        0,
+        0,
+        692,
+        322
+      ],
+      "pngSize": [
+        2048,
+        953
+      ]
+    },
+    {
+      "name": "petal-symbol-plum",
+      "kind": "symbol",
+      "color": "plum",
+      "svg": "svg/petal-symbol-plum.svg",
+      "png": "png/petal-symbol-plum.png",
+      "viewBox": [
+        0,
+        0,
+        287,
+        257
+      ],
+      "pngSize": [
+        1024,
+        917
+      ]
+    },
+    {
+      "name": "petal-wordmark-plum",
+      "kind": "wordmark",
+      "color": "plum",
+      "svg": "svg/petal-wordmark-plum.svg",
+      "png": "png/petal-wordmark-plum.png",
+      "viewBox": [
+        0,
+        0,
+        692,
+        322
+      ],
+      "pngSize": [
+        2048,
+        953
+      ]
+    },
+    {
+      "name": "petal-symbol-black",
+      "kind": "symbol",
+      "color": "black",
+      "svg": "svg/petal-symbol-black.svg",
+      "png": "png/petal-symbol-black.png",
+      "viewBox": [
+        0,
+        0,
+        287,
+        257
+      ],
+      "pngSize": [
+        1024,
+        917
+      ]
+    },
+    {
+      "name": "petal-wordmark-black",
+      "kind": "wordmark",
+      "color": "black",
+      "svg": "svg/petal-wordmark-black.svg",
+      "png": "png/petal-wordmark-black.png",
+      "viewBox": [
+        0,
+        0,
+        692,
+        322
+      ],
+      "pngSize": [
+        2048,
+        953
+      ]
+    },
+    {
+      "name": "petal-symbol-white",
+      "kind": "symbol",
+      "color": "white",
+      "svg": "svg/petal-symbol-white.svg",
+      "png": "png/petal-symbol-white.png",
+      "viewBox": [
+        0,
+        0,
+        287,
+        257
+      ],
+      "pngSize": [
+        1024,
+        917
+      ]
+    },
+    {
+      "name": "petal-wordmark-white",
+      "kind": "wordmark",
+      "color": "white",
+      "svg": "svg/petal-wordmark-white.svg",
+      "png": "png/petal-wordmark-white.png",
+      "viewBox": [
+        0,
+        0,
+        692,
+        322
+      ],
+      "pngSize": [
+        2048,
+        953
+      ]
+    },
+    {
+      "name": "petal-icon-circle-rose",
+      "kind": "icon-circle",
+      "color": "rose",
+      "svg": "svg/petal-icon-circle-rose.svg",
+      "png": "png/petal-icon-circle-rose.png",
+      "viewBox": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "pngSize": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "petal-icon-circle-plum",
+      "kind": "icon-circle",
+      "color": "plum",
+      "svg": "svg/petal-icon-circle-plum.svg",
+      "png": "png/petal-icon-circle-plum.png",
+      "viewBox": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "pngSize": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "name": "petal-icon-circle-black",
+      "kind": "icon-circle",
+      "color": "black",
+      "svg": "svg/petal-icon-circle-black.svg",
+      "png": "png/petal-icon-circle-black.png",
+      "viewBox": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "pngSize": [
+        1024,
+        1024
+      ]
+    }
+  ],
+  "iconSizes": [
+    {
+      "size": 16,
+      "file": "png/petal-icon-circle-rose-16.png"
+    },
+    {
+      "size": 32,
+      "file": "png/petal-icon-circle-rose-32.png"
+    },
+    {
+      "size": 48,
+      "file": "png/petal-icon-circle-rose-48.png"
+    },
+    {
+      "size": 180,
+      "file": "png/petal-icon-circle-rose-180.png"
+    },
+    {
+      "size": 192,
+      "file": "png/petal-icon-circle-rose-192.png"
+    },
+    {
+      "size": 512,
+      "file": "png/petal-icon-circle-rose-512.png"
+    }
+  ]
+}
