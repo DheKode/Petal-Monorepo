@@ -7,3 +7,5 @@ allowBuilds:
   electron: true
   electron-winstaller: false
   esbuild: true
+  # Desktop local AI (#9) uses the prebuilt @node-llama-cpp/* binaries with build: 'never'; never download or compile llama.cpp at install time.
+  node-llama-cpp: false
