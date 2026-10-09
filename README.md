@@ -4,6 +4,10 @@ Private, offline pill companion prototype. [PRD](PRD.md) defines the product; [A
 
 [Team Kanban and Agent Assignments](https://github.com/orgs/DheKode/projects/1)
 
+## Shared domain contracts
+
+`packages/domain` provides PRD entity types and validation, an unsupported guidance stub, offline evidence ID lookup, and complete version-1 backup validation/JSON Schema. Build with `pnpm --filter @petal/domain build` before consuming it. See [domain contracts](docs/domain-contracts.md). The approved evidence corpus is empty pending review; no clinical branches or native app integration are claimed.
+
 ## Optional login and encrypted sync
 
 This scaffold implements an Express/Clerk/Turso sync service, a shared client-side encryption package, and a **development UI using fictional notes**. It does not yet implement the native pill-tracking apps or connect their SQLite data to sync.
@@ -32,6 +36,7 @@ The API binds localhost:3001; the development UI uses localhost:5173. Configure 
 
 - `apps/sync-api`: authenticated ciphertext storage; Turso credentials stay here.
 - `apps/sync-demo`: optional account and opt-in sync development interface.
+- `packages/domain`: shared records, validation, evidence and backup contracts.
 - `packages/encrypted-sync`: portable Web Crypto encryption and explicit-action sync client.
 - `lib`: standalone utilities not published as workspace packages; shared versioned interfaces belong in `packages`.
 - `docs`: decisions and integration contracts.
