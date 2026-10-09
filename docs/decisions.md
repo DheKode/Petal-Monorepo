@@ -14,3 +14,11 @@ User explicitly approved optional Clerk login and encrypted Turso sync now, over
 - No claim of a formal security audit, full protection against a compromised client/backend, or tested native cross-device integration.
 
 The existing TASKS.md DEC2 native/domain paths remain unchanged; optional-sync paths are additive. X01 tracks this extension on issue #17. Workspace bootstrap does not satisfy native scaffold task acceptance.
+
+## Shared domain contracts — October 9, 2026
+
+User assigned Codex D01/D06-D08 under #2 while Claude owns the desktop inference spike under #3. `@petal/domain` uses pinned Zod schemas for TypeScript/runtime contracts and generated JSON Schema for interchange. Runtime semantic validation remains mandatory. Compiled ESM and declarations are consumed by future native/desktop apps.
+
+Dose identity is separate from calendar date; absence means no-entry, and the explicit missed status is confirmed-missed. One canonical current event per dose is corrected with an audit trail. Version-1 backup excludes credentials/keys/derived guidance and preserves all durable records. Evidence corpus starts empty; the guidance stub always returns unsupported pending #4/#5. See docs/domain-contracts.md.
+
+Issue #20 owns desktop scaffold/root configuration and must consume this package rather than replace its manifest or exports. The domain task changes only root lockfile dependency entries, not root manifests, workspace configuration or desktop paths. Native scaffold acceptance under S01-S03 remains pending.
