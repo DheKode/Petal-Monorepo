@@ -1,17 +1,29 @@
-import { app, BrowserWindow, ipcMain, Menu, type IpcMainInvokeEvent } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, Menu, type IpcMainInvokeEvent } from 'electron';
 import { join } from 'node:path';
 import {
   IPC_APP_INFO, IPC_GET_STATE, IPC_SAVE_SETUP, IPC_RECORD_INTAKE, IPC_UNDO_INTAKE,
   type AppInfo, type RecordIntakeInput, type SetupInput,
 } from '../shared/ipc';
-import { MemoryStore } from './store';
+import { SqliteStore } from './sqliteStore';
 import { PetalService } from './service';
 // Same artwork electron-builder uses for installers (build/icon.png); ?asset bundles it and returns its path.
 import icon from '../../build/icon.png?asset';
 
-// Temporary non-persistent store until the SQLite adapter (#6) is merged; see store.ts.
-const service = new PetalService(new MemoryStore());
+// Name and data folder must be set before the first call to app.getPath('userData'). A --user-data-dir switch (used by
+// tests) wins; unpackaged runs use a separate folder so development data never mixes with an installed app's.
+app.setName('Petal');
+if (!app.isPackaged && !app.commandLine.hasSwitch('user-data-dir')) {
+  app.setPath('userData', join(app.getPath('appData'), 'Petal-dev'));
+}
+
+let store: SqliteStore | null = null;
+let service: PetalService | null = null;
 let mainWindow: BrowserWindow | null = null;
+
+function requireService(): PetalService {
+  if (!service) throw new Error('Storage is not open');
+  return service;
+}
 
 function createWindow(): void {
   const win = new BrowserWindow({
@@ -54,21 +66,35 @@ function handle<A extends unknown[], R>(channel: string, fn: (...args: A) => R):
 }
 
 handle(IPC_APP_INFO, (): AppInfo => ({ appVersion: app.getVersion(), platform: process.platform }));
-handle(IPC_GET_STATE, () => service.getState());
-handle(IPC_SAVE_SETUP, (input: SetupInput) => service.saveSetup(input));
-handle(IPC_RECORD_INTAKE, (input: RecordIntakeInput) => service.recordIntake(input));
-handle(IPC_UNDO_INTAKE, (doseId: string) => service.undoIntake(doseId));
+handle(IPC_GET_STATE, () => requireService().getState());
+handle(IPC_SAVE_SETUP, (input: SetupInput) => requireService().saveSetup(input));
+handle(IPC_RECORD_INTAKE, (input: RecordIntakeInput) => requireService().recordIntake(input));
+handle(IPC_UNDO_INTAKE, (doseId: string) => requireService().undoIntake(doseId));
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   // No File/Edit/View/Window menu bar. macOS always shows a system menu bar and needs the Edit roles for
   // copy/paste shortcuts, so it keeps only the app and edit menus.
   Menu.setApplicationMenu(
     process.platform === 'darwin' ? Menu.buildFromTemplate([{ role: 'appMenu' }, { role: 'editMenu' }]) : null,
   );
+  try {
+    store = await SqliteStore.open(join(app.getPath('userData'), 'petal.db'), app.getVersion());
+    service = new PetalService(store);
+  } catch {
+    // Never start with an empty in-memory fallback: the user would think their records were lost or keep logging into nothing.
+    dialog.showErrorBox('Petal could not open its data file', 'Nothing was changed or deleted. Close other copies of Petal and try again.');
+    app.quit();
+    return;
+  }
   createWindow();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+});
+
+app.on('before-quit', () => {
+  store?.close();
+  store = null;
 });
 
 app.on('window-all-closed', () => {

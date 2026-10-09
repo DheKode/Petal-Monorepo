@@ -40,3 +40,13 @@ Issue #20 (sub-issue of #2), approved by @Kiko915.
 - Electron 44.4.5. Windows use `contextIsolation`, `sandbox`, no Node integration, deny new windows and navigation, and a strict CSP; the renderer reaches the main process only through the typed preload bridge.
 - The desktop app consumes the compiled `@petal/domain` package (no alias to its source). Desktop `dev`, `build` and `typecheck` build `@petal/domain` first.
 - `pnpm-workspace.yaml` allows the Electron install script (downloads its binary) and denies `electron-winstaller` (Squirrel, unused).
+
+## Desktop persistence — October 10, 2026
+
+Issue #8, approved by @Kiko915.
+
+- The desktop main process owns a `SqliteStore` that wraps `@petal/storage` (`LocalStore`) and opens `petal.db` in the app user-data folder. The renderer only reaches it through the typed IPC operations in `src/main/service.ts`, which re-validate every request and apply the shared domain rules (`applyIntake`) before the adapter is called. A failure to open the file shows an error and quits; the app never falls back to an in-memory store.
+- Setup goes through the adapter's validated replace-all import (it has no dedicated call); the service refuses setup when a pack already exists. Intake changes use the adapter's preview and confirm back to back, because the user's own logging action is the confirmation.
+- Undo is available only for corrections: it writes the earlier values back as a new correction with a fresh update time, because the adapter rejects going back in time and cannot remove an event (follow-up #37, item 7). New entries cannot be undone.
+- `@libsql/client` is a native module, so it is a real `dependency` of `@petal/desktop`, stays external in the main bundle, and is unpacked from the asar. The packaged Windows build was checked; macOS was not, and macOS packaging must run on a Mac.
+- `@petal/storage` declares only an `import` export condition, so the desktop test script resolves it with `tsx --conditions=import`. Adding a `default` condition is tracked in #37.

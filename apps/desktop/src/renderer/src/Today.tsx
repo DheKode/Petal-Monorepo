@@ -38,7 +38,7 @@ export function Today({ state, onState }: { state: PetalState; onState: (state: 
     onState(result.value.state);
     setNotice(result.value.change === 'unchanged'
       ? { text: 'No change: that entry was already recorded.' }
-      : { text, undoDoseId: input.doseId });
+      : { text, undoDoseId: result.value.undoable ? input.doseId : undefined });
     setSelectedId(null);
     setEarlier(false);
     setEarlierAt('');

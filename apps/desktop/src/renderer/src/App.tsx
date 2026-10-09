@@ -20,8 +20,10 @@ export function App() {
   return (
     <main>
       <h1>Petal</h1>
-      {state.persistence === 'memory' && (
-        <p role="status">Temporary storage: your records are lost when the app closes. Saving to your device is not connected yet.</p>
+      {state.persistence === 'memory' ? (
+        <p role="status">Temporary storage: your records are lost when the app closes.</p>
+      ) : (
+        <p role="status">Your records are saved on this device only. They are not encrypted, so anyone who can open your user account can read them.</p>
       )}
       <p>Product details are not verified yet, so Petal is tracking only and shows no guidance.</p>
       {state.pack ? <Today state={state} onState={setState} /> : <Setup onSaved={setState} />}
