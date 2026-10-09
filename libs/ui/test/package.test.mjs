@@ -35,7 +35,7 @@ test('a separate application can import the built root, web/native themes, CSS p
       }
       const source = JSON.parse(await readFile(new URL(import.meta.resolve('@petal/ui/tokens.json')), 'utf8'));
       assert.equal(source.primitive.color.rose.$value.hex, '#B83D70');
-      for (const group of ['components', 'hooks', 'layouts']) {
+      for (const group of ['components', 'hooks', 'layouts', 'icons']) {
         const webPath = import.meta.resolve('@petal/ui/' + group);
         const nativePath = import.meta.resolve('@petal/ui/' + group + '/native');
         assert(webPath.endsWith('/index.js'));
@@ -46,7 +46,7 @@ test('a separate application can import the built root, web/native themes, CSS p
     assert.equal(result.status, 0, result.stderr);
     const nativeResolution = spawnSync(process.execPath, ['--conditions=react-native', '--input-type=module', '-e', `
       import assert from 'node:assert/strict';
-      for (const group of ['components','hooks','layouts']) {
+      for (const group of ['components','hooks','layouts','icons']) {
         assert(import.meta.resolve('@petal/ui/' + group).endsWith('/index.native.js'));
       }
     `], { cwd: consumer, encoding: 'utf8' });
@@ -54,12 +54,13 @@ test('a separate application can import the built root, web/native themes, CSS p
     const themeOnly = spawnSync(process.execPath, ['--input-type=module', '-e', `
       import { registerHooks } from 'node:module';
       registerHooks({resolve(specifier, context, next) {
-        if (/^react(?:-native|\\/|$)/.test(specifier)) throw new Error('Theme imported React: ' + specifier);
+        if (/^react(?:-native|\\/|$)/.test(specifier) || specifier.startsWith('@animateicons') || specifier.startsWith('lucide')) throw new Error('Theme imported a framework: ' + specifier);
         return next(specifier, context);
       }});
       await import('@petal/ui');
       await import('@petal/ui/theme/native');
       await import('@petal/ui/utils');
+      await import('@petal/ui/icons/catalog');
     `], { cwd: consumer, encoding: 'utf8' });
     assert.equal(themeOnly.status, 0, themeOnly.stderr);
   } finally {

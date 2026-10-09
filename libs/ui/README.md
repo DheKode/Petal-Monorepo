@@ -7,6 +7,7 @@ This workspace package contains UI code reused across Petal applications. The ro
 | `src/styles/` | Opt-in shared web styling driven by the theme tokens |
 | `src/themes/` | Shared appearance values and their platform exports; [Petal theme](src/themes/README.md) |
 | `src/components/` | Seven shared controls with React web/Electron and React Native implementations |
+| `src/icons/` | 24 shared Lucide symbols, accessible Icon/IconButton wrappers, and platform-specific motion |
 | `src/hooks/` | Disclosure, reduced-motion preference, and responsive layout behavior |
 | `src/layouts/` | Screen and Stack arrangements on both platforms |
 | `src/utils/` | Pure class-name, layout, and button-appearance helpers |
@@ -40,6 +41,9 @@ import '@petal/ui/theme.css';
 | `@petal/ui/hooks` | Web hooks by default; native hooks under the `react-native` condition |
 | `@petal/ui/layouts` | Web layouts by default; native layouts under the `react-native` condition |
 | `@petal/ui/components/native`, `hooks/native`, `layouts/native` | Explicit native entry points for platform-safe imports |
+| `@petal/ui/icons`, `icons/native` | Web animated Lucide icons or explicit React Native vectors |
+| `@petal/ui/icons/catalog` | Framework-free names and neutral labels |
+| `@petal/ui/icons/notices` | Upstream license notices to retain when distributing icons |
 | `@petal/ui/utils` | Pure helpers without React or React Native imports |
 
 The package provides ESM with declarations. React `>=19.2.3 <20` and React Native `0.86.3` are optional peers: applications using controls provide their platform runtime, while theme-only consumers require neither. Web consumers need React; native consumers need both. CSS is marked as a side effect so bundlers preserve it. App owners must verify their Vite/Metro setup and register Geist Mono locally for offline use. Native font format/registration remains an app-adapter task; the bundled WOFF2 is verified only in the web preview.
@@ -62,6 +66,8 @@ import '@petal/ui/styles.css';
 
 Native apps can use the explicit `/native` paths to avoid depending on bundler condition configuration. Shared props are identical; children use platform-appropriate elements (wrap native text in React Native Text). Supply measured safe-area insets to native Screen. See [components](src/components/README.md), [hooks](src/hooks/README.md), and [layouts](src/layouts/README.md) for behavior and integration responsibilities.
 
+See [the icon integration guide](src/icons/README.md) for platform dependencies, labels, sizes, and motion behavior. Web icon consumers provide `@animateicons/react@0.12.0`; native icon consumers provide `lucide-react-native@1.52.0` and `react-native-svg@15.15.5` and rebuild the native application after SVG autolinking. These optional peers are required only by icon consumers.
+
 ## Live component preview
 
 ```sh
@@ -69,7 +75,7 @@ pnpm --filter @petal/ui build
 pnpm --filter @petal/ui preview:components
 ```
 
-Open http://127.0.0.1:4179/ to exercise the actual web components: controlled fields, selections, busy actions, and confirmation/cancellation. Unlike the self-contained token HTML, this development preview needs the local server. It reuses the repository's existing desktop Vite tool, adds no preview dependency, and saves no records. Its font is local; the server binds to loopback.
+Open http://127.0.0.1:4179/ to exercise the actual web components: controlled fields, selections, busy actions, confirmation/cancellation, and all 24 icons with a reduced-motion toggle. Unlike the self-contained token HTML, this development preview needs the local server. It reuses the repository's existing desktop Vite tool, adds no preview dependency, and saves no records. Its font is local; the server binds to loopback.
 
 ## Verify
 
