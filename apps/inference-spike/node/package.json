@@ -1,0 +1,22 @@
+{
+  "name": "petal-inference-spike",
+  "private": true,
+  "description": "Isolated desktop local-inference spike (issue #3, TASKS A02-A03). Not part of the root workspace.",
+  "type": "module",
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "fetch-model": "node src/fetch-model.mjs",
+    "verify-model": "node src/verify-model.mjs",
+    "generate": "node src/generate.mjs",
+    "electron-smoke": "electron src/electron-main.mjs"
+  },
+  "dependencies": {
+    "node-llama-cpp": "3.22.1"
+  },
+  "devDependencies": {
+    "electron": "44.4.5"
+  }
+}
