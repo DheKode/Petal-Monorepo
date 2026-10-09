@@ -6,6 +6,10 @@ export const IPC_SAVE_SETUP = 'petal:save-setup';
 export const IPC_RECORD_INTAKE = 'petal:record-intake';
 export const IPC_UNDO_INTAKE = 'petal:undo-intake';
 export const IPC_RECORD_BATCH = 'petal:record-intake-batch';
+export const IPC_BACKUP_EXPORT = 'petal:backup-export';
+export const IPC_BACKUP_PICK_IMPORT = 'petal:backup-pick-import';
+export const IPC_BACKUP_CONFIRM_IMPORT = 'petal:backup-confirm-import';
+export const IPC_BACKUP_CANCEL_IMPORT = 'petal:backup-cancel-import';
 
 export interface AppInfo {
   appVersion: string;
@@ -59,6 +63,29 @@ export interface BatchOutcome {
 
 /** Most entries one batch may carry (a pack has 28 tablets). */
 export const MAX_BATCH = 56;
+/** What a backup file holds, by record type. Counts only: the renderer never receives the file's records. */
+export type RecordCounts = Record<string, number>;
+
+/** Shown to the user before an import replaces anything. Nothing has been changed when the user sees this. */
+export interface ImportPreview {
+  /** Opaque, single-use, expires after a few minutes. Passed back to confirm or cancel. */
+  token: string;
+  /** Records in the file, which would replace everything below. */
+  incoming: RecordCounts;
+  /** Records on this device right now. */
+  current: RecordCounts;
+  sensitivityNotice: string;
+}
+
+/** `canceled` means the user closed the file dialog; nothing was read or changed. */
+export type ExportOutcome = { canceled: true } | { canceled: false; fileName: string; sensitivityNotice: string };
+export type PickImportOutcome = { canceled: true } | { canceled: false; preview: ImportPreview };
+
+export interface ImportOutcome {
+  state: PetalState;
+  /** True when the replaced records were kept as a recovery copy inside the app's database. */
+  recoveryKept: boolean;
+}
 
 export interface PetalBridge {
   getAppInfo(): Promise<AppInfo>;
@@ -69,4 +96,12 @@ export interface PetalBridge {
   undoIntake(doseId: string): Promise<Result<PetalState>>;
   /** Save several entries after the user confirmed a preview. All are validated before any is written. */
   recordIntakeBatch(inputs: RecordIntakeInput[]): Promise<Result<BatchOutcome>>;
+  /** Ask where to save, then write the full backup as JSON. Plaintext: the file is not encrypted. */
+  exportBackup(): Promise<Result<ExportOutcome>>;
+  /** Ask which file to open, validate it and return a preview. Nothing is replaced until `confirmImport`. */
+  pickImport(): Promise<Result<PickImportOutcome>>;
+  /** Replace all records with the previewed file in one transaction, keeping a recovery copy. */
+  confirmImport(token: string): Promise<Result<ImportOutcome>>;
+  /** Discard a preview. Changes nothing. */
+  cancelImport(token: string): Promise<Result<null>>;
 }

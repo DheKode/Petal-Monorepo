@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { AppInfo, PetalState } from '../../shared/ipc';
+import { Backup } from './Backup';
 import { Setup } from './Setup';
 import { Today } from './Today';
 
@@ -27,6 +28,7 @@ export function App() {
       )}
       <p>Product details are not verified yet, so Petal is tracking only and shows no guidance.</p>
       {state.pack ? <Today state={state} onState={setState} /> : <Setup onSaved={setState} />}
+      <Backup onState={setState} />
       {info && <footer><small>Petal {info.appVersion} · {info.platform}</small></footer>}
     </main>
   );
