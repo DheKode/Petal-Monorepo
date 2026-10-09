@@ -41,3 +41,29 @@ Guidance is never persisted as authoritative data. `guidance(profileId)` derives
 Run `pnpm --filter @petal/storage test`, `pnpm --filter @petal/storage typecheck`, and `pnpm --filter @petal/storage build`. Tests use fictional records and real temporary SQLite files, including a fresh child process with no auth environment, reopening, backup round-trip, audit corrections, no-entry and same-day identities, cancellation, malformed/oversized imports, stale/replayed tokens, and a trigger-induced write failure that verifies complete rollback.
 
 This is an adapter implementation, not a finished native app flow. Android consumption, Electron native-driver packaging/runtime, Windows persistence, app-level setup/logging/import previews, and restart behavior on each target still require integration/device verification. No tested Electron/Android compatibility or installer claim is made here. No model, clinical rule, reminder, or remote sync changes are included.
+
+## Follow-ups from the PR #28 review (issue #37), October 10, 2026
+
+**New operations.** All follow the same preview, show, confirm pattern; a preview writes nothing, is single-use, expires after five minutes, and `confirm(token)` commits exactly what was previewed together with its audit entry.
+
+| Operation | Does | Audit entry |
+| --- | --- | --- |
+| `previewIntakeRemoval(doseId, origin)` | removes the current intake event of a dose; unknown dose is `unknown-entry` | prior set, new value `null` |
+| `previewBleedingEntry(entry, origin)` | creates or edits a bleeding or spotting entry, matched by `id`; validated with `BleedingEntrySchema` | prior (or `null`), new |
+| `previewBleedingRemoval(id, origin)` | deletes a bleeding or spotting entry; unknown id is `unknown-entry` | prior set, new value `null` |
+
+`Preview.kind` is now `'import' | 'correction' | 'bleeding'`. Intake changes appear in `preview.changes`; bleeding changes appear in the new `preview.bleedingChanges` (always present, empty for other kinds). Nothing in storage predicts, infers or diagnoses from bleeding entries.
+
+**Error codes** (all `StorageError`, message `Petal storage: <code>`, never record contents). New codes: `too-large` (a preview or confirm would exceed the 1.5 MB snapshot limit, now caught at **preview** time), `too-many-previews` (the 64-live-preview cap), `unknown-recovery`, `unknown-profile`, `unknown-entry`. `invalid-preview` now means only an unknown, cancelled, expired or already-used token. A malformed event or bleeding entry is `invalid-correction`; a raw `ZodError` is never thrown.
+
+**Opening.** The schema version check and the table setup now run in one write transaction, so a file that was moved to a newer schema is never touched or downgraded, and a new file is stamped version 1 exactly once.
+
+**Package exports** now include a `default` condition, so CommonJS tools (such as the desktop test runner) can `require('@petal/storage')` without `--conditions=import`.
+
+**Caller responsibilities (not enforced here).** `previewIntakeCorrection` does not apply the domain's intake rules (`applyIntake`: no future times, deterministic event IDs, identical re-entry is a no-op). The app must call `applyIntake` first, as the desktop does. An identical re-submission would otherwise bump the revision and add an audit entry.
+
+**Known limits of the SQLite driver on Windows, measured on October 10, 2026 (Node 22, `@libsql/client` 0.18.0):**
+- `busy_timeout=5000` does apply to the write transactions: a second writer waited the full timeout and then failed with `SQLITE_BUSY`.
+- After a failed attempt to take the write lock, that connection reports "SQL statements in progress" and cannot start another transaction until it is reopened. A failed `confirm` therefore uses up its preview and the caller must start again from a fresh preview (this is why the preview is not kept for a retry).
+- The database file stays locked for one to two seconds after `close()`. Tests clean up temp folders on a best-effort basis.
+- Several clients taking a write lock at the same moment on a new file were very slow (about 11 s for the first) and the others failed. The app never does this (single-instance lock, one connection).

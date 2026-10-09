@@ -37,5 +37,5 @@ test('HTTP API isolates accounts, detects concurrent edits, deletes ciphertext a
  await clientA.upload({note:'client integration'},key,a.snapshot.revision);await assert.rejects(clientB.upload({note:'stale'},key,b.revision),SyncConflict);
  assert.equal((await clientA.download<{note:string}>(key)).value?.note,'client integration');
  const reopened=createClient({url:`file:${join(dir,'test.db')}`});try{assert.equal((await new SnapshotStore(reopened).read('alice')).revision,5);}finally{reopened.close();}
- } finally {await new Promise<void>((resolve,reject)=>server.close(err=>err?reject(err):resolve()));db.close();await rm(dir,{recursive:true,force:true});}
+ } finally {await new Promise<void>((resolve,reject)=>server.close(err=>err?reject(err):resolve()));db.close();await rm(dir,{recursive:true,force:true,maxRetries:2,retryDelay:100}).catch(()=>{});} // best effort: Windows keeps the file locked briefly after close() (#37)
 });
