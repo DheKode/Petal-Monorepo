@@ -32,7 +32,7 @@ The selected direction is flat, modern, and UX-driven: clear hierarchy, readable
 
 ### Approved logo identity
 
-Petal's final logo pairs a three-petal **open blossom** with a bespoke lowercase **petal** wordmark. The blossom is an independent symbol; the wordmark uses custom outlined lettering with almond-shaped counters and tight spacing. Keep both flat, with a rose symbol and deep plum lettering in the primary horizontal lockup. A white blossom inside a rose circle is the approved circular icon treatment.
+Petal's final logo pairs a single **folded petal** with the preserved bespoke lowercase **petal** wordmark. The designer approved the folded-petal direction, placed after the lettering and enlarged by 25% from its first lockup study. The primary horizontal logo leads with deep plum lettering, followed by the rose symbol. The symbol is 220 units tall, with a 34-unit gap after the 644-unit wordmark and a 10-unit optical top offset. The custom outlined lettering, almond-shaped counters, and tight spacing are unchanged. The circular icon uses the white folded petal inside a rose circle; stacked derivatives also lead with the wordmark.
 
 The asset bundle lives in [libs/assets/brands](libs/assets/brands/README.md), with horizontal and stacked lockups, standalone wordmarks and symbols, circular icons, monochrome and reversed versions, SVG masters, and transparent PNG exports. Use the supplied outlines rather than reconstructing the wordmark with a font. Naming, initial minimum-size recommendations, and usage guidance are recorded in the bundle README.
 
