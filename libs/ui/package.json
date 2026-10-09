@@ -5,8 +5,13 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "sideEffects": ["**/*.css"],
-  "files": ["dist", "src/themes/petal.tokens.json"],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist",
+    "src/themes/petal.tokens.json"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -32,5 +37,24 @@
     "typecheck": "pnpm build && tsc -p tsconfig.json",
     "test": "pnpm build && node --test src/themes/scripts/tokens.test.mjs src/themes/scripts/preview.test.mjs test/package.test.mjs",
     "theme:check": "node src/themes/scripts/build.mjs --check"
+  },
+  "peerDependencies": {
+    "react": ">=19.2.3 <20",
+    "react-native": "0.86.3"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "react-native": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.86.3"
   }
 }
