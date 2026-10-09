@@ -24,12 +24,13 @@
       "default": "./dist/src/themes/generated/native-theme.mjs"
     },
     "./theme.css": "./dist/src/themes/generated/theme.css",
+    "./styles.css": "./dist/src/styles/index.css",
     "./tokens.json": "./src/themes/petal.tokens.json"
   },
   "scripts": {
     "build": "node src/themes/scripts/build.mjs && tsc -p tsconfig.build.json && node scripts/copy-theme.mjs",
     "typecheck": "pnpm build && tsc -p tsconfig.json",
-    "test": "pnpm build && node --test src/themes/scripts/tokens.test.mjs test/package.test.mjs",
+    "test": "pnpm build && node --test src/themes/scripts/tokens.test.mjs src/themes/scripts/preview.test.mjs test/package.test.mjs",
     "theme:check": "node src/themes/scripts/build.mjs --check"
   }
 }
