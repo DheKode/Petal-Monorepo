@@ -42,3 +42,18 @@
 .app-cell[aria-pressed="true"] { background: var(--petal-color-surface-subtle); border-color: var(--petal-color-action-primary); }
 .app-cell[aria-current="date"] { border-color: var(--petal-color-action-primary); }
 .app-cell-today { font-size: var(--petal-type-caption-font-size); line-height: var(--petal-type-caption-line-height); font-weight: var(--petal-type-label-font-weight); color: var(--petal-color-text-link); }
+
+/* Illustrations (decorative) and icon spacing. */
+.app-hero { position: relative; overflow: hidden; }
+.app-hero-art { position: absolute; right: var(--petal-space-group); bottom: 0; width: 11rem; height: auto; pointer-events: none; }
+@media (max-width: 56rem) { .app-hero-art { display: none; } }
+@media (min-width: 56rem) { .app-hero > :not(.app-hero-art) { max-width: calc(100% - 9rem); } }
+.app-art-right { float: right; width: 6rem; height: auto; margin: 0 0 var(--petal-space-related) var(--petal-space-group); }
+.app-art-large { width: 9rem; }
+.app-hero-meta { display: flex; align-items: center; flex-wrap: wrap; gap: var(--petal-space-inline); }
+.app-day-status, .app-cell-status { display: inline-flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: var(--petal-space-inline); }
+.app-day[aria-pressed="true"] .petal-icon { color: var(--petal-color-text-on-action); }
+.app .petal-card::after { content: ""; display: block; clear: both; }
+.app-review { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--petal-space-group); align-items: end; }
+.app-review-art { width: 8rem; height: auto; margin-bottom: calc(-1 * var(--petal-space-related)); }
+.app > section.petal-card, .app > details { margin-top: var(--petal-space-section); }

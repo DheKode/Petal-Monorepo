@@ -4,6 +4,8 @@ import { deriveFromSetupInput, type DerivedSetup } from '../../shared/setup';
 import type { PetalState, SetupInput } from '../../shared/ipc';
 import { errorText, tabletTypeLabel, doseTime } from './format';
 import { Feedback } from '@petal/ui/components';
+import { IconLabelButton } from './IconLabelButton';
+import { art } from './art';
 
 type Kind = 'first-pack' | 'mid-pack';
 
@@ -69,8 +71,8 @@ export function Setup({ onSaved }: { onSaved: (state: PetalState) => void }) {
         </table>
         {error && <Feedback kind="error" message={error} />}
         <p>
-          <button type="button" className="petal-button" data-variant="secondary" onClick={() => setReview(null)} disabled={saving}>Back</button>{' '}
-          <button type="button" className="petal-button" onClick={save} disabled={saving}>Save schedule</button>
+          <IconLabelButton icon="back" label="Back" variant="secondary" onPress={() => setReview(null)} disabled={saving} />{' '}
+          <IconLabelButton icon="check" label="Save schedule" onPress={save} disabled={saving} />
         </p>
       </section>
     );
@@ -78,6 +80,7 @@ export function Setup({ onSaved }: { onSaved: (state: PetalState) => void }) {
 
   return (
     <section className="petal-card" aria-labelledby="setup-heading">
+      <img className="app-art-right app-art-large" src={art.welcome} alt="" />
       <h2 id="setup-heading">Set up your pack</h2>
       <p>Petal supports one product: the Trust 28-tablet pack (21 active and 7 non-hormonal tablets).</p>
       <form onSubmit={event => { event.preventDefault(); showReview(); }}>
@@ -110,7 +113,7 @@ export function Setup({ onSaved }: { onSaved: (state: PetalState) => void }) {
           <label>Time zone <input className="petal-input" type="text" value={timeZone} onChange={e => setTimeZone(e.target.value)} required /></label>
         </p>
         {error && <Feedback kind="error" message={error} />}
-        <button type="submit" className="petal-button">Review schedule</button>
+        <IconLabelButton icon="next" label="Review schedule" submit />
       </form>
     </section>
   );

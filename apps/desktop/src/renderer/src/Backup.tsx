@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Feedback } from '@petal/ui/components';
+import { IconLabelButton } from './IconLabelButton';
+import { art } from './art';
 import type { ImportPreview, PetalState, RecordCounts } from '../../shared/ipc';
 
 const COUNT_LABELS: [keyof RecordCounts & string, string][] = [
@@ -61,6 +63,7 @@ export function Backup({ onState }: { onState: (state: PetalState) => void }) {
 
   return (
     <section className="petal-card" aria-labelledby="backup-heading">
+      <img className="app-art-right" src={art.folder} alt="" />
       <h2 id="backup-heading">Backup</h2>
       <p>
         A backup is a file with all your records. It is not encrypted, so anyone who can open it can read it. Store it
@@ -95,14 +98,14 @@ export function Backup({ onState }: { onState: (state: PetalState) => void }) {
           <p>Your current records are kept as a recovery copy inside the app's database before they are replaced.</p>
           <p>{preview.sensitivityNotice}</p>
           <p>
-            <button type="button" className="petal-button" onClick={confirmImport} disabled={busy}>Replace my records</button>{' '}
-            <button type="button" className="petal-button" data-variant="secondary" onClick={cancelImport} disabled={busy}>Cancel</button>
+            <IconLabelButton icon="upload" label="Replace my records" onPress={confirmImport} disabled={busy} />{' '}
+            <IconLabelButton icon="close" label="Cancel" variant="secondary" onPress={cancelImport} disabled={busy} />
           </p>
         </div>
       ) : (
         <p>
-          <button type="button" className="petal-button" data-variant="secondary" onClick={exportBackup} disabled={busy}>Save a backup file</button>{' '}
-          <button type="button" className="petal-button" data-variant="secondary" onClick={pickImport} disabled={busy}>Import from a backup file</button>
+          <IconLabelButton icon="download" label="Save a backup file" variant="secondary" onPress={exportBackup} disabled={busy} />{' '}
+          <IconLabelButton icon="upload" label="Import from a backup file" variant="secondary" onPress={pickImport} disabled={busy} />
         </p>
       )}
     </section>

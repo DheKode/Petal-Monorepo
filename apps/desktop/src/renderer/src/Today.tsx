@@ -6,6 +6,9 @@ import { Guidance } from './Guidance';
 import { Repair } from './Repair';
 import { Button, Card, Feedback, StatusBadge } from '@petal/ui/components';
 import { Stack } from '@petal/ui/layouts';
+import { Icon } from '@petal/ui/icons';
+import { IconLabelButton } from './IconLabelButton';
+import { art } from './art';
 
 interface Notice {
   text: string;
@@ -95,7 +98,7 @@ export function Today({ state, onState }: { state: PetalState; onState: (state: 
         <nav className="app-strip" aria-label="Days in your pack">
           {strip.map(d => {
             const { weekday, day } = dayParts(d.localDate);
-            const { word, mark } = shortStatus(eventOf(d));
+            const { word, icon } = shortStatus(eventOf(d));
             const isToday = d.localDate === localDateIn(now, d.timeZone);
             return (
               <button
@@ -109,7 +112,7 @@ export function Today({ state, onState }: { state: PetalState; onState: (state: 
               >
                 <span className="app-day-weekday">{isToday ? 'Today' : weekday}</span>
                 <span className="app-day-number">{day}</span>
-                <span className="app-day-status"><span aria-hidden="true">{mark}</span> {word}</span>
+                <span className="app-day-status"><Icon name={icon} size="small" /> {word}</span>
               </button>
             );
           })}
@@ -125,20 +128,21 @@ export function Today({ state, onState }: { state: PetalState; onState: (state: 
 
         <div className="app-grid">
           <section className="app-hero" aria-labelledby="today-heading">
+            <img className="app-hero-art" src={art.hello} alt="" />
             {dose ? (
               <>
                 <p className="app-eyebrow">Recording for {why}</p>
                 <h2 id="today-heading" className="app-hero-title">Tablet {dose.position}</h2>
-                <p className="app-hero-meta">{dose.localDate} at {doseTime(dose)} · {tabletTypeLabel(dose.tabletKind)}</p>
+                <p className="app-hero-meta"><Icon name="calendar" size="small" /> {dose.localDate} <Icon name="clock" size="small" /> {doseTime(dose)} · {tabletTypeLabel(dose.tabletKind)}</p>
                 <div><StatusBadge label={`Status: ${statusLabel(dose, eventOf(dose))}`} /></div>
                 <div className="app-hero-actions">
-                  <Button label="Taken now" onPress={() => record({ doseId: dose.id, status: 'taken', actualAt: new Date().toISOString() }, `Recorded ${doseLabel(dose)} as taken now.`)} />
+                  <IconLabelButton icon="taken" label="Taken now" onPress={() => record({ doseId: dose.id, status: 'taken', actualAt: new Date().toISOString() }, `Recorded ${doseLabel(dose)} as taken now.`)} />
                 </div>
                 <Stack direction="row" wrap space="related">
-                  <button type="button" className="petal-button" data-variant="secondary" onClick={() => setEarlier(open => !open)} aria-expanded={earlier}>Taken earlier</button>
-                  <Button label="Taken, time unknown" variant="secondary" onPress={() => record({ doseId: dose.id, status: 'taken' }, `Recorded ${doseLabel(dose)} as taken, time unknown.`)} />
-                  <Button label="Confirmed missed" variant="secondary" onPress={() => record({ doseId: dose.id, status: 'confirmed-missed' }, `Recorded ${doseLabel(dose)} as confirmed missed.`)} />
-                  <Button label="Unsure" variant="secondary" onPress={() => record({ doseId: dose.id, status: 'unsure' }, `Recorded ${doseLabel(dose)} as unsure.`)} />
+                  <IconLabelButton icon="clock" label="Taken earlier" variant="secondary" onPress={() => setEarlier(open => !open)} expanded={earlier} />
+                  <IconLabelButton icon="taken" label="Taken, time unknown" variant="secondary" onPress={() => record({ doseId: dose.id, status: 'taken' }, `Recorded ${doseLabel(dose)} as taken, time unknown.`)} />
+                  <IconLabelButton icon="missed" label="Confirmed missed" variant="secondary" onPress={() => record({ doseId: dose.id, status: 'confirmed-missed' }, `Recorded ${doseLabel(dose)} as confirmed missed.`)} />
+                  <IconLabelButton icon="unsure" label="Unsure" variant="secondary" onPress={() => record({ doseId: dose.id, status: 'unsure' }, `Recorded ${doseLabel(dose)} as unsure.`)} />
                 </Stack>
                 {earlier && (
                   <form onSubmit={submitEarlier} className="app-form">
@@ -153,10 +157,10 @@ export function Today({ state, onState }: { state: PetalState; onState: (state: 
                         <option value="approximate">Approximate</option>
                       </select>
                     </label>
-                    <div><button type="submit" className="petal-button">Save time</button></div>
+                    <div><IconLabelButton icon="check" label="Save time" submit /></div>
                   </form>
                 )}
-                {selectedId && <div><Button label="Back to suggested tablet" variant="tertiary" onPress={() => setSelectedId(null)} /></div>}
+                {selectedId && <div><IconLabelButton icon="back" label="Back to suggested tablet" variant="tertiary" onPress={() => setSelectedId(null)} /></div>}
               </>
             ) : (
               <>
@@ -169,10 +173,13 @@ export function Today({ state, onState }: { state: PetalState; onState: (state: 
           <div className="app-side">
             {unresolvedCount > 0 && (
               <Card title="Not sure about a day?" variant="proposal">
-                <Stack>
-                  <p className="app-card-text">Let's review it. {unresolvedCount} tablet{unresolvedCount === 1 ? ' has' : 's have'} no confirmed entry. That history is unknown, not missed.</p>
-                  <div><Button label="Fix my history" variant="secondary" onPress={() => setRepairing(true)} /></div>
-                </Stack>
+                <div className="app-review">
+                  <Stack>
+                    <p className="app-card-text">Let's review it. {unresolvedCount} tablet{unresolvedCount === 1 ? ' has' : 's have'} no confirmed entry. That history is unknown, not missed.</p>
+                    <div><IconLabelButton icon="edit" label="Fix my history" variant="secondary" onPress={() => setRepairing(true)} /></div>
+                  </Stack>
+                  <img className="app-review-art" src={art.reflecting} alt="" />
+                </div>
               </Card>
             )}
             {!selectedId && target.alternatives.length > 0 && (
@@ -199,7 +206,7 @@ export function Today({ state, onState }: { state: PetalState; onState: (state: 
             <p className="petal-muted app-card-text">Your 28-tablet schedule. Choose a tablet to add or correct its entry.</p>
             <ol className="app-pack" aria-label="Your 28-tablet schedule">
               {state.doses.map(d => {
-                const { word, mark } = shortStatus(eventOf(d));
+                const { word, icon } = shortStatus(eventOf(d));
                 const isToday = d.localDate === localDateIn(now, d.timeZone);
                 const { weekday, day } = dayParts(d.localDate);
                 return (
@@ -214,7 +221,7 @@ export function Today({ state, onState }: { state: PetalState; onState: (state: 
                     >
                       <span className="app-cell-number">{d.position}</span>
                       <span className="app-cell-date">{weekday} {day}</span>
-                      <span className="app-cell-status"><span aria-hidden="true">{mark}</span> {word}</span>
+                      <span className="app-cell-status"><Icon name={icon} size="small" /> {word}</span>
                       {isToday && <span className="app-cell-today">Today</span>}
                     </button>
                   </li>

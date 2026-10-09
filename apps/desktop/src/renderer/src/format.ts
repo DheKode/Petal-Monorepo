@@ -1,3 +1,4 @@
+import type { IconName } from '@petal/ui/icons';
 import { DomainValidationError, toZonedIso, type IntakeEvent, type ScheduledDose } from '@petal/domain';
 
 export const doseTime = (dose: ScheduledDose): string => dose.scheduledAt.slice(11, 16);
@@ -26,11 +27,11 @@ export function errorText(error: unknown): string {
 }
 
 /** Short status word for compact views (week strip, pack cells). Always shown as text, never by color alone. */
-export function shortStatus(event: IntakeEvent | undefined): { word: string; mark: string } {
-  if (!event) return { word: 'No entry', mark: '–' };
-  if (event.status === 'confirmed-missed') return { word: 'Missed', mark: '✕' };
-  if (event.status === 'unsure') return { word: 'Unsure', mark: '?' };
-  return { word: 'Taken', mark: '✓' };
+export function shortStatus(event: IntakeEvent | undefined): { word: string; icon: IconName } {
+  if (!event) return { word: 'No entry', icon: 'no-entry' };
+  if (event.status === 'confirmed-missed') return { word: 'Missed', icon: 'missed' };
+  if (event.status === 'unsure') return { word: 'Unsure', icon: 'unsure' };
+  return { word: 'Taken', icon: 'taken' };
 }
 
 /** Short weekday and day of month for a local date like 2026-10-09. It is already a local date, so no zone shift applies. */
