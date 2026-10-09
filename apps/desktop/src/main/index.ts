@@ -16,6 +16,24 @@ if (!app.isPackaged && !app.commandLine.hasSwitch('user-data-dir')) {
   app.setPath('userData', join(app.getPath('appData'), 'Petal-dev'));
 }
 
+// Log only the kind of failure, never its message: an unexpected error's text can quote the data it was handling
+// (a JSON parse error, for example, repeats part of the input). Electron's default handler would print and show it all.
+function reportUnexpected(error: unknown): string {
+  const name = error instanceof Error ? error.name : typeof error;
+  console.error(`Petal hit an unexpected error (${name})`);
+  return name;
+}
+process.on('uncaughtException', error => {
+  const name = reportUnexpected(error);
+  if (app.isReady()) {
+    dialog.showErrorBox('Petal hit an unexpected error', `Petal will close. Your saved records were not changed. (Error: ${name})`);
+  }
+  app.exit(1);
+});
+process.on('unhandledRejection', reason => {
+  reportUnexpected(reason);
+});
+
 let store: SqliteStore | null = null;
 let service: PetalService | null = null;
 let mainWindow: BrowserWindow | null = null;
@@ -75,7 +93,7 @@ function handle<A extends unknown[], R>(channel: string, fn: (...args: A) => R):
   });
 }
 
-handle(IPC_APP_INFO, (): AppInfo => ({ appVersion: app.getVersion(), platform: process.platform }));
+handle(IPC_APP_INFO, (): AppInfo => ({ appVersion: app.getVersion(), platform: process.platform, dataFolder: app.getPath('userData') }));
 handle(IPC_GET_STATE, () => requireService().getState());
 handle(IPC_SAVE_SETUP, (input: SetupInput) => requireService().saveSetup(input));
 handle(IPC_RECORD_INTAKE, (input: RecordIntakeInput) => requireService().recordIntake(input));

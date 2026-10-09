@@ -10,6 +10,8 @@ export const IPC_RECORD_BATCH = 'petal:record-intake-batch';
 export interface AppInfo {
   appVersion: string;
   platform: string;
+  /** Folder holding `petal.db`, so the privacy screen can say exactly where records are kept. */
+  dataFolder: string;
 }
 
 /** Everything the screens need, as plain JSON. `persistence` tells the UI whether records survive a restart. */
