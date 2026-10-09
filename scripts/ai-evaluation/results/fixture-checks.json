@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "cases": 24,
+  "sqliteDoses": 672,
+  "checks": [
+    "no-entry remains unknown",
+    "separate same-day dose IDs",
+    "yesterday scheduled position 8",
+    "two consecutive confirmed misses",
+    "cancel changes no intake or audit",
+    "confirmed approximate correction persisted with one audit",
+    "restart reads",
+    "draft evidence excluded"
+  ],
+  "databaseSHA256": "ed2a058c1d1a94fa3b9c23d3b8e76edf352e7abaf50b5c7471fa63076d9fba64"
+}
