@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { localDateIn, type BleedingEntry } from '@petal/domain';
+import { bleedingOn } from './calendarView';
+import { JournalCalendar } from './JournalCalendar';
 import type { PetalState } from '../../shared/ipc';
 import { CATEGORY_LABEL, INTENSITY_LABEL, dateRangeLabel, entrySummary, intensityLabel, sortJournal } from './journalView';
 
@@ -20,6 +22,7 @@ const draftOf = (entry: BleedingEntry): Draft => ({
 
 // Functional markup only; visual design belongs to the designer (#11).
 export function Journal({ state, onState }: { state: PetalState; onState: (state: PetalState) => void }) {
+  const [selectedDate, setSelectedDate] = useState(() => localDateIn(new Date(), state.settings?.timeZone ?? 'UTC'));
   const [draft, setDraft] = useState<Draft | null>(null);
   const [deleting, setDeleting] = useState<BleedingEntry | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -27,6 +30,7 @@ export function Journal({ state, onState }: { state: PetalState; onState: (state
   const [busy, setBusy] = useState(false);
   const formHeading = useRef<HTMLHeadingElement>(null);
   const entries = useMemo(() => sortJournal(state.bleeding), [state.bleeding]);
+  const selectedEntries = bleedingOn(entries, selectedDate);
   const today = localDateIn(new Date(), state.settings?.timeZone ?? 'UTC');
 
   useEffect(() => {
@@ -73,10 +77,11 @@ export function Journal({ state, onState }: { state: PetalState; onState: (state
 
   return (
     <section aria-labelledby="journal-heading">
-      <h2 id="journal-heading">Bleeding and spotting journal</h2>
+      <h2 id="journal-heading">Calendar</h2>
       <p>
         Keep your own record of bleeding and spotting. Petal does not diagnose, predict or interpret these entries, and they are not linked to your tablets.
       </p>
+      <JournalCalendar state={state} selectedDate={selectedDate} onSelect={setSelectedDate} />
       {message && <p role="status">{message}</p>}
       {error && !draft && <p role="alert">{error}</p>}
 
@@ -114,7 +119,7 @@ export function Journal({ state, onState }: { state: PetalState; onState: (state
           <button type="button" onClick={() => { setDraft(null); setError(null); }} disabled={busy}>Cancel</button>
         </form>
       ) : (
-        <p><button type="button" onClick={() => { setDraft(blank()); setMessage(null); setError(null); }}>Add an entry</button></p>
+        <p><button type="button" disabled={selectedDate > today} onClick={() => { setDraft({ ...blank(), startDate: selectedDate }); setMessage(null); setError(null); }}>Log bleeding or spotting</button></p>
       )}
 
       {deleting && (
@@ -126,11 +131,12 @@ export function Journal({ state, onState }: { state: PetalState; onState: (state
         </div>
       )}
 
-      {entries.length === 0 ? (
-        <p>No entries yet.</p>
+      <h3>Bleeding and spotting on {selectedDate}</h3>
+      {selectedEntries.length === 0 ? (
+        <p>No bleeding or spotting recorded for this date.</p>
       ) : (
         <table>
-          <caption>Your entries, newest first</caption>
+          <caption>Recorded entries for the selected date</caption>
           <thead>
             <tr>
               <th scope="col">Dates</th>
@@ -141,7 +147,7 @@ export function Journal({ state, onState }: { state: PetalState; onState: (state
             </tr>
           </thead>
           <tbody>
-            {entries.map(entry => (
+            {selectedEntries.map(entry => (
               <tr key={entry.id}>
                 <th scope="row">{dateRangeLabel(entry)}</th>
                 <td>{CATEGORY_LABEL[entry.category]}</td>
