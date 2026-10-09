@@ -125,6 +125,15 @@ importers:
 
   packages/encrypted-sync: {}
 
+  packages/storage:
+    dependencies:
+      '@libsql/client':
+        specifier: 0.18.0
+        version: 0.18.0
+      '@petal/domain':
+        specifier: workspace:*
+        version: link:../domain
+
 packages:
 
   '@babel/code-frame@7.29.7':

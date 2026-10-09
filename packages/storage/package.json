@@ -12,7 +12,7 @@
   "scripts": {
     "build": "pnpm --filter @petal/domain build && tsc -p tsconfig.build.json",
     "typecheck": "pnpm --filter @petal/domain build && tsc",
-    "test": "pnpm --filter @petal/domain build && tsx --test test/*.test.ts"
+    "test": "pnpm build && tsx --test test/*.test.ts"
   },
   "dependencies": {
     "@libsql/client": "0.18.0",
