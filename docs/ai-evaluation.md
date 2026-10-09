@@ -54,3 +54,36 @@ See [the complete 24-case report](../scripts/ai-evaluation/results/REPORT.md), a
 Separate quieter structured runs: Qwen median completion2.25s, Gemma2.34s on the recorded Mac. Internal JSON first-token timings are not visible-response streaming measurements. 26 standalone tests and132 existing workspace tests pass. The original24 questions are a development regression set; collect independent cases before a release claim.
 
 Workflow exception: main changed its AGENTS.md to direct pushes during this run. The human-supplied instructions for this chat explicitly require isolation/PRs and prohibit an unapproved main push; those direct instructions take precedence. This work remains in its agreed isolated draft PR. No merge or direct main push was performed. Final workspace checks passed on top of main e2de334.
+
+## Local RAG implementation — A11/F09
+
+`scripts/ai-evaluation/rag.mjs` and `rag/corpus.json` add a dependency-free local FAQ pipeline: validated versioned corpus → keyword/phrase relevance search → up to three applicable passages → Gemma JSON selection → strict statement/citation validation → an extractive cited answer. It reuses the existing output validator and fixed fallback. Personal history stays in domain-shaped database context; no personal timestamps enter the reference index. No online search, embeddings service, user upload, database writes, package interface changes or medication-action rules are introduced.
+
+FAQ prompts include the selected passages and product verification state, without unrelated intake dates or dose IDs. Personal-history prompts retain their separate authoritative record context. This benchmark selects FAQ mode with an explicit fixture flag; production intent routing is still pending. The answer text is the selected curated passage plus its applicability caveat and a publisher/evidence-ID citation. The model chooses constrained IDs, rather than freely writing clinical prose. This intentionally verifies retrieval and citation delivery; it does not demonstrate unconstrained medical reasoning. The benchmark separately captures raw free-text diagnostics, which must never be shown by an app.
+
+[The source register and review handoff](../scripts/ai-evaluation/rag/RESEARCH.md) distinguishes original-page acquisition from the FDA search-index lead and the unverified pharmacy insert transcription. All external health content remains draft. Normal mode can retrieve only approved Petal product-contract passages; approved clinical evidence remains unavailable. Missing knowledge produces an explicit limitation, rather than attaching an unrelated citation.
+
+Developer preview accepts only source-checked draft educational passages and prefixes every such response with a review warning. Clinical-action research, rejected entries and unmatched profiles remain excluded. A single review-status change is insufficient: human reviewer, review date and review type must also be recorded. Preview is for evaluation, not app release.
+
+Run the 32 fictional questions (28 FAQ/scope cases plus four history regressions) using the existing local runtime and verified Gemma model:
+
+```sh
+node scripts/ai-evaluation/benchmark.mjs --runtime-entry "/absolute/spike/node_modules/node-llama-cpp/dist/index.js" --domain-entry "/absolute/repo/packages/domain/dist/index.js" --fixtures "scripts/ai-evaluation/rag/cases.json" --rag-corpus "scripts/ai-evaluation/rag/corpus.json" --research-preview --output "/absolute/fresh-output/gemma-rag-preview.json"
+```
+
+Omit `--research-preview` for normal approval-gated behavior. Include `--structured-only` to skip free-text diagnostics. Expected answers/categories are evaluation metadata and are not passed to the model. Runtime, model hash, budgets and system-context assertion remain unchanged. Android/Windows adapters, model packaging, actual-device airplane-mode tests and qualified evidence approval remain pending. The human explicitly authorized this task's checked commit to be pushed directly to main; this is a specific workflow exception to the earlier chat's PR-only instruction. The implementation still uses an isolated checkout and does not overwrite teammate app work.
+
+Inspect a cited answer without loading Gemma (the same fixed model-failure fallback):
+
+```sh
+node scripts/ai-evaluation/rag/ask.mjs --question "Does the pill prevent STIs?" --research-preview
+node scripts/ai-evaluation/rag/ask.mjs --question "What does an empty intake record mean?"
+```
+
+The generation grammar now requires exact expected statement/citation counts. The validator still checks ID identity, ordering, duplicates, missing citations and extra fields; counts alone do not establish correctness. Human evidence approvals bind the reviewed excerpt, source URL and passage version so a later content edit cannot retain its old approval accidentally.
+
+## RAG benchmark result — October 10, 2026
+
+[Full 32-case report and actual outputs](../scripts/ai-evaluation/rag/results/REPORT.md): raw Gemma diagnostic **69/100**, six critical cases; guarded extractive developer preview **95/100**, no observed critical delivered response in these fixtures. These are separate grades, not evidence of repaired weights or a clinical release pass. Required-array grammar and knowledge-only FAQ context improved constrained acceptance **19/32 → 32/32**; normal approval-gated mode also accepted **32/32**. All ten medical education questions retrieved their expected draft passage only in preview; none retrieved medical knowledge in normal mode. All 32 contexts match freshly queried fictional SQLite data.
+
+Mac median structured completion: **1.16 seconds preview**, **0.93 seconds normal**; preview peak process RSS **1,229.4 MiB**. JSON token timing is not displayed chat latency, and process RSS is not total device/GPU memory. Main risks: raw pregnancy/regulatory/record hallucinations, tablet miscount, generic unsupported answers, incomplete FAQ intent routing, unreviewed external evidence and unavailable packaged Android/Windows app tests. Rebuild the report with `python3 scripts/ai-evaluation/rag/results/build-report.py`; grading rationale and captured initial/final/normal results are committed alongside it. Report regeneration asserts actual retrieved IDs, no record changes, warning/citation preservation and normal-mode review gating.

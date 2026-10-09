@@ -1,0 +1,622 @@
+{
+  "schemaVersion": 1,
+  "knowledgeVersion": "trust-research-2026-10-10-v1",
+  "supportedProfileId": "trust-28-unverified",
+  "items": [
+    {
+      "evidence": {
+        "id": "petal-no-entry",
+        "publisher": "Petal product specification",
+        "title": "Missing records are unknown",
+        "url": "https://github.com/DheKode/Petal-Monorepo/blob/ea408b8/PRD.md",
+        "sectionOrPage": "\u00a75.2, \u00a710",
+        "excerpt": "An empty intake record means Petal does not know whether that scheduled tablet was taken. It is different from a dose you explicitly recorded as missed.",
+        "publicationDate": "2026-10-09",
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "reviewed"
+      },
+      "kind": "app-behavior",
+      "keywords": [
+        "blank",
+        "empty",
+        "unrecorded",
+        "no entry",
+        "missing record"
+      ],
+      "caveat": "",
+      "provenance": {
+        "acquisition": "repo-contract",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": "human-approved PRD contract",
+        "reviewedAt": "2026-10-09",
+        "reviewType": "product-contract"
+      }
+    },
+    {
+      "evidence": {
+        "id": "petal-precision",
+        "publisher": "Petal product specification",
+        "title": "Approximate intake times",
+        "url": "https://github.com/DheKode/Petal-Monorepo/blob/ea408b8/PRD.md",
+        "sectionOrPage": "\u00a75.4, \u00a78",
+        "excerpt": "Petal preserves approximate or unknown intake times. Remembering a rough time does not establish an exact timestamp.",
+        "publicationDate": "2026-10-09",
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "reviewed"
+      },
+      "kind": "app-behavior",
+      "keywords": [
+        "approximate",
+        "rough time",
+        "exact time",
+        "8 ish"
+      ],
+      "caveat": "",
+      "provenance": {
+        "acquisition": "repo-contract",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": "human-approved PRD contract",
+        "reviewedAt": "2026-10-09",
+        "reviewType": "product-contract"
+      }
+    },
+    {
+      "evidence": {
+        "id": "petal-confirmation",
+        "publisher": "Petal product specification",
+        "title": "Confirming a chat correction",
+        "url": "https://github.com/DheKode/Petal-Monorepo/blob/ea408b8/PRD.md",
+        "sectionOrPage": "F08, \u00a75.4",
+        "excerpt": "Chat corrections require a preview and your explicit confirmation before a record changes. Cancelling the proposal leaves the records unchanged.",
+        "publicationDate": "2026-10-09",
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "reviewed"
+      },
+      "kind": "app-behavior",
+      "keywords": [
+        "confirmation",
+        "preview",
+        "cancel",
+        "automatically save"
+      ],
+      "caveat": "",
+      "provenance": {
+        "acquisition": "repo-contract",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": "human-approved PRD contract",
+        "reviewedAt": "2026-10-09",
+        "reviewType": "product-contract"
+      }
+    },
+    {
+      "evidence": {
+        "id": "petal-dose-identity",
+        "publisher": "Petal product specification",
+        "title": "Separate scheduled dose identities",
+        "url": "https://github.com/DheKode/Petal-Monorepo/blob/ea408b8/PRD.md",
+        "sectionOrPage": "\u00a75.2, \u00a710",
+        "excerpt": "Two tablets recorded on one day can belong to different scheduled doses. Petal keeps the scheduled dose identity separate from the actual intake date.",
+        "publicationDate": "2026-10-09",
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "reviewed"
+      },
+      "kind": "app-behavior",
+      "keywords": [
+        "dose identity",
+        "two tablets",
+        "same day",
+        "after midnight"
+      ],
+      "caveat": "",
+      "provenance": {
+        "acquisition": "repo-contract",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": "human-approved PRD contract",
+        "reviewedAt": "2026-10-09",
+        "reviewType": "product-contract"
+      }
+    },
+    {
+      "evidence": {
+        "id": "fda-trust-registration",
+        "publisher": "Philippine FDA",
+        "title": "Trust Pill registration DRP-336",
+        "url": "https://verification.fda.gov.ph/drug_productsview.php?registration_number=DRP-336&showdetail=",
+        "sectionOrPage": "Product information",
+        "excerpt": "DRP-336 lists Trust Pill with ethinylestradiol 30 micrograms, levonorgestrel 125 micrograms, and ferrous fumarate 75 milligrams in 28-tablet packaging. The registry names Pond\u2019s Chemical Thailand R.O.P. as manufacturer and DKT Philippines, Inc. as importer and distributor.",
+        "publicationDate": null,
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "draft"
+      },
+      "kind": "reference-research",
+      "keywords": [
+        "registration",
+        "registered",
+        "fda",
+        "strength"
+      ],
+      "caveat": "Direct page retrieval failed; re-open the regulator record before approval. Registration does not authenticate the user\u2019s pack or its leaflet.",
+      "provenance": {
+        "acquisition": "search-index-only",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": null,
+        "reviewedAt": null,
+        "reviewType": null
+      }
+    },
+    {
+      "evidence": {
+        "id": "trust-formulation",
+        "publisher": "SwipeRx pharmacy learning hub",
+        "title": "Trust Pill listed formulation",
+        "url": "https://mobile.swiperxapp.com/trust-pharmacy-learning-hub/tplh-content/tlph-trust-pill-oral-contraceptive-pill/",
+        "sectionOrPage": "FORMULATION",
+        "excerpt": "SwipeRx lists 21 ochreous tablets containing ethinylestradiol 30 micrograms and levonorgestrel 125 micrograms each, plus seven brown tablets containing ferrous fumarate 75 milligrams each.",
+        "publicationDate": null,
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "draft"
+      },
+      "kind": "education",
+      "keywords": [
+        "ingredients",
+        "contain",
+        "composition",
+        "formulation",
+        "hormones",
+        "brown",
+        "iron"
+      ],
+      "caveat": "This is a pharmacy education page, not an authenticated pack leaflet. These details do not verify the pack in your setup.",
+      "provenance": {
+        "acquisition": "opened-page",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": null,
+        "reviewedAt": null,
+        "reviewType": null
+      }
+    },
+    {
+      "evidence": {
+        "id": "trust-tablet-count",
+        "publisher": "SwipeRx pharmacy learning hub",
+        "title": "Trust Pill listed tablet groups",
+        "url": "https://mobile.swiperxapp.com/trust-pharmacy-learning-hub/tplh-content/tlph-trust-pill-oral-contraceptive-pill/",
+        "sectionOrPage": "FORMULATION",
+        "excerpt": "The published Trust Pill description divides the pack into 21 tablets with contraceptive hormones and seven tablets listing ferrous fumarate.",
+        "publicationDate": null,
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "draft"
+      },
+      "kind": "education",
+      "keywords": [
+        "how many tablets",
+        "tablet groups",
+        "28",
+        "21",
+        "7 tablets",
+        "active",
+        "inactive"
+      ],
+      "caveat": "Tablet colour alone cannot identify a formulation; the exact pack leaflet still needs verification.",
+      "provenance": {
+        "acquisition": "opened-page",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": null,
+        "reviewedAt": null,
+        "reviewType": null
+      }
+    },
+    {
+      "evidence": {
+        "id": "cdc-combined-definition",
+        "publisher": "CDC",
+        "title": "What a combined pill contains",
+        "url": "https://www.cdc.gov/contraception/hcp/usspr/combined-hormonal-contraceptives.html",
+        "sectionOrPage": "Overview",
+        "excerpt": "Combined oral contraceptives contain an estrogen and a progestin. They are one type of combined hormonal contraception.",
+        "publicationDate": "2024-11-19",
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "draft"
+      },
+      "kind": "education",
+      "keywords": [
+        "combined",
+        "estrogen",
+        "progestin",
+        "two hormones"
+      ],
+      "caveat": "This explains combined pills generally; it does not verify your product.",
+      "provenance": {
+        "acquisition": "opened-page",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": null,
+        "reviewedAt": null,
+        "reviewType": null
+      }
+    },
+    {
+      "evidence": {
+        "id": "cdc-sti",
+        "publisher": "CDC",
+        "title": "Pills and STI prevention",
+        "url": "https://www.cdc.gov/contraception/hcp/usspr/combined-hormonal-contraceptives.html",
+        "sectionOrPage": "Overview",
+        "excerpt": "Combined hormonal contraceptives do not prevent sexually transmitted infections. Correct, consistent use of latex condoms reduces STI risk.",
+        "publicationDate": "2024-11-19",
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "draft"
+      },
+      "kind": "education",
+      "keywords": [
+        "sti",
+        "stis",
+        "hiv",
+        "infection",
+        "infections",
+        "condoms"
+      ],
+      "caveat": "",
+      "provenance": {
+        "acquisition": "opened-page",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": null,
+        "reviewedAt": null,
+        "reviewType": null
+      }
+    },
+    {
+      "evidence": {
+        "id": "cdc-mechanism",
+        "publisher": "CDC",
+        "title": "How combined pills work",
+        "url": "https://www.cdc.gov/mmwr/volumes/73/rr/rr7303a1.htm",
+        "sectionOrPage": "Missed POPs: Norethindrone or Norgestrel POPs; comparison with COCs",
+        "excerpt": "Combined oral contraceptives prevent ovulation as their main contraceptive mechanism. Ovulation means release of an egg.",
+        "publicationDate": "2024-08-08",
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "draft"
+      },
+      "kind": "education",
+      "keywords": [
+        "work",
+        "ovulation",
+        "mechanism",
+        "release an egg"
+      ],
+      "caveat": "This is general education, not an assessment of whether you are protected.",
+      "provenance": {
+        "acquisition": "opened-page",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": null,
+        "reviewedAt": null,
+        "reviewType": null
+      }
+    },
+    {
+      "evidence": {
+        "id": "nhs-breakthrough",
+        "publisher": "NHS",
+        "title": "Bleeding changes when starting a combined pill",
+        "url": "https://www.nhs.uk/contraception/methods-of-contraception/combined-pill/side-effects/",
+        "sectionOrPage": "Common side effects of the combined pill",
+        "excerpt": "Bleeding between periods and changes in bleeding patterns are common during the first few months of combined-pill use.",
+        "publicationDate": "2024-02-15",
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "draft"
+      },
+      "kind": "education",
+      "keywords": [
+        "spotting",
+        "breakthrough",
+        "bleeding between",
+        "bleeding changes"
+      ],
+      "caveat": "This does not establish the cause of your bleeding or predict when it will occur.",
+      "provenance": {
+        "acquisition": "opened-page",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": null,
+        "reviewedAt": null,
+        "reviewType": null
+      }
+    },
+    {
+      "evidence": {
+        "id": "nhs-persistent-effects",
+        "publisher": "NHS",
+        "title": "Persistent bothersome side effects",
+        "url": "https://www.nhs.uk/contraception/methods-of-contraception/combined-pill/side-effects/",
+        "sectionOrPage": "Common side effects of the combined pill",
+        "excerpt": "If side effects remain troublesome after three months, NHS guidance recommends discussing them with a pharmacist or doctor.",
+        "publicationDate": "2024-02-15",
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "draft"
+      },
+      "kind": "education",
+      "keywords": [
+        "persistent",
+        "bothersome",
+        "three months",
+        "3 months",
+        "side effects"
+      ],
+      "caveat": "Petal cannot decide whether a symptom is caused by your pill or recommend a regimen change.",
+      "provenance": {
+        "acquisition": "opened-page",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": null,
+        "reviewedAt": null,
+        "reviewType": null
+      }
+    },
+    {
+      "evidence": {
+        "id": "cdc-late-definition",
+        "publisher": "CDC",
+        "title": "CDC timing terminology for active combined pills",
+        "url": "https://www.cdc.gov/contraception/hcp/usspr/combined-hormonal-contraceptives.html",
+        "sectionOrPage": "Late or missed doses and side effects from CHC use",
+        "excerpt": "CDC defines an active combined-pill dose as late below 24 hours after its scheduled time, and missed at 24 hours or more. Placebo pills are excluded from these definitions.",
+        "publicationDate": "2024-11-19",
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "draft"
+      },
+      "kind": "clinical-research",
+      "keywords": [
+        "late",
+        "missed",
+        "24 hours"
+      ],
+      "caveat": "Do not activate thresholds before exact leaflet reconciliation and approved rule fixtures.",
+      "provenance": {
+        "acquisition": "opened-page",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": null,
+        "reviewedAt": null,
+        "reviewType": null
+      }
+    },
+    {
+      "evidence": {
+        "id": "cdc-hormone-free",
+        "publisher": "CDC",
+        "title": "Extending the hormone-free interval",
+        "url": "https://www.cdc.gov/contraception/hcp/usspr/combined-hormonal-contraceptives.html",
+        "sectionOrPage": "Late or missed doses: Comments and Evidence Summary",
+        "excerpt": "CDC identifies extending the hormone-free interval through missed active tablets near the interval as a particularly concerning pattern.",
+        "publicationDate": "2024-11-19",
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "draft"
+      },
+      "kind": "clinical-research",
+      "keywords": [
+        "delayed pack",
+        "hormone free",
+        "consecutive"
+      ],
+      "caveat": "Research context only; no personal risk or action is established.",
+      "provenance": {
+        "acquisition": "opened-page",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": null,
+        "reviewedAt": null,
+        "reviewType": null
+      }
+    },
+    {
+      "evidence": {
+        "id": "cdc-missed-actions",
+        "publisher": "CDC",
+        "title": "CDC missed-pill action branches",
+        "url": "https://www.cdc.gov/mmwr/volumes/73/rr/rr7303a1.htm",
+        "sectionOrPage": "Figure 1: Recommended actions after late or missed combined oral contraceptives",
+        "excerpt": "CDC separates one late or missed active tablet from two or more consecutive missed active tablets. Figure 1 also distinguishes pack position and recent sexual activity.",
+        "publicationDate": "2024-08-08",
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "draft"
+      },
+      "kind": "clinical-research",
+      "keywords": [
+        "one missed",
+        "two missed",
+        "multiple misses"
+      ],
+      "caveat": "Full figure and exact Trust leaflet must be reviewed together. This summary is not an executable medication protocol.",
+      "provenance": {
+        "acquisition": "opened-page",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": null,
+        "reviewedAt": null,
+        "reviewType": null
+      }
+    },
+    {
+      "evidence": {
+        "id": "trust-transition",
+        "publisher": "SwipeRx pharmacy learning hub",
+        "title": "Trust pack transition source lead",
+        "url": "https://mobile.swiperxapp.com/trust-pharmacy-learning-hub/tplh-content/tlph-trust-pill-oral-contraceptive-pill/",
+        "sectionOrPage": "DOSAGE AND ADMINISTRATION, item 3",
+        "excerpt": "The published product page describes beginning the next pack on the day after the final brown tablet.",
+        "publicationDate": null,
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "draft"
+      },
+      "kind": "clinical-research",
+      "keywords": [
+        "next pack",
+        "brown tablets",
+        "pack transition"
+      ],
+      "caveat": "Authenticate the leaflet and review transition fixtures before enabling instructions. The page\u2019s exact bleeding-day claim is excluded.",
+      "provenance": {
+        "acquisition": "opened-page",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": null,
+        "reviewedAt": null,
+        "reviewType": null
+      }
+    },
+    {
+      "evidence": {
+        "id": "trust-timing-conflict",
+        "publisher": "SwipeRx pharmacy learning hub",
+        "title": "Timing language requiring reconciliation",
+        "url": "https://mobile.swiperxapp.com/trust-pharmacy-learning-hub/tplh-content/tlph-trust-pill-oral-contraceptive-pill/",
+        "sectionOrPage": "DOSAGE AND ADMINISTRATION, item 7",
+        "excerpt": "The product page includes a 12-hour statement following a 24-hour lapse; it requires reconciliation with CDC timing categories.",
+        "publicationDate": null,
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "draft"
+      },
+      "kind": "clinical-research",
+      "keywords": [
+        "12 hours",
+        "24 hours",
+        "timing"
+      ],
+      "caveat": "Do not combine these statements into an invented threshold.",
+      "provenance": {
+        "acquisition": "opened-page",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": null,
+        "reviewedAt": null,
+        "reviewType": null
+      }
+    },
+    {
+      "evidence": {
+        "id": "trust-public-faq",
+        "publisher": "DKT Philippines / TRUST.ph",
+        "title": "Public FAQ missed-pill source lead",
+        "url": "https://trust.ph/faq/",
+        "sectionOrPage": "Nakalimutan ko po inumin ang TRUST/Lady/Charlize/Althea pills ko, mabubuntis ba ako?",
+        "excerpt": "The Trust public FAQ separates one missed pill from multiple misses and includes remaining-active-tablet branches.",
+        "publicationDate": null,
+        "retrievalDate": "2026-10-10",
+        "supportedProfileIds": [
+          "trust-28-unverified"
+        ],
+        "version": "1.0.0",
+        "reviewStatus": "draft"
+      },
+      "kind": "clinical-research",
+      "keywords": [
+        "missed",
+        "remaining tablets"
+      ],
+      "caveat": "Multi-brand public FAQ, not an exact Trust pack insert; translation and branch boundaries require review.",
+      "provenance": {
+        "acquisition": "opened-page",
+        "excerptType": "paraphrase",
+        "sourceCheckedBy": "Codex research session",
+        "sourceCheckedDate": "2026-10-10",
+        "reviewer": null,
+        "reviewedAt": null,
+        "reviewType": null
+      }
+    }
+  ]
+}

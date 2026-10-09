@@ -140,8 +140,8 @@ export function promptContext(context, plan) {
 }
 export function outputSchema(plan) {
   return {type: 'object', properties: {
-    statementIds: {type: 'array', items: {enum: plan.requiredIds}, minItems: 1, maxItems: Math.max(1, plan.requiredIds.length)},
-    evidenceIds: plan.evidenceIds.length ? {type: 'array', items: {enum: plan.evidenceIds}, maxItems: 3} : {type: 'array', items: {type: 'string'}, maxItems: 0},
+    statementIds: {type: 'array', items: {enum: plan.requiredIds}, minItems: Math.max(1, plan.requiredIds.length), maxItems: Math.max(1, plan.requiredIds.length)},
+    evidenceIds: plan.evidenceIds.length ? {type: 'array', items: {enum: plan.evidenceIds}, minItems: plan.evidenceIds.length, maxItems: plan.evidenceIds.length} : {type: 'array', items: {type: 'string'}, maxItems: 0},
     style: {enum: ['plain', 'gentle']}}, required: ['statementIds', 'evidenceIds', 'style'], additionalProperties: false};
 }
 export function validateOutput(raw, plan) {
