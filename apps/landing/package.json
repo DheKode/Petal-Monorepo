@@ -10,7 +10,8 @@
     "typecheck": "pnpm --filter @petal/ui build && tsc",
     "test": "tsx --test test/*.test.ts",
     "deploy": "npx wrangler@4.139.0 deploy",
-    "stage-download": "node scripts/stage-download.mjs"
+    "stage-download": "node scripts/stage-download.mjs",
+    "publish-build": "node scripts/publish-build.mjs"
   },
   "dependencies": {
     "@fontsource/geist-mono": "5.3.0",

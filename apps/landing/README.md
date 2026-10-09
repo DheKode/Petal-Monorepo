@@ -27,6 +27,15 @@ Builds are uploaded **with each deploy as Worker static assets**, never committe
 
 ### Publishing a tested build
 
+Use the one-step command (rules in [AGENTS.md](AGENTS.md)):
+
+```sh
+pnpm --filter @petal/landing publish-build -- --platform android|windows|macos --file <path/to/build> --tested-on "<device, OS, date>"
+```
+
+Manual equivalent:
+
+
 1. Install and test the build on a real device (see `src/downloads.ts`).
 2. Build and stage it (repeat step 2's second line per platform):
    ```sh
