@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import {
-  applyIntake, BleedingEntrySchema, DomainValidationError, IdSchema, IntakeStatusSchema, localDateIn, TimePrecisionSchema, TimestampSchema, toZonedIso,
+  applyIntake, BleedingEntrySchema, deriveSchedule, DomainValidationError, IdSchema, IntakeStatusSchema, localDateIn, SettingsSchema, TimePrecisionSchema, TimestampSchema, toZonedIso,
   type BleedingEntry, type IntakeEvent,
 } from '@petal/domain';
 import { deriveFromSetupInput } from '../shared/setup';
@@ -216,6 +216,26 @@ export class PetalService {
         if (entry.endDate !== null && entry.endDate > today) return fail('The end date cannot be in the future.');
         if (existing && sameBleeding(existing, entry)) return ok(state);
         return ok(await this.store.putBleedingEntry(entry));
+      } catch (error) {
+        return fail(messageOf(error));
+      }
+    });
+  }
+
+  /** Change the usual time. It takes effect from tomorrow: only tablets on later dates (in the schedule's own zone) move to the
+      new time, so today's tablet, every earlier tablet and every entry keep exactly what they have. No time is rewritten in
+      the past. The schedule stays in the zone chosen at setup. */
+  changeUsualTime(usualTime: string): Promise<Result<PetalState>> {
+    return this.exclusive(async () => {
+      try {
+        if (!SettingsSchema.shape.usualTime.safeParse(usualTime).success) return fail('Enter the time as hours and minutes, for example 21:00.');
+        const state = await this.store.load();
+        if (!state.pack || !state.settings || !state.profile) return fail('Finish setting up your pack first.');
+        if (state.settings.usualTime === usualTime) return ok(state);
+        const derived = deriveSchedule({ packId: state.pack.id, profile: state.profile, usualTime, timeZone: state.settings.timeZone, startDate: state.pack.startDate });
+        const today = localDateIn(this.now(), state.settings.timeZone);
+        const doses = state.doses.map(dose => (dose.localDate > today ? derived.doses.find(d => d.id === dose.id) ?? dose : dose));
+        return ok(await this.store.updateSchedule({ settings: { ...state.settings, usualTime }, doses }));
       } catch (error) {
         return fail(messageOf(error));
       }

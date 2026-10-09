@@ -8,6 +8,7 @@ export const IPC_UNDO_INTAKE = 'petal:undo-intake';
 export const IPC_RECORD_BATCH = 'petal:record-intake-batch';
 export const IPC_SAVE_BLEEDING = 'petal:save-bleeding';
 export const IPC_DELETE_BLEEDING = 'petal:delete-bleeding';
+export const IPC_CHANGE_USUAL_TIME = 'petal:change-usual-time';
 export const IPC_BACKUP_EXPORT = 'petal:backup-export';
 export const IPC_BACKUP_PICK_IMPORT = 'petal:backup-pick-import';
 export const IPC_BACKUP_CONFIRM_IMPORT = 'petal:backup-confirm-import';
@@ -114,6 +115,8 @@ export interface PetalBridge {
   recordIntakeBatch(inputs: RecordIntakeInput[]): Promise<Result<BatchOutcome>>;
   /** Create or edit a bleeding or spotting entry. Validated and audited; nothing is inferred from it. */
   saveBleeding(input: BleedingInput): Promise<Result<PetalState>>;
+  /** Change the usual time (HH:mm). Takes effect from tomorrow: tablets up to today keep their times, and no entry is touched. */
+  changeUsualTime(usualTime: string): Promise<Result<PetalState>>;
   /** Delete a bleeding or spotting entry. The deleted values stay in the local change history. */
   deleteBleeding(id: string): Promise<Result<PetalState>>;
   /** Ask where to save, then write the full backup as JSON. Plaintext: the file is not encrypted. */

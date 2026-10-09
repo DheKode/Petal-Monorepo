@@ -3,7 +3,7 @@ import { readFile, stat, writeFile } from 'node:fs/promises';
 import { basename, join } from 'node:path';
 import { MAX_BACKUP_BYTES } from '@petal/domain';
 import {
-  IPC_APP_INFO, IPC_GET_STATE, IPC_SAVE_SETUP, IPC_RECORD_INTAKE, IPC_UNDO_INTAKE, IPC_RECORD_BATCH, IPC_SAVE_BLEEDING, IPC_DELETE_BLEEDING,
+  IPC_APP_INFO, IPC_GET_STATE, IPC_SAVE_SETUP, IPC_RECORD_INTAKE, IPC_UNDO_INTAKE, IPC_RECORD_BATCH, IPC_SAVE_BLEEDING, IPC_DELETE_BLEEDING, IPC_CHANGE_USUAL_TIME,
   IPC_BACKUP_EXPORT, IPC_BACKUP_PICK_IMPORT, IPC_BACKUP_CONFIRM_IMPORT, IPC_BACKUP_CANCEL_IMPORT,
   type AppInfo, type BleedingInput, type ExportOutcome, type PickImportOutcome, type RecordIntakeInput, type Result, type SetupInput,
 } from '../shared/ipc';
@@ -104,6 +104,7 @@ handle(IPC_UNDO_INTAKE, (doseId: string) => requireService().undoIntake(doseId))
 handle(IPC_RECORD_BATCH, (inputs: RecordIntakeInput[]) => requireService().recordIntakeBatch(inputs));
 handle(IPC_SAVE_BLEEDING, (input: BleedingInput) => requireService().saveBleeding(input));
 handle(IPC_DELETE_BLEEDING, (id: string) => requireService().deleteBleeding(id));
+handle(IPC_CHANGE_USUAL_TIME, (usualTime: string) => requireService().changeUsualTime(usualTime));
 
 const jsonFilter = [{ name: 'Petal backup (JSON)', extensions: ['json'] }];
 

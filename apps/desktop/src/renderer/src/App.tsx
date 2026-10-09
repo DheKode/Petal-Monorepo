@@ -4,6 +4,7 @@ import { Backup } from './Backup';
 import { Journal } from './Journal';
 import { Privacy } from './Privacy';
 import { Setup } from './Setup';
+import { UsualTime } from './UsualTime';
 import { Today } from './Today';
 import { ZoneNotice } from './ZoneNotice';
 
@@ -34,6 +35,7 @@ export function App() {
       <Privacy info={info} />
       {state.pack ? <Today state={state} onState={setState} /> : <Setup onSaved={setState} />}
       {state.pack && <Journal state={state} onState={setState} />}
+      {state.pack && <UsualTime state={state} onState={setState} />}
       <Backup onState={setState} />
       {info && <footer><small>Petal {info.appVersion} · {info.platform}</small></footer>}
     </main>
