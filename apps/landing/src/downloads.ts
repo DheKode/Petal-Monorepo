@@ -49,7 +49,7 @@ export const downloads: readonly PlatformDownload[] = [
     requirement: 'Apple Silicon Mac (M1 or later)',
     url: 'https://petal.necookie.dev/download/petal-0.1.0.dmg',
     sizeLabel: '961.9 MB',
-    sha256: 'a1fafd73f02a5948b977fc75f0c2cf287f6f5e59de546eb70ad0bc788b65019d',
+    sha256: '342f4d6355cce31073a624a1d80c4bcc9f405069b50dcd0bbc3a8babf16af99f',
     installNote: 'Unsigned app. macOS will ask you to confirm before the first launch.',
   },
 ];
