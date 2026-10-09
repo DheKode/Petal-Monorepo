@@ -37,6 +37,7 @@
 .app-pack { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--petal-space-related); }
 @media (max-width: 40rem) { .app-pack { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .app-pack li { display: grid; }
+.app-cell { align-content: start; }
 .app-cell { position: relative; }
 .app-cell-number { font-size: var(--petal-type-body-large-font-size); line-height: var(--petal-type-body-large-line-height); font-weight: var(--petal-type-title-font-weight); }
 .app-cell[aria-pressed="true"] { background: var(--petal-color-surface-subtle); border-color: var(--petal-color-action-primary); }
@@ -56,4 +57,11 @@
 .app .petal-card::after { content: ""; display: block; clear: both; }
 .app-review { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--petal-space-group); align-items: end; }
 .app-review-art { width: 5rem; height: auto; margin-bottom: calc(-1 * var(--petal-space-related)); }
-.app > section.petal-card, .app > details { margin-top: var(--petal-space-section); }
+
+/* Pack page: the grid beside the record card for the chosen tablet. */
+.app-split { display: grid; gap: var(--petal-space-section); align-items: start; }
+@media (min-width: 64rem) { .app-split { grid-template-columns: minmax(0, 1.8fr) minmax(20rem, 1fr); } }
+.app-split-side { display: grid; gap: var(--petal-space-group); position: sticky; top: var(--petal-space-group); }
+.app-hero[data-compact] { padding: var(--petal-space-section); }
+.app-hero[data-compact] .app-hero-title { font-size: var(--petal-type-heading-font-size); line-height: var(--petal-type-heading-line-height); }
+.app-hero[data-compact] > :not(.app-hero-art) { max-width: none; }
