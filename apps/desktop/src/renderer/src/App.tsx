@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { AppInfo, PetalState } from '../../shared/ipc';
+import { Backup } from './Backup';
+import { Privacy } from './Privacy';
 import { Feedback } from '@petal/ui/components';
 import logo from '../../../../../libs/assets/brands/svg/petal-logo-horizontal-primary.svg';
 import { Setup } from './Setup';
@@ -34,7 +36,9 @@ export function App() {
         )}
         <Feedback kind="warning" message="Product details are not verified yet, so Petal is tracking only and shows no guidance." />
       </div>
+      <Privacy info={info} />
       {state.pack ? <Today state={state} onState={setState} /> : <Setup onSaved={setState} />}
+      <Backup onState={setState} />
       {info && <footer className="app-footer">Petal {info.appVersion} · {info.platform}</footer>}
     </main>
   );

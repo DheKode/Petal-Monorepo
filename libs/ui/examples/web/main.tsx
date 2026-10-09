@@ -5,6 +5,7 @@ import { useDisclosure, useReducedMotion, useResponsiveLayout } from '@petal/ui/
 import { Screen, Stack } from '@petal/ui/layouts';
 import '@petal/ui/styles.css';
 import './preview.css';
+import { IconGallery } from './icon-gallery.js';
 
 function Preview() {
   const [value, setValue] = useState('Example entry');
@@ -16,6 +17,7 @@ function Preview() {
   const { isWide } = useResponsiveLayout();
   return <Screen title="Shared UI, in use." description="Real Petal React components driven by the shared tokens."
     footer={<p className="petal-muted preview-footer">{isWide ? 'Wide' : 'Compact'} composition · Reduced motion {reduced ? 'on' : 'off'} · Native counterparts use React Native primitives and require device review.</p>}>
+    <IconGallery />
     <Card title="Actions and states">
       <Stack direction="row" wrap space="related"><Button label="Save example" onPress={() => setResult('Example action pressed. No record was saved.')} />
         <Button label="Edit details" variant="secondary" /><Button label="View history" variant="tertiary" />

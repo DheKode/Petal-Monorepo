@@ -2,7 +2,7 @@
 
 Derived from `PRD.md`. The PRD is the source of truth for scope. This file is the **fixed plan**: what's in and out of scope, how work breaks down, the order of work, and the cut order.
 
-**Live status is not tracked here.** Owners, progress, blockers and handoffs live in the GitHub issues and the Project board (see `AGENTS.md`). Each task below points to the issue that tracks it. Put the task ID (e.g. `A07`) in the issue checklist, commits and PR descriptions so work can be traced.
+**Live status is not tracked here.** Owners, progress, blockers and handoffs live in the GitHub issues and the Project board (see `AGENTS.md`). Each task below points to the issue that tracks it. Put the task ID (e.g. `A07`) in the issue checklist and commit messages so work can be traced.
 
 **Code freeze: October 10, 2026, 10:00 AM Asia/Manila.** Target times assume work starts ~23:00 Oct 9.
 

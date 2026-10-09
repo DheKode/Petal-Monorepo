@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "collection": "Petal illustration proposals",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "assets": [
     {
       "id": "character-welcome",
@@ -79,8 +79,8 @@
       "id": "character-reading",
       "family": "characters",
       "title": "Take a closer look",
-      "description": "An adult with shoulder-length wavy hair reading a blank open book.",
-      "path": "characters/petal-character-reading-v1.png",
+      "description": "A fuller-built adult with a short afro and round glasses, seated on a blush cushion reading a blank book over a long white skirt.",
+      "path": "characters/petal-character-reading-v2.png",
       "width": 1254,
       "height": 1254,
       "mode": "RGBA",
@@ -88,23 +88,24 @@
         0,
         255
       ],
-      "transparentPixels": 1334416,
+      "transparentPixels": 1154670,
       "contentBounds": [
-        435,
-        142,
-        844,
-        1148
+        245,
+        143,
+        1016,
+        1117
       ],
-      "sha256": "b9577baf0450358e3295300f2d11149e9e20f14af23057cc5a87fcdff68b7dd1",
-      "bytes": 339865,
-      "approval": "proposal"
+      "sha256": "3fae7e25521bf0cbd8a617a0a0ae92cefdc6240a78b5d029f06a53af33597cd4",
+      "bytes": 505301,
+      "approval": "proposal",
+      "previousPath": "characters/petal-character-reading-v1.png"
     },
     {
       "id": "character-reminders",
       "family": "characters",
       "title": "At your own pace",
-      "description": "A short-haired adult holding a simple round clock with an understated smile.",
-      "path": "characters/petal-character-reminders-v1.png",
+      "description": "An adult with a plum pixie cut wearing a rose shirt dress, checking a wristwatch during a relaxed step.",
+      "path": "characters/petal-character-reminders-v2.png",
       "width": 1254,
       "height": 1254,
       "mode": "RGBA",
@@ -112,23 +113,24 @@
         0,
         255
       ],
-      "transparentPixels": 1352069,
+      "transparentPixels": 1331918,
       "contentBounds": [
-        455,
-        155,
-        806,
-        1135
+        421,
+        88,
+        923,
+        1177
       ],
-      "sha256": "4c2713ea526fc565018c74540b3b5d5ca3da3c5a536a409c3b6be88754928840",
-      "bytes": 310370,
-      "approval": "proposal"
+      "sha256": "9668eeae348dfe15da8d9c0377d0267d429e53dfb28ad4887bbafab48ba6e6b0",
+      "bytes": 377173,
+      "approval": "proposal",
+      "previousPath": "characters/petal-character-reminders-v1.png"
     },
     {
       "id": "character-organizing",
       "family": "characters",
       "title": "Keep things together",
-      "description": "An adult with a long plum braid holding a simple rose folder.",
-      "path": "characters/petal-character-organizing-v1.png",
+      "description": "An adult with a low plum ponytail and blush jumpsuit, kneeling beside a low table to sort a blank page into an open folder.",
+      "path": "characters/petal-character-organizing-v2.png",
       "width": 1254,
       "height": 1254,
       "mode": "RGBA",
@@ -136,16 +138,17 @@
         0,
         255
       ],
-      "transparentPixels": 1354854,
+      "transparentPixels": 1107402,
       "contentBounds": [
-        452,
-        155,
-        800,
-        1135
+        61,
+        158,
+        1205,
+        1089
       ],
-      "sha256": "4dc09477d369c0f6dc1d37c822dadbc5a3ce7f26b1530dbc01bdf751bab7b6d8",
-      "bytes": 310365,
-      "approval": "proposal"
+      "sha256": "4b8a3cb0cba14abb5dd9451ef27b467521211d7313966ef90e8982555b5ebc39",
+      "bytes": 586730,
+      "approval": "proposal",
+      "previousPath": "characters/petal-character-organizing-v1.png"
     },
     {
       "id": "companion-hello",
