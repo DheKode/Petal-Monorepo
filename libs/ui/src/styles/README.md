@@ -1,6 +1,6 @@
 # Shared web styles
 
-Original Petal specimens built from `../themes/petal.tokens.json`. Import `@petal/ui/styles.css`; it includes the generated theme, `base.css`, and `components.css` in that order. Wrap the consuming UI with `data-petal-ui` for base typography, box sizing, and visible focus. Register Geist Mono locally; this stylesheet makes no font or network request.
+Original Petal specimens built from `../themes/petal.tokens.json`. Import `@petal/ui/styles.css`; it includes the generated theme, `fonts.css`, base, component, layout, and icon styles. Wrap the consuming UI with `data-petal-ui` for base typography, box sizing, and visible focus. Geist Sans is registered as `Geist` from the locally packaged WOFF2; no third-party font request is made. `@petal/ui/fonts.css` exposes registration alone for theme-only consumers. The copied font folder includes its SIL license and provenance.
 
 `petal-button` supports `data-variant="secondary|tertiary|danger"` and native `disabled`. `data-state="hover|pressed|focus"` exists for fixed review specimens. Fields use `petal-field`, `petal-input`, and `petal-help`; attach visible labels and descriptions in application markup. Other specimens include `petal-card`, `petal-proposal`, `petal-status`, `petal-selection`, `petal-tab`, `petal-feedback`, and a native HTML `petal-dialog`.
 

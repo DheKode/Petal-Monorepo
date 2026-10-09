@@ -50,11 +50,13 @@ export declare const petalTheme: {
       readonly "focus": 2;
     };
     readonly "font": {
-      readonly "family": readonly ["Geist Mono", "monospace"];
+      readonly "family": readonly ["Geist", "sans-serif"];
       readonly "weight": {
         readonly "regular": 400;
         readonly "medium": 500;
         readonly "semibold": 600;
+        readonly "bold": 700;
+        readonly "extraBold": 800;
       };
       readonly "size": {
         readonly "s12": 12;
@@ -130,51 +132,51 @@ export declare const petalTheme: {
     };
     readonly "type": {
       readonly "caption": {
-        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontFamily": readonly ["Geist", "sans-serif"];
         readonly "fontSize": 12;
         readonly "fontWeight": 400;
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.5;
       };
       readonly "label": {
-        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontFamily": readonly ["Geist", "sans-serif"];
         readonly "fontSize": 14;
-        readonly "fontWeight": 500;
+        readonly "fontWeight": 600;
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.4285714285714286;
       };
       readonly "body": {
-        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontFamily": readonly ["Geist", "sans-serif"];
         readonly "fontSize": 16;
-        readonly "fontWeight": 400;
+        readonly "fontWeight": 500;
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.5;
       };
       readonly "bodyLarge": {
-        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontFamily": readonly ["Geist", "sans-serif"];
         readonly "fontSize": 18;
-        readonly "fontWeight": 400;
+        readonly "fontWeight": 500;
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.5555555555555556;
       };
       readonly "title": {
-        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontFamily": readonly ["Geist", "sans-serif"];
         readonly "fontSize": 20;
-        readonly "fontWeight": 600;
+        readonly "fontWeight": 700;
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.4;
       };
       readonly "heading": {
-        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontFamily": readonly ["Geist", "sans-serif"];
         readonly "fontSize": 24;
-        readonly "fontWeight": 600;
+        readonly "fontWeight": 700;
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.3333333333333333;
       };
       readonly "display": {
-        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontFamily": readonly ["Geist", "sans-serif"];
         readonly "fontSize": 32;
-        readonly "fontWeight": 600;
+        readonly "fontWeight": 800;
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.25;
       };
@@ -247,9 +249,9 @@ export declare const petalTheme: {
       readonly "paddingBlock": 12;
       readonly "gap": 8;
       readonly "type": {
-        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontFamily": readonly ["Geist", "sans-serif"];
         readonly "fontSize": 14;
-        readonly "fontWeight": 500;
+        readonly "fontWeight": 600;
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.4285714285714286;
       };
@@ -298,9 +300,9 @@ export declare const petalTheme: {
       readonly "borderWidth": 1;
       readonly "errorBorder": "#A32640";
       readonly "type": {
-        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontFamily": readonly ["Geist", "sans-serif"];
         readonly "fontSize": 16;
-        readonly "fontWeight": 400;
+        readonly "fontWeight": 500;
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.5;
       };
@@ -308,16 +310,16 @@ export declare const petalTheme: {
       readonly "disabledBackground": "#FFF7FA";
       readonly "disabledForeground": "#745D69";
       readonly "labelType": {
-        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontFamily": readonly ["Geist", "sans-serif"];
         readonly "fontSize": 14;
-        readonly "fontWeight": 500;
+        readonly "fontWeight": 600;
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.4285714285714286;
       };
       readonly "helperType": {
-        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontFamily": readonly ["Geist", "sans-serif"];
         readonly "fontSize": 14;
-        readonly "fontWeight": 500;
+        readonly "fontWeight": 600;
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.4285714285714286;
       };
@@ -334,9 +336,9 @@ export declare const petalTheme: {
       readonly "foreground": "#33252D";
       readonly "mutedForeground": "#745D69";
       readonly "titleType": {
-        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontFamily": readonly ["Geist", "sans-serif"];
         readonly "fontSize": 20;
-        readonly "fontWeight": 600;
+        readonly "fontWeight": 700;
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.4;
       };
@@ -347,9 +349,9 @@ export declare const petalTheme: {
       readonly "activeForeground": "#B83D70";
       readonly "foreground": "#745D69";
       readonly "type": {
-        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontFamily": readonly ["Geist", "sans-serif"];
         readonly "fontSize": 14;
-        readonly "fontWeight": 500;
+        readonly "fontWeight": 600;
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.4285714285714286;
       };
@@ -365,9 +367,9 @@ export declare const petalTheme: {
       readonly "paddingInline": 8;
       readonly "paddingBlock": 4;
       readonly "type": {
-        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontFamily": readonly ["Geist", "sans-serif"];
         readonly "fontSize": 14;
-        readonly "fontWeight": 500;
+        readonly "fontWeight": 600;
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.4285714285714286;
       };
@@ -409,9 +411,9 @@ export declare const petalTheme: {
       readonly "padding": 16;
       readonly "gap": 8;
       readonly "type": {
-        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontFamily": readonly ["Geist", "sans-serif"];
         readonly "fontSize": 14;
-        readonly "fontWeight": 500;
+        readonly "fontWeight": 600;
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.4285714285714286;
       };

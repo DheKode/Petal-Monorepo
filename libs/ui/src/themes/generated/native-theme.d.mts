@@ -50,11 +50,13 @@ export declare const petalNativeTheme: {
       readonly "focus": 2;
     };
     readonly "font": {
-      readonly "family": "Geist Mono";
+      readonly "family": "Geist";
       readonly "weight": {
         readonly "regular": "400";
         readonly "medium": "500";
         readonly "semibold": "600";
+        readonly "bold": "700";
+        readonly "extraBold": "800";
       };
       readonly "size": {
         readonly "s12": 12;
@@ -130,51 +132,51 @@ export declare const petalNativeTheme: {
     };
     readonly "type": {
       readonly "caption": {
-        readonly "fontFamily": "Geist Mono";
+        readonly "fontFamily": "Geist";
         readonly "fontSize": 12;
         readonly "fontWeight": "400";
         readonly "letterSpacing": 0;
         readonly "lineHeight": 18;
       };
       readonly "label": {
-        readonly "fontFamily": "Geist Mono";
+        readonly "fontFamily": "Geist";
         readonly "fontSize": 14;
-        readonly "fontWeight": "500";
+        readonly "fontWeight": "600";
         readonly "letterSpacing": 0;
         readonly "lineHeight": 20;
       };
       readonly "body": {
-        readonly "fontFamily": "Geist Mono";
+        readonly "fontFamily": "Geist";
         readonly "fontSize": 16;
-        readonly "fontWeight": "400";
+        readonly "fontWeight": "500";
         readonly "letterSpacing": 0;
         readonly "lineHeight": 24;
       };
       readonly "bodyLarge": {
-        readonly "fontFamily": "Geist Mono";
+        readonly "fontFamily": "Geist";
         readonly "fontSize": 18;
-        readonly "fontWeight": "400";
+        readonly "fontWeight": "500";
         readonly "letterSpacing": 0;
         readonly "lineHeight": 28;
       };
       readonly "title": {
-        readonly "fontFamily": "Geist Mono";
+        readonly "fontFamily": "Geist";
         readonly "fontSize": 20;
-        readonly "fontWeight": "600";
+        readonly "fontWeight": "700";
         readonly "letterSpacing": 0;
         readonly "lineHeight": 28;
       };
       readonly "heading": {
-        readonly "fontFamily": "Geist Mono";
+        readonly "fontFamily": "Geist";
         readonly "fontSize": 24;
-        readonly "fontWeight": "600";
+        readonly "fontWeight": "700";
         readonly "letterSpacing": 0;
         readonly "lineHeight": 32;
       };
       readonly "display": {
-        readonly "fontFamily": "Geist Mono";
+        readonly "fontFamily": "Geist";
         readonly "fontSize": 32;
-        readonly "fontWeight": "600";
+        readonly "fontWeight": "800";
         readonly "letterSpacing": 0;
         readonly "lineHeight": 40;
       };
@@ -247,9 +249,9 @@ export declare const petalNativeTheme: {
       readonly "paddingBlock": 12;
       readonly "gap": 8;
       readonly "type": {
-        readonly "fontFamily": "Geist Mono";
+        readonly "fontFamily": "Geist";
         readonly "fontSize": 14;
-        readonly "fontWeight": "500";
+        readonly "fontWeight": "600";
         readonly "letterSpacing": 0;
         readonly "lineHeight": 20;
       };
@@ -298,9 +300,9 @@ export declare const petalNativeTheme: {
       readonly "borderWidth": 1;
       readonly "errorBorder": "#A32640";
       readonly "type": {
-        readonly "fontFamily": "Geist Mono";
+        readonly "fontFamily": "Geist";
         readonly "fontSize": 16;
-        readonly "fontWeight": "400";
+        readonly "fontWeight": "500";
         readonly "letterSpacing": 0;
         readonly "lineHeight": 24;
       };
@@ -308,16 +310,16 @@ export declare const petalNativeTheme: {
       readonly "disabledBackground": "#FFF7FA";
       readonly "disabledForeground": "#745D69";
       readonly "labelType": {
-        readonly "fontFamily": "Geist Mono";
+        readonly "fontFamily": "Geist";
         readonly "fontSize": 14;
-        readonly "fontWeight": "500";
+        readonly "fontWeight": "600";
         readonly "letterSpacing": 0;
         readonly "lineHeight": 20;
       };
       readonly "helperType": {
-        readonly "fontFamily": "Geist Mono";
+        readonly "fontFamily": "Geist";
         readonly "fontSize": 14;
-        readonly "fontWeight": "500";
+        readonly "fontWeight": "600";
         readonly "letterSpacing": 0;
         readonly "lineHeight": 20;
       };
@@ -334,9 +336,9 @@ export declare const petalNativeTheme: {
       readonly "foreground": "#33252D";
       readonly "mutedForeground": "#745D69";
       readonly "titleType": {
-        readonly "fontFamily": "Geist Mono";
+        readonly "fontFamily": "Geist";
         readonly "fontSize": 20;
-        readonly "fontWeight": "600";
+        readonly "fontWeight": "700";
         readonly "letterSpacing": 0;
         readonly "lineHeight": 28;
       };
@@ -347,9 +349,9 @@ export declare const petalNativeTheme: {
       readonly "activeForeground": "#B83D70";
       readonly "foreground": "#745D69";
       readonly "type": {
-        readonly "fontFamily": "Geist Mono";
+        readonly "fontFamily": "Geist";
         readonly "fontSize": 14;
-        readonly "fontWeight": "500";
+        readonly "fontWeight": "600";
         readonly "letterSpacing": 0;
         readonly "lineHeight": 20;
       };
@@ -365,9 +367,9 @@ export declare const petalNativeTheme: {
       readonly "paddingInline": 8;
       readonly "paddingBlock": 4;
       readonly "type": {
-        readonly "fontFamily": "Geist Mono";
+        readonly "fontFamily": "Geist";
         readonly "fontSize": 14;
-        readonly "fontWeight": "500";
+        readonly "fontWeight": "600";
         readonly "letterSpacing": 0;
         readonly "lineHeight": 20;
       };
@@ -409,9 +411,9 @@ export declare const petalNativeTheme: {
       readonly "padding": 16;
       readonly "gap": 8;
       readonly "type": {
-        readonly "fontFamily": "Geist Mono";
+        readonly "fontFamily": "Geist";
         readonly "fontSize": 14;
-        readonly "fontWeight": "500";
+        readonly "fontWeight": "600";
         readonly "letterSpacing": 0;
         readonly "lineHeight": 20;
       };

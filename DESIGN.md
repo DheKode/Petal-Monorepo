@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: Petal
-description: Petal's developing original brand identity, with an approved rose-and-white palette and Geist Mono typography.
+description: Petal's developing original brand identity, with an approved rose-and-white palette and Geist Sans typography.
 colors:
   primary: "#B83D70"
   on-primary: "#FFFFFF"
@@ -12,7 +12,7 @@ colors:
   on-surface-variant: "#745D69"
 typography:
   default:
-    fontFamily: Geist Mono
+    fontFamily: Geist Sans
 omitted:
   - section: spacing
     reason: The initial spacing baseline is maintained in libs/ui/src/themes/petal.tokens.json.
@@ -26,7 +26,7 @@ omitted:
 
 ## Overview
 
-This document uses the section structure from [Google's DESIGN.md specification](https://github.com/google-labs-code/design.md/blob/main/docs/spec.md) to record Petal's original brand decisions alongside reference research. The rose-and-white palette and Geist Mono font family are approved. The [shared theme](libs/ui/src/themes/README.md) provides an initial baseline for typography sizing, spacing, radii, control states, focus, and motion. Screen layouts, illustrations, and actual-device checks remain to be completed. Flo and the community kit remain reference material.
+This document uses the section structure from [Google's DESIGN.md specification](https://github.com/google-labs-code/design.md/blob/main/docs/spec.md) to record Petal's original brand decisions alongside reference research. The rose-and-white palette and Geist Sans font family are approved. The [shared theme](libs/ui/src/themes/README.md) provides an initial baseline for typography sizing, spacing, radii, control states, focus, and motion. Screen layouts, illustrations, and actual-device checks remain to be completed. Flo and the community kit remain reference material.
 
 The selected direction is flat, modern, and UX-driven: clear hierarchy, readable content, and purposeful color use. Brand expression should support daily logging and history review.
 
@@ -102,11 +102,11 @@ Flo and Marvilo's inspected imagery uses pink emphasis, light backgrounds, and w
 
 ### Approved font family
 
-Use **Geist Mono** from Vercel as Petal's primary typeface. Vercel describes its monospace design as prioritizing readability, within a family influenced by Swiss design principles. [Font source](https://vercel.com/font)
+Use **Geist Sans** from Vercel as Petal's primary typeface. Its registered family name is `Geist`. This designer-approved selection replaces the earlier Geist Mono decision. [Font source](https://vercel.com/font)
 
-The design intent is a precise, contemporary type voice balanced by the warm rose-and-white palette. Apply the family consistently across headings, controls, dates, times, tablet positions, and body text. The approved logo wordmark is separate custom outlined artwork; do not typeset it in Geist Mono.
+The design intent is a precise, contemporary type voice balanced by the warm rose-and-white palette. Apply the family consistently across headings, controls, dates, times, tablet positions, and body text. The approved logo wordmark is separate custom outlined artwork; do not typeset it in Geist Sans.
 
-Keep sentence case, natural spacing, and a clear hierarchy. Monospaced text can require more horizontal space; allow labels to wrap and keep explanations concise. Essential instructions must remain readable, and text scaling must preserve the main task and its actions.
+Use 500 for body text, 600 for labels/buttons, 700 for section titles and screen headings, and 800 for display emphasis. Optional captions retain 400. Keep sentence case, natural spacing, and a clear hierarchy. Allow labels to wrap and keep explanations concise. Essential instructions must remain readable, and text scaling must preserve the main task and its actions.
 
 The initial type scale and role-specific weights, line heights, and letter spacing are defined in [the theme source](libs/ui/src/themes/petal.tokens.json), with usage guidance in its README. Body starts at 16/24 and screen headings at 24/32 logical units. Verify the scale at mobile sizes and with text scaling. Bundle the chosen font files with the eventual app so typography remains available offline.
 
@@ -150,7 +150,7 @@ The shared theme defines initial radii: 12 for controls, 16 for containers, and 
 
 Shared defaults for buttons, fields, cards, navigation, neutral status containers, and dialogs are in `libs/ui/src/themes/petal.tokens.json`. These are reusable appearance values; implementing components and validating screens remain separate tasks. Future shared component, hook, layout, and helper code belongs in the corresponding `libs/ui/src/` folders.
 
-The [offline HTML preview](libs/ui/preview.html) shows every canonical token, original component specimens, source aliases, and web/native values. It embeds the approved artwork and locally bundled Geist Mono. Buttons explore a 12-unit rounded rectangle, with 10/16-unit comparisons; selections and proposed changes use explicit labels. Shared web styling lives in `libs/ui/src/styles/`, exposed as `@petal/ui/styles.css`. These specimens remain an exploration for designer review. Petal controls remain original; the icon dependency is documented separately below.
+The [offline HTML preview](libs/ui/preview.html) shows every canonical token, original component specimens, source aliases, and web/native values. It embeds the approved artwork and locally bundled Geist Sans. Buttons explore a 12-unit rounded rectangle, with 10/16-unit comparisons; selections and proposed changes use explicit labels. Shared web styling lives in `libs/ui/src/styles/`, exposed as `@petal/ui/styles.css`. These specimens remain an exploration for designer review. Petal controls remain original; the icon dependency is documented separately below.
 
 The shared icon baseline uses Lucide shapes through [AnimateIcons](https://animateicons.in/) on web/Electron and Lucide React Native vectors on Android. Petal’s Icon and IconButton wrappers apply the existing size, outline, color, target, and accessibility tokens; review all 24 names in the live shared-component preview. Web motion animates individual paths; native motion uses a finite scale pulse rather than identical path choreography. Icons are still at rest and respect system/app reduced motion. Keep record labels explicit; a check or warning never implies contraceptive protection. App integration and actual-device accessibility review remain separate. [Animata](https://animata.design/) remains a study reference for restrained custom feedback. Component studies include [Untitled UI](https://www.untitledui.com/react/components/buttons), [HeroUI](https://heroui.com/en/docs/react/components/button), and [shadcn](https://ui.shadcn.com/docs/components/button). Study interaction hierarchy, then design Petal’s own values and controls. Motion proposals use 120/180/240 ms, scale 0.98, and an 8-unit entry offset; respect reduced motion and avoid automatic loops.
 

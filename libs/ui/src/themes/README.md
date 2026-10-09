@@ -4,7 +4,7 @@ Shared visual foundations for mobile, desktop, and landing applications, under U
 
 The canonical source is `petal.tokens.json`, using the published DTCG 2025.10 format. Primitive values feed semantic roles, which feed component defaults. Consumers use semantic and component tokens instead of duplicating raw brand values.
 
-The approved palette and Geist Mono family are retained. New type sizes, spacing, shapes, control states, and motion are an initial implementation baseline for review, with actual-device checks still required. Only the light appearance is defined. Application integration and the remaining U01/L01 acceptance checks are separate work.
+The palette, Geist Sans family, and heavier role-specific weights are approved. Type sizes, spacing, shapes, control states, and motion remain an initial implementation baseline for review, with actual-device checks still required. Only the light appearance is defined. Application integration and the remaining U01/L01 acceptance checks are separate work.
 
 ## Structure and naming
 
@@ -49,14 +49,14 @@ Layout values guide composition; they do not detect a device or force a navigati
 | Typography role | Size / line height | Weight | Use |
 | --- | --- | --- | --- |
 | Caption | 12 / 18 | 400 | Optional metadata |
-| Label | 14 / 20 | 500 | Labels and short controls |
-| Body | 16 / 24 | 400 | Essential instructions and reading |
-| Body large | 18 / 28 | 400 | Brief introductory text |
-| Title | 20 / 28 | 600 | Section/card titles |
-| Heading | 24 / 32 | 600 | Screen headings |
-| Display | 32 / 40 | 600 | Brief prominent text |
+| Label | 14 / 20 | 600 | Labels and short controls |
+| Body | 16 / 24 | 500 | Essential instructions and reading |
+| Body large | 18 / 28 | 500 | Brief introductory text |
+| Title | 20 / 28 | 700 | Section/card titles |
+| Heading | 24 / 32 | 700 | Screen headings |
+| Display | 32 / 40 | 800 | Brief prominent text |
 
-All roles use Geist Mono, zero added letter spacing, and sentence case. Caption is not for essential instructions. The original variable WOFF2, SIL license, and provenance live in `libs/assets/fonts/geist-mono/`. The preview embeds the font offline. Runtime exports do not register fonts; each app must bundle/register a supported format. Web includes a monospace fallback. Native exports use the family name `Geist Mono`; the app's font adapter must map that to the actual registered family and weights on each target. Keep native font scaling enabled and verify it on actual devices.
+All roles use Geist Sans (registered family `Geist`), zero added letter spacing, and sentence case. Caption is not for essential instructions. The original variable WOFF2 and TTF, SIL license, and provenance live in `libs/assets/fonts/geist-sans/`. The preview embeds the font offline. JavaScript/theme exports do not register fonts. `@petal/ui/styles.css` includes local WOFF2 registration; theme-only web consumers import `@petal/ui/fonts.css` separately. Web includes a sans-serif fallback. Native exports use `Geist`; the application's font adapter must register a supported format and verify family/weight resolution on each target. Keep native font scaling enabled and verify it on actual devices.
 
 The six brand colors are approved and unchanged. The source additionally defines rose hover/pressed shades, decorative/control borders, and error, warning, and save-success feedback colors as initial functional baseline values. Success means a save/export acknowledgement, never health, protection, or adherence. Taken, confirmed-missed, unsure, and no-entry states need explicit wording and distinct icons; the shared status container is neutral. `color.border.subtle` is decorative separation, not an essential input boundary.
 

@@ -1,6 +1,6 @@
 # Geist Mono
 
-Approved Petal UI typeface, bundled locally for offline use. This original variable WOFF2 comes from Vercel’s `geist` package version 1.7.2. It is font artwork, not a runtime dependency.
+Previous Petal UI typeface, retained as historical artwork. The designer now approved [Geist Sans](../geist-sans/README.md) for the UI. This original variable WOFF2 comes from Vercel’s `geist` package version 1.7.2. It is font artwork, not a runtime dependency.
 
 Source: https://registry.npmjs.org/geist/-/geist-1.7.2.tgz
 
@@ -10,4 +10,4 @@ License: SIL Open Font License 1.1, reproduced in [OFL.txt](OFL.txt). The archiv
 
 Archive integrity: `sha512-Gu5lDFa3pLRyoBlBPf0QIFHVdWAnpco7fS1bJm41jyLPFoguBgiubseUN2oLXMgqZ7uxAxDoXcHMhCY/fOTTgg==`
 
-The HTML token preview embeds this font. Web apps may bundle it with `@font-face`; native apps still need their own supported font format and registration adapter. Keep text scaling enabled. No font files have been modified.
+Current previews and shared styles use Geist Sans. This preserved Mono file is no longer the approved UI font. No font files have been modified.

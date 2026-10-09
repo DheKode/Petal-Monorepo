@@ -38,12 +38,13 @@ test('rejects malformed values, unsafe names, unsupported features and CSS name 
 test('exports CSS relative units and native absolute dimensions, line heights, and font weights', () => {
   const {files, native} = compileTheme(source);
   assert.match(files['theme.css'], /--petal-primitive-font-size-s16: 1rem/);
+  assert.match(files['theme.css'], /--petal-primitive-font-family: "Geist", sans-serif;/);
   assert.match(files['theme.css'], /--petal-primitive-border-thin: 1px/);
   assert.equal(native.semantic.type.body.fontSize, 16);
   assert.equal(native.semantic.type.body.lineHeight, 24);
   assert.equal(native.semantic.type.label.lineHeight, 20);
-  assert.equal(native.semantic.type.label.fontWeight, '500');
-  assert.equal(native.semantic.type.body.fontFamily, 'Geist Mono');
+  assert.equal(native.semantic.type.label.fontWeight, '600');
+  assert.equal(native.semantic.type.body.fontFamily, 'Geist');
   assert.equal(native.component.button.minHeight, 48);
   assert.equal(native.component.field.minHeight, 48);
   const {native: converted} = compileTheme(fixture({dimension:{$type:'dimension',$value:{value:2,unit:'rem'}},duration:{$type:'duration',$value:{value:.2,unit:'s'}}}));

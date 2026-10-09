@@ -102,7 +102,8 @@
       "import": "./dist/src/icons/catalog.js",
       "default": "./dist/src/icons/catalog.js"
     },
-    "./icons/notices": "./src/icons/THIRD_PARTY_NOTICES.md"
+    "./icons/notices": "./src/icons/THIRD_PARTY_NOTICES.md",
+    "./fonts.css": "./dist/src/styles/fonts.css"
   },
   "scripts": {
     "build": "node src/themes/scripts/build.mjs && tsc -p tsconfig.build.json && node scripts/copy-theme.mjs",

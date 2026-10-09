@@ -46,9 +46,9 @@ import '@petal/ui/theme.css';
 | `@petal/ui/icons/notices` | Upstream license notices to retain when distributing icons |
 | `@petal/ui/utils` | Pure helpers without React or React Native imports |
 
-The package provides ESM with declarations. React `>=19.2.3 <20` and React Native `0.86.3` are optional peers: applications using controls provide their platform runtime, while theme-only consumers require neither. Web consumers need React; native consumers need both. CSS is marked as a side effect so bundlers preserve it. App owners must verify their Vite/Metro setup and register Geist Mono locally for offline use. Native font format/registration remains an app-adapter task; the bundled WOFF2 is verified only in the web preview.
+The package provides ESM with declarations. React `>=19.2.3 <20` and React Native `0.86.3` are optional peers: applications using controls provide their platform runtime, while theme-only consumers require neither. Web consumers need React; native consumers need both. CSS is marked as a side effect so bundlers preserve it. Shared web styles bundle and register Geist Sans locally as `Geist`, with its SIL license; app owners verify their Vite/Metro setup. Native TTF registration and device rendering remain application-adapter checks.
 
-For web controls, import `@petal/ui/styles.css` and wrap the UI with `data-petal-ui` (Screen already supplies it). This export includes the theme. Register Geist Mono from [the local font asset](../assets/fonts/geist-mono/README.md).
+For web controls, import `@petal/ui/styles.css` and wrap the UI with `data-petal-ui` (Screen already supplies it). This includes the theme and bundled font registration. Theme-only consumers can import `@petal/ui/fonts.css` beside `@petal/ui/theme.css`. See [font assets and native guidance](../assets/fonts/geist-sans/README.md).
 
 ```tsx
 import { Button, Card, TextField } from '@petal/ui/components';

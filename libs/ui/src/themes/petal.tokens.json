@@ -409,8 +409,8 @@
       "family": {
         "$type": "fontFamily",
         "$value": [
-          "Geist Mono",
-          "monospace"
+          "Geist",
+          "sans-serif"
         ]
       },
       "weight": {
@@ -425,6 +425,14 @@
         "semibold": {
           "$type": "fontWeight",
           "$value": 600
+        },
+        "bold": {
+          "$type": "fontWeight",
+          "$value": 700
+        },
+        "extraBold": {
+          "$type": "fontWeight",
+          "$value": 800
         }
       },
       "size": {
@@ -697,7 +705,7 @@
         "$value": {
           "fontFamily": "{primitive.font.family}",
           "fontSize": "{primitive.font.size.s14}",
-          "fontWeight": "{primitive.font.weight.medium}",
+          "fontWeight": "{primitive.font.weight.semibold}",
           "letterSpacing": "{primitive.font.letterSpacing}",
           "lineHeight": 1.4285714285714286
         },
@@ -708,7 +716,7 @@
         "$value": {
           "fontFamily": "{primitive.font.family}",
           "fontSize": "{primitive.font.size.s16}",
-          "fontWeight": "{primitive.font.weight.regular}",
+          "fontWeight": "{primitive.font.weight.medium}",
           "letterSpacing": "{primitive.font.letterSpacing}",
           "lineHeight": 1.5
         },
@@ -719,7 +727,7 @@
         "$value": {
           "fontFamily": "{primitive.font.family}",
           "fontSize": "{primitive.font.size.s18}",
-          "fontWeight": "{primitive.font.weight.regular}",
+          "fontWeight": "{primitive.font.weight.medium}",
           "letterSpacing": "{primitive.font.letterSpacing}",
           "lineHeight": 1.5555555555555556
         },
@@ -730,7 +738,7 @@
         "$value": {
           "fontFamily": "{primitive.font.family}",
           "fontSize": "{primitive.font.size.s20}",
-          "fontWeight": "{primitive.font.weight.semibold}",
+          "fontWeight": "{primitive.font.weight.bold}",
           "letterSpacing": "{primitive.font.letterSpacing}",
           "lineHeight": 1.4
         },
@@ -741,7 +749,7 @@
         "$value": {
           "fontFamily": "{primitive.font.family}",
           "fontSize": "{primitive.font.size.s24}",
-          "fontWeight": "{primitive.font.weight.semibold}",
+          "fontWeight": "{primitive.font.weight.bold}",
           "letterSpacing": "{primitive.font.letterSpacing}",
           "lineHeight": 1.3333333333333333
         },
@@ -752,7 +760,7 @@
         "$value": {
           "fontFamily": "{primitive.font.family}",
           "fontSize": "{primitive.font.size.s32}",
-          "fontWeight": "{primitive.font.weight.semibold}",
+          "fontWeight": "{primitive.font.weight.extraBold}",
           "letterSpacing": "{primitive.font.letterSpacing}",
           "lineHeight": 1.25
         },

@@ -123,7 +123,7 @@ function cssScalar(type, value, path) {
     case 'color': return color(value);
     case 'dimension': return /(?:border|focus|letterSpacing|strokeWidth)/.test(path) ? `${pixels(value)}px` : `${number(pixels(value) / 16)}rem`;
     case 'duration': return `${milliseconds(value)}ms`;
-    case 'fontFamily': return (Array.isArray(value) ? value : [value]).map(n => n === 'monospace' ? n : JSON.stringify(n)).join(', ');
+    case 'fontFamily': return (Array.isArray(value) ? value : [value]).map(n => n === 'monospace' || n === 'sans-serif' ? n : JSON.stringify(n)).join(', ');
     case 'cubicBezier': return `cubic-bezier(${value.join(', ')})`;
     default: return String(value);
   }

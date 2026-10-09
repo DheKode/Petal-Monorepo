@@ -33,6 +33,14 @@ test('a separate application can import the built root, web/native themes, CSS p
         const imported = await readFile(new URL(match[1], stylesUrl), 'utf8');
         assert(imported.length > 0);
       }
+      const fontCssUrl = new URL(import.meta.resolve('@petal/ui/fonts.css'));
+      const fontCss = await readFile(fontCssUrl, 'utf8');
+      assert(fontCss.includes("font-family: 'Geist'"));
+      const fontPath = fontCss.match(/url\\('([^']+)'\\)/)[1];
+      const font = await readFile(new URL(fontPath, fontCssUrl));
+      assert.equal(font.subarray(0, 4).toString(), 'wOF2');
+      const license = await readFile(new URL('./fonts/OFL.txt', fontCssUrl), 'utf8');
+      assert(license.includes('SIL OPEN FONT LICENSE Version 1.1'));
       const source = JSON.parse(await readFile(new URL(import.meta.resolve('@petal/ui/tokens.json')), 'utf8'));
       assert.equal(source.primitive.color.rose.$value.hex, '#B83D70');
       for (const group of ['components', 'hooks', 'layouts', 'icons']) {

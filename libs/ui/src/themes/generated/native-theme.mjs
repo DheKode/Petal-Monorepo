@@ -51,11 +51,13 @@ export const petalNativeTheme = freeze({
       "focus": 2
     },
     "font": {
-      "family": "Geist Mono",
+      "family": "Geist",
       "weight": {
         "regular": "400",
         "medium": "500",
-        "semibold": "600"
+        "semibold": "600",
+        "bold": "700",
+        "extraBold": "800"
       },
       "size": {
         "s12": 12,
@@ -136,51 +138,51 @@ export const petalNativeTheme = freeze({
     },
     "type": {
       "caption": {
-        "fontFamily": "Geist Mono",
+        "fontFamily": "Geist",
         "fontSize": 12,
         "fontWeight": "400",
         "letterSpacing": 0,
         "lineHeight": 18
       },
       "label": {
-        "fontFamily": "Geist Mono",
+        "fontFamily": "Geist",
         "fontSize": 14,
-        "fontWeight": "500",
+        "fontWeight": "600",
         "letterSpacing": 0,
         "lineHeight": 20
       },
       "body": {
-        "fontFamily": "Geist Mono",
+        "fontFamily": "Geist",
         "fontSize": 16,
-        "fontWeight": "400",
+        "fontWeight": "500",
         "letterSpacing": 0,
         "lineHeight": 24
       },
       "bodyLarge": {
-        "fontFamily": "Geist Mono",
+        "fontFamily": "Geist",
         "fontSize": 18,
-        "fontWeight": "400",
+        "fontWeight": "500",
         "letterSpacing": 0,
         "lineHeight": 28
       },
       "title": {
-        "fontFamily": "Geist Mono",
+        "fontFamily": "Geist",
         "fontSize": 20,
-        "fontWeight": "600",
+        "fontWeight": "700",
         "letterSpacing": 0,
         "lineHeight": 28
       },
       "heading": {
-        "fontFamily": "Geist Mono",
+        "fontFamily": "Geist",
         "fontSize": 24,
-        "fontWeight": "600",
+        "fontWeight": "700",
         "letterSpacing": 0,
         "lineHeight": 32
       },
       "display": {
-        "fontFamily": "Geist Mono",
+        "fontFamily": "Geist",
         "fontSize": 32,
-        "fontWeight": "600",
+        "fontWeight": "800",
         "letterSpacing": 0,
         "lineHeight": 40
       }
@@ -258,9 +260,9 @@ export const petalNativeTheme = freeze({
       "paddingBlock": 12,
       "gap": 8,
       "type": {
-        "fontFamily": "Geist Mono",
+        "fontFamily": "Geist",
         "fontSize": 14,
-        "fontWeight": "500",
+        "fontWeight": "600",
         "letterSpacing": 0,
         "lineHeight": 20
       },
@@ -309,9 +311,9 @@ export const petalNativeTheme = freeze({
       "borderWidth": 1,
       "errorBorder": "#A32640",
       "type": {
-        "fontFamily": "Geist Mono",
+        "fontFamily": "Geist",
         "fontSize": 16,
-        "fontWeight": "400",
+        "fontWeight": "500",
         "letterSpacing": 0,
         "lineHeight": 24
       },
@@ -319,16 +321,16 @@ export const petalNativeTheme = freeze({
       "disabledBackground": "#FFF7FA",
       "disabledForeground": "#745D69",
       "labelType": {
-        "fontFamily": "Geist Mono",
+        "fontFamily": "Geist",
         "fontSize": 14,
-        "fontWeight": "500",
+        "fontWeight": "600",
         "letterSpacing": 0,
         "lineHeight": 20
       },
       "helperType": {
-        "fontFamily": "Geist Mono",
+        "fontFamily": "Geist",
         "fontSize": 14,
-        "fontWeight": "500",
+        "fontWeight": "600",
         "letterSpacing": 0,
         "lineHeight": 20
       },
@@ -345,9 +347,9 @@ export const petalNativeTheme = freeze({
       "foreground": "#33252D",
       "mutedForeground": "#745D69",
       "titleType": {
-        "fontFamily": "Geist Mono",
+        "fontFamily": "Geist",
         "fontSize": 20,
-        "fontWeight": "600",
+        "fontWeight": "700",
         "letterSpacing": 0,
         "lineHeight": 28
       }
@@ -358,9 +360,9 @@ export const petalNativeTheme = freeze({
       "activeForeground": "#B83D70",
       "foreground": "#745D69",
       "type": {
-        "fontFamily": "Geist Mono",
+        "fontFamily": "Geist",
         "fontSize": 14,
-        "fontWeight": "500",
+        "fontWeight": "600",
         "letterSpacing": 0,
         "lineHeight": 20
       },
@@ -376,9 +378,9 @@ export const petalNativeTheme = freeze({
       "paddingInline": 8,
       "paddingBlock": 4,
       "type": {
-        "fontFamily": "Geist Mono",
+        "fontFamily": "Geist",
         "fontSize": 14,
-        "fontWeight": "500",
+        "fontWeight": "600",
         "letterSpacing": 0,
         "lineHeight": 20
       },
@@ -420,9 +422,9 @@ export const petalNativeTheme = freeze({
       "padding": 16,
       "gap": 8,
       "type": {
-        "fontFamily": "Geist Mono",
+        "fontFamily": "Geist",
         "fontSize": 14,
-        "fontWeight": "500",
+        "fontWeight": "600",
         "letterSpacing": 0,
         "lineHeight": 20
       },
