@@ -73,6 +73,25 @@ def enableProguardInReleaseBuilds = false
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
 android {
+    // Spike size trim (~98 MB -> ~37 MB): keep llama.rn's dot-product build
+    // (Helio G88/G99 and most phones since 2019) plus the generic fallback it
+    // always loads. Missing variants are skipped at runtime by llama.rn's
+    // loader; phones without dot-product use the slower generic build.
+    packaging {
+        jniLibs {
+            excludes += [
+                "**/librnllama_v8.so", "**/librnllama_jni_v8.so",
+                "**/librnllama_v8_2.so", "**/librnllama_jni_v8_2.so",
+                "**/librnllama_v8_2_i8mm.so", "**/librnllama_jni_v8_2_i8mm.so",
+                "**/librnllama_v8_2_dotprod_i8mm.so", "**/librnllama_jni_v8_2_dotprod_i8mm.so",
+                "**/librnllama_v8_2_dotprod_i8mm_hexagon_opencl.so", "**/librnllama_jni_v8_2_dotprod_i8mm_hexagon_opencl.so"
+            ]
+        }
+    }
+    // Qualcomm Hexagon NPU helpers are unused on MediaTek phones.
+    androidResources {
+        ignoreAssetsPattern "!ggml-hexagon"
+    }
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion

@@ -3,9 +3,10 @@
  *
  * Loads a locally stored GGUF with llama.rn, streams fresh replies to the
  * fictional prompts and shows load time, time to first token and latency.
- * It runs once on launch; each summary is also logged as
+ * On first launch it downloads and verifies the model (internet needed once),
+ * then works offline. It runs once on launch; each summary is also logged as
  * `PETAL_BENCH {json}` so `adb logcat -s ReactNativeJS` can capture it.
- * No network access is used or needed after the model is copied over.
+ * No network access is used after the model is verified.
  *
  * @format
  */
@@ -15,13 +16,14 @@ import {Button, ScrollView, StatusBar, StyleSheet, Text, View} from 'react-nativ
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {initLlama, LlamaContext} from 'llama.rn';
 import {prompts, system} from './src/prompts';
+import {ensureModel, MODEL, SetupProgress} from './src/model';
 
-const MODEL_FILE = 'Qwen3-0.6B-Q4_K_M.gguf';
-// Internal storage (copied with `adb shell run-as`) first, then app-specific external storage.
-const MODEL_PATHS = [
-  `/data/user/0/dev.petal.spike/files/${MODEL_FILE}`,
-  `/storage/emulated/0/Android/data/dev.petal.spike/files/${MODEL_FILE}`,
-];
+function describeSetup(progress: SetupProgress): string {
+  if (progress.phase === 'checking') return 'Checking for the on-device model…';
+  if (progress.phase === 'verifying') return 'Verifying the model file (one time)…';
+  const mb = (bytes: number) => (bytes / 1e6).toFixed(0);
+  return `Downloading the AI model (one time): ${mb(progress.bytesWritten)} / ${mb(progress.totalBytes)} MB`;
+}
 
 type RunResult = {
   prompt: string;
@@ -56,28 +58,23 @@ function Bench() {
 
   const ensureContext = useCallback(async () => {
     if (contextRef.current) return contextRef.current;
-    let lastError: unknown = null;
-    for (const path of MODEL_PATHS) {
-      try {
-        setStatus(`Loading ${path}`);
-        const start = Date.now();
-        const context = await initLlama({
-          model: path,
-          n_ctx: 2048,
-          n_gpu_layers: 0,
-          use_mlock: false,
-        });
-        const loadMs = Date.now() - start;
-        contextRef.current = context;
-        const info = {event: 'load', path, loadMs, gpu: context.gpu, reasonNoGPU: context.reasonNoGPU};
-        console.log(`PETAL_BENCH ${JSON.stringify(info)}`);
-        setLoadInfo(`Loaded in ${loadMs} ms from ${path} (GPU: ${context.gpu ? 'yes' : 'no'})`);
-        return context;
-      } catch (error) {
-        lastError = error;
-      }
-    }
-    throw new Error(`Model not found or failed to load: ${String(lastError)}`);
+    const setupStart = Date.now();
+    const path = await ensureModel(progress => setStatus(describeSetup(progress)));
+    const setupMs = Date.now() - setupStart;
+    setStatus('Loading the model…');
+    const start = Date.now();
+    const context = await initLlama({
+      model: path,
+      n_ctx: 2048,
+      n_gpu_layers: 0,
+      use_mlock: false,
+    });
+    const loadMs = Date.now() - start;
+    contextRef.current = context;
+    const info = {event: 'load', path, setupMs, loadMs, gpu: context.gpu, reasonNoGPU: context.reasonNoGPU};
+    console.log(`PETAL_BENCH ${JSON.stringify(info)}`);
+    setLoadInfo(`${MODEL.file} loaded in ${loadMs} ms on this phone (GPU: ${context.gpu ? 'yes' : 'no'})`);
+    return context;
   }, []);
 
   const run = useCallback(async () => {
@@ -140,8 +137,12 @@ function Bench() {
 
   return (
     <ScrollView contentContainerStyle={styles.content}>
-      <Text style={styles.title}>Petal on-device inference spike</Text>
-      <Text style={styles.note}>Fictional prompts only. Not medical guidance.</Text>
+      <Text style={styles.title}>Petal AI preview (test build)</Text>
+      <Text style={styles.note}>
+        Tests the small AI model running entirely on this phone. This is not the Petal pill tracker, and it gives no medical
+        guidance. Prompts use fictional data. The first launch downloads the model (about 400 MB); after that it works
+        offline.
+      </Text>
       <Text style={styles.status}>{status}</Text>
       {loadInfo ? <Text style={styles.metric}>{loadInfo}</Text> : null}
       <View style={styles.box}>
