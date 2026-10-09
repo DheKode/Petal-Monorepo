@@ -1,5 +1,5 @@
 /* Minimal Petal look for the desktop screens (DESIGN.md): flat, mostly white and soft white, rose only for the main action
-   and the current page, Geist Mono, text labels never replaced by color. Only @petal/ui tokens; no raw brand values.
+   and the current page, Geist Sans (registered by @petal/ui), text labels never replaced by color. Only @petal/ui tokens; no raw brand values.
    Plain elements are styled here so the existing screens keep their markup; draft #57 can replace this file. */
 
 html, body { margin: 0; background: var(--petal-color-background); }

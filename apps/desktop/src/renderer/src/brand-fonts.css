@@ -1,9 +1,0 @@
-/* Geist Mono, the approved Petal typeface (DESIGN.md), bundled locally (libs/assets/fonts/geist-mono, SIL OFL 1.1).
-   No network request. @petal/ui tokens already name it as the font family. */
-@font-face {
-  font-family: 'Geist Mono';
-  src: url('../../../../../libs/assets/fonts/geist-mono/GeistMono-Variable.woff2') format('woff2');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
