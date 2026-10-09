@@ -1,6 +1,6 @@
 # Petal theme
 
-Shared visual foundations for mobile, desktop, and landing applications, under U01 / issue #11 and PRD §4. The human selected `libs/ui/themes/` as the theme's home. No app or workspace dependency is introduced.
+Shared visual foundations for mobile, desktop, and landing applications, under U01 / issue #11 and PRD §4. The human selected `libs/ui/src/themes/` as the theme's home. It is exposed by the `@petal/ui` workspace package; no application dependency is added here.
 
 The canonical source is `petal.tokens.json`, using the published DTCG 2025.10 format. Primitive values feed semantic roles, which feed component defaults. Consumers use semantic and component tokens instead of duplicating raw brand values.
 
@@ -9,7 +9,7 @@ The approved palette and Geist Mono family are retained. New type sizes, spacing
 ## Structure and naming
 
 ```text
-libs/ui/themes/
+libs/ui/src/themes/
   petal.tokens.json           # Canonical DTCG-format source
   generated/
     theme.css                # Web/Electron CSS variables
@@ -60,10 +60,10 @@ The tests check declared normal-text pairs at 4.5:1, and control/focus pairs at 
 
 ## Web and Electron
 
-From a file at `apps/<app>/src/main.tsx`, import the generated CSS:
+After adding `"@petal/ui": "workspace:*"` to the app dependencies and building the shared package, import the CSS:
 
 ```ts
-import '../../../libs/ui/themes/generated/theme.css';
+import '@petal/ui/theme.css';
 ```
 
 ```css
@@ -87,17 +87,17 @@ import '../../../libs/ui/themes/generated/theme.css';
 CSS dimensions use `rem` at a 16 px reference size; border/focus thickness and letter spacing use px. Do not force the user's root font size. The CSS defines variables only, without a reset, component selectors, external font download, or app behavior. Its reduced-motion media query zeros all duration tokens, including component aliases. CSS custom properties cannot be used as media-query conditions; use the numeric layout export when building responsive behavior.
 
 ```ts
-import { petalTheme, getPetalTheme } from '../../../libs/ui/themes/generated/theme.mjs';
+import { petalTheme, getPetalTheme } from '@petal/ui/theme';
 const background = petalTheme.semantic.color.background;
 const animationTheme = getPetalTheme({ reduceMotion: userPrefersReducedMotion });
 ```
 
-Adjust relative paths for the importing file; Electron's deeper renderer layout needs a different number of `../` segments. No alias or workspace package is configured by this change. JavaScript dimensions are logical pixel numbers, durations are milliseconds, and typography `lineHeight` is a multiplier in the web export.
+JavaScript dimensions are logical pixel numbers, durations are milliseconds, and typography `lineHeight` is a multiplier in the web export.
 
 ## React Native
 
 ```ts
-import { petalNativeTheme as theme, getPetalNativeTheme } from '../../../libs/ui/themes/generated/native-theme.mjs';
+import { petalNativeTheme as theme, getPetalNativeTheme } from '@petal/ui/theme/native';
 const bodyStyle = {
   ...theme.semantic.type.body,
   color: theme.semantic.color.text.primary,
@@ -120,11 +120,12 @@ Native dimensions are density-independent numbers; typography line heights are a
 Run from the repository root with the existing Node.js 22+ runtime; commands work in PowerShell, Git Bash, and zsh:
 
 ```sh
-node libs/ui/themes/scripts/build.mjs
-node libs/ui/themes/scripts/build.mjs --check
-node --test libs/ui/themes/scripts/tokens.test.mjs
+pnpm --filter @petal/ui build
+pnpm --filter @petal/ui theme:check
+pnpm --filter @petal/ui typecheck
+pnpm --filter @petal/ui test
 ```
 
 Edit only `petal.tokens.json`, regenerate, and commit source and generated exports together. `--check` fails on missing/stale output. The tests reject missing/cyclic references, mismatched types, malformed values, unsafe keys, and exported-name collisions; check contrast and unit conversions; and prove reduced motion and source/export parity.
 
-Runtime exports have no build dependency. This is a source library outside the currently registered pnpm workspace globs, so the dedicated checks above are required until owners integrate them with root tooling. No app was restyled or built for this handoff.
+Built runtime exports have no package dependencies. The workspace package uses the pinned repository TypeScript toolchain to emit its entry point and declarations, then copies the generated theme exports into `dist/`. Root recursive build, typecheck, and test commands include it. Package checks verify typed imports and runtime resolution from a separate application. Actual Vite/Metro application integration remains with the application owners.

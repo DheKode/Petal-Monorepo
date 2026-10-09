@@ -28,7 +28,7 @@
   },
   "scripts": {
     "build": "node src/themes/scripts/build.mjs && tsc -p tsconfig.build.json && node scripts/copy-theme.mjs",
-    "typecheck": "tsc -p tsconfig.json",
+    "typecheck": "pnpm build && tsc -p tsconfig.json",
     "test": "pnpm build && node --test src/themes/scripts/tokens.test.mjs test/package.test.mjs",
     "theme:check": "node src/themes/scripts/build.mjs --check"
   }
