@@ -1,0 +1,65 @@
+{
+  "host": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M1",
+    "node": "v26.5.0"
+  },
+  "model": {
+    "family": "gemma3",
+    "sha256": "8ccc5cd1f1b3602548715ae25a66ed73fd5dc68a210412eea643eb20eb75a135"
+  },
+  "runtime": {
+    "nodeLlamaCpp": "3.22.1",
+    "llamaCpp": {
+      "repo": "ggml-org/llama.cpp",
+      "release": "v0.5.0"
+    },
+    "gpu": "metal"
+  },
+  "contextSize": 2048,
+  "maxTokens": 180,
+  "temperature": 0,
+  "loadMs": 2186,
+  "peakRSS": 1170128896,
+  "runs": [
+    {
+      "id": "P13",
+      "question": "Why do the brown pills look different?",
+      "plan": {
+        "mode": "bounded",
+        "statements": [
+          {
+            "id": "formulation-limit",
+            "plain": "The product formulation is not verified in this setup. Tablet colour alone cannot establish its contents. Draft sources are excluded from answers.",
+            "gentle": "The product formulation is not verified in this setup. Tablet colour alone cannot establish its contents. Draft sources are excluded from answers."
+          }
+        ],
+        "requiredIds": [
+          "formulation-limit"
+        ],
+        "evidenceIds": []
+      },
+      "inputFacts": {
+        "takenUnknownTime": [],
+        "takenYesterday": [],
+        "confirmedMisses": [],
+        "unknown": [
+          "P13-dose-06",
+          "P13-dose-07",
+          "P13-dose-08"
+        ]
+      },
+      "retrievedDoses": 3,
+      "evidenceCount": 0,
+      "natural": {
+        "raw": "The provided records do not offer information about why brown pills appear different. The records detail the status of dosage confirmations, and do not address the visual characteristics of the pills themselves.",
+        "inputTokens": 389,
+        "firstTokenMs": 1100,
+        "totalMs": 2341,
+        "outputTokens": 35,
+        "systemContextIncluded": true
+      }
+    }
+  ]
+}
