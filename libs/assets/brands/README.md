@@ -1,6 +1,6 @@
 # Petal brand assets
 
-The approved identity is a three-petal **open blossom** with a custom lowercase **petal** wordmark. The lettering is outlined artwork, independent of the Geist Mono UI font. These assets support designer work under U01 / issue #11 and PRD §4; they do not implement or verify an app screen.
+The approved v2 identity is a single **folded petal** following the preserved custom lowercase **petal** wordmark. The designer selected this direction and approved the symbol enlarged by 25% from the first lockup study. The lettering is outlined artwork, independent of the Geist Mono UI font. These assets support designer work under U01/L01 / issues #11 and #53, PRD §4 and F15; they do not implement or verify an app screen.
 
 ## Choose an asset
 
@@ -8,8 +8,8 @@ The approved identity is a three-petal **open blossom** with a custom lowercase 
 | --- | --- | --- |
 | Primary horizontal | `petal-logo-horizontal-primary` | Default logo on white or soft white |
 | Stacked | `petal-logo-stacked-primary` | Compact compositions with vertical room |
-| Wordmark | `petal-wordmark-plum` | Brand name where the blossom already appears |
-| Blossom | `petal-symbol-rose` | Recognizable brand accent without lettering |
+| Wordmark | `petal-wordmark-plum` | Brand name where the symbol already appears |
+| Folded petal | `petal-symbol-rose` | Recognizable brand accent without lettering |
 | Circular icon | `petal-icon-circle-rose` | Avatars, shortcuts, and favicon artwork |
 | Reversed | Any `*-white` logo, wordmark, or symbol | Deep plum or rose background |
 | Monochrome | Any `*-rose`, `*-plum`, or `*-black` | One-color artwork and print |
@@ -32,17 +32,26 @@ libs/assets/brands/
     petal-logo-master.json
     petal-logo-approved-reference.png
     petal-logo-transparent-extraction.png
+    petal-folded-symbol-reference.png
+    petal-logo-approved-reference-v2.png
     export-assets.mjs
+    trace-symbol.mjs
+    verify-assets.mjs
     generation-notes.md
+    archive/
+      petal-logo-master-v1.json
+      petal-logo-master-v1.svg
+      wordmark-checksums-v1.json
 ```
 
-Treatments are `logo-horizontal`, `logo-stacked`, `wordmark`, `symbol`, and `icon-circle`. Colors are `primary`, `rose`, `plum`, `black`, and `white`, where applicable. `primary` combines a rose blossom with a deep plum wordmark. `icon-circle` uses a white blossom on a solid rose, plum, or black disk; the area outside the disk is transparent.
+Treatments are `logo-horizontal`, `logo-stacked`, `wordmark`, `symbol`, and `icon-circle`. Colors are `primary`, `rose`, `plum`, `black`, and `white`, where applicable. `primary` combines a rose folded petal with a deep plum wordmark. `icon-circle` uses a white petal on a solid rose, plum, or black disk; the area outside the disk is transparent. Canonical filenames are unchanged, so consumers receive the revised identity at the same paths. The manifest records version 2.
 
 ## Usage
 
-- Preserve the aspect ratio, letter spacing, blossom gaps, and relative proportions. Scale the complete asset uniformly.
+- Preserve the aspect ratio, letter spacing, symbol cutout, and relative proportions. Scale the complete asset uniformly.
+- Horizontal lockups read wordmark → symbol: the lettering is 644 × 274 units, the petal is approximately 202.6852 × 220, the clear gap is 34, and the petal starts 10 units below the lettering's top. The symbol's center stays at 120 units, above the p's descender. Stacked derivatives place the wordmark above the petal with both scaled uniformly to 65%.
 - SVG and PNG logos include clearspace around the artwork. Keep that space free of text and controls. The circular icon is intentionally edge-to-edge within its square canvas.
-- Prefer the horizontal logo at 160 px wide or larger and the stacked logo at 100 px wide or larger. Prefer standalone blossoms and circular icons at 32 px or larger. These are initial handoff recommendations; verify legibility in the final screen and on the actual device. The 16 px export is for favicon use.
+- Prefer the horizontal logo at 160 px wide or larger and the stacked logo at 100 px wide or larger. Prefer standalone symbols and circular icons at 32 px or larger. These are initial handoff recommendations; verify legibility in the final screen and on the actual device. The 16 px export is for favicon use.
 - Use the white version on a solid dark or rose surface. Do not place white artwork on a white surface. Black is a reproduction option, not a new UI palette token.
 - Keep fills flat. Do not add gradients, textures, outlines, shadows, rotate the mark, or replace the lettering with typed text.
 - SVGs contain paths and primitive geometry, with no embedded raster image, external asset, or font dependency. PNG backgrounds and letter counters are transparent.
@@ -51,14 +60,15 @@ Treatments are `logo-horizontal`, `logo-stacked`, `wordmark`, `symbol`, and `ico
 
 ## Source and exports
 
-The vector master was traced from the approved reference's upper horizontal logo, retaining its custom lettering and blossom silhouette. All variations use the same outlines. Fills were normalized to **Rose `#B83D70`**, **Deep plum `#33252D`**, **White `#FFFFFF`**, or reproduction **Black `#000000`**. The original raster has slight texture; exported vectors and PNGs have solid fills. The transparent ImageGen extraction is retained as supporting source material, rather than substituted for the approved outline reference.
+The wordmark is preserved exactly from the v1 vector master; all eight standalone wordmark SVG/PNG files are byte-for-byte unchanged. The revised symbol is reconstructed from the approved original raster's alpha silhouette, with restrained curve smoothing. All variations use the same outlines. Fills are normalized to **Rose `#B83D70`**, **Deep plum `#33252D`**, **White `#FFFFFF`**, or reproduction **Black `#000000`**. The raster study has slight color variation; exported vectors and PNGs have solid fills. Historical v1 masters and references remain as provenance, rather than current product artwork.
 
 The master JSON contains the shared outlines; the master SVG is the default horizontal logo. To regenerate exports, use an existing Sharp installation with Node.js:
 
 ```sh
 node libs/assets/brands/source/export-assets.mjs --sharp "/absolute/path/to/sharp"
+node libs/assets/brands/source/verify-assets.mjs --sharp "/absolute/path/to/sharp"
 ```
 
-The script is cross-platform; use an absolute Windows path on Windows. If Sharp is already resolvable by Node, omit `--sharp`. No package manifest or app dependency was added for this handoff. Regeneration replaces this bundle's exported SVGs, PNGs, manifest, and variation sheet.
+The scripts are cross-platform; use an absolute Windows path on Windows. If Sharp is already resolvable by Node, omit `--sharp`. No package manifest or app dependency was added for this handoff. Regeneration replaces this bundle's exported SVGs, PNGs, manifest, and variation sheet. The optional `trace-symbol.mjs` reconstructs the symbol from the retained reference; routine exports need only the versioned master. Verification checks native vector content, PNG rendering/transparency, dimensions, palette, approved-source silhouette fidelity, and unchanged wordmark checksums. App/device and installer/adaptive-icon packaging checks remain separate.
 
 Review [petal-logo-variations.png](petal-logo-variations.png) for the complete catalog. The contact sheet is a presentation artifact; use individual files in products.

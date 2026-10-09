@@ -18,6 +18,8 @@ export declare const petalTheme: {
       readonly "warningSurface": "#FFF3D9";
       readonly "success": "#2B6B59";
       readonly "successSurface": "#EAF4EF";
+      readonly "transparent": "rgba(255, 255, 255, 0)";
+      readonly "scrim": "rgba(51, 37, 45, 0.18)";
     };
     readonly "spacing": {
       readonly "s0": 0;
@@ -41,6 +43,7 @@ export declare const petalTheme: {
       readonly "container": 16;
       readonly "sheet": 24;
       readonly "round": 9999;
+      readonly "tight": 10;
     };
     readonly "border": {
       readonly "thin": 1;
@@ -72,6 +75,18 @@ export declare const petalTheme: {
     };
     readonly "easing": {
       readonly "standard": readonly [0.2, 0, 0, 1];
+    };
+    readonly "icon": {
+      readonly "size": {
+        readonly "small": 20;
+        readonly "default": 24;
+        readonly "large": 32;
+      };
+      readonly "strokeWidth": 1.75;
+    };
+    readonly "motion": {
+      readonly "pressScale": 0.98;
+      readonly "enterOffset": 8;
     };
   };
   readonly "semantic": {
@@ -111,6 +126,7 @@ export declare const petalTheme: {
           readonly "surface": "#EAF4EF";
         };
       };
+      readonly "scrim": "rgba(51, 37, 45, 0.18)";
     };
     readonly "type": {
       readonly "caption": {
@@ -211,6 +227,16 @@ export declare const petalTheme: {
         readonly "slow": number;
       };
       readonly "easing": readonly [0.2, 0, 0, 1];
+      readonly "pressScale": 0.98;
+      readonly "enterOffset": 8;
+    };
+    readonly "icon": {
+      readonly "size": {
+        readonly "small": 20;
+        readonly "default": 24;
+        readonly "large": 32;
+      };
+      readonly "strokeWidth": 1.75;
     };
   };
   readonly "component": {
@@ -238,10 +264,26 @@ export declare const petalTheme: {
         readonly "background": "#FFFFFF";
         readonly "foreground": "#B83D70";
         readonly "border": "#917584";
+        readonly "hover": "#FCE8EF";
+        readonly "pressed": "#FCE8EF";
       };
       readonly "disabled": {
         readonly "background": "#FCE8EF";
         readonly "foreground": "#745D69";
+      };
+      readonly "borderWidth": 1;
+      readonly "iconSize": 20;
+      readonly "pressScale": 0.98;
+      readonly "focusWidth": 2;
+      readonly "focusOffset": 2;
+      readonly "tertiary": {
+        readonly "background": "rgba(255, 255, 255, 0)";
+        readonly "foreground": "#B83D70";
+        readonly "hover": "#FCE8EF";
+      };
+      readonly "danger": {
+        readonly "background": "#A32640";
+        readonly "foreground": "#FFFFFF";
       };
     };
     readonly "field": {
@@ -262,6 +304,25 @@ export declare const petalTheme: {
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.5;
       };
+      readonly "focusBorder": "#B83D70";
+      readonly "disabledBackground": "#FFF7FA";
+      readonly "disabledForeground": "#745D69";
+      readonly "labelType": {
+        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontSize": 14;
+        readonly "fontWeight": 500;
+        readonly "letterSpacing": 0;
+        readonly "lineHeight": 1.4285714285714286;
+      };
+      readonly "helperType": {
+        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontSize": 14;
+        readonly "fontWeight": 500;
+        readonly "letterSpacing": 0;
+        readonly "lineHeight": 1.4285714285714286;
+      };
+      readonly "gap": 8;
+      readonly "transition": number;
     };
     readonly "card": {
       readonly "background": "#FFFFFF";
@@ -270,6 +331,15 @@ export declare const petalTheme: {
       readonly "gap": 16;
       readonly "border": "#E7D5DE";
       readonly "borderWidth": 1;
+      readonly "foreground": "#33252D";
+      readonly "mutedForeground": "#745D69";
+      readonly "titleType": {
+        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontSize": 20;
+        readonly "fontWeight": 600;
+        readonly "letterSpacing": 0;
+        readonly "lineHeight": 1.4;
+      };
     };
     readonly "navigation": {
       readonly "minTarget": 48;
@@ -283,6 +353,10 @@ export declare const petalTheme: {
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.4285714285714286;
       };
+      readonly "radius": 12;
+      readonly "gap": 8;
+      readonly "paddingInline": 16;
+      readonly "transition": number;
     };
     readonly "status": {
       readonly "background": "#FCE8EF";
@@ -297,20 +371,59 @@ export declare const petalTheme: {
         readonly "letterSpacing": 0;
         readonly "lineHeight": 1.4285714285714286;
       };
+      readonly "gap": 8;
+      readonly "iconSize": 20;
     };
     readonly "dialog": {
       readonly "background": "#FFFFFF";
       readonly "radius": 24;
       readonly "padding": 24;
       readonly "gap": 16;
+      readonly "foreground": "#33252D";
+      readonly "border": "#E7D5DE";
+      readonly "backdrop": "rgba(51, 37, 45, 0.18)";
+      readonly "maxWidth": 720;
+      readonly "transition": number;
+      readonly "enterOffset": 8;
+    };
+    readonly "selection": {
+      readonly "minTarget": 48;
+      readonly "radius": 12;
+      readonly "background": "#FFFFFF";
+      readonly "foreground": "#33252D";
+      readonly "selectedBackground": "#B83D70";
+      readonly "selectedForeground": "#FFFFFF";
+      readonly "border": "#917584";
+      readonly "gap": 8;
+      readonly "transition": number;
+    };
+    readonly "proposal": {
+      readonly "background": "#FCE8EF";
+      readonly "foreground": "#33252D";
+      readonly "border": "#B83D70";
+      readonly "radius": 16;
+      readonly "padding": 20;
+    };
+    readonly "feedback": {
+      readonly "radius": 12;
+      readonly "padding": 16;
+      readonly "gap": 8;
+      readonly "type": {
+        readonly "fontFamily": readonly ["Geist Mono", "monospace"];
+        readonly "fontSize": 14;
+        readonly "fontWeight": 500;
+        readonly "letterSpacing": 0;
+        readonly "lineHeight": 1.4285714285714286;
+      };
+      readonly "transition": number;
     };
   };
 };
 export type PetalTheme = typeof petalTheme;
 export declare const petalThemeMetadata: {
-  readonly "version": "0.1.0";
+  readonly "version": "0.2.0";
   readonly "appearance": "light";
   readonly "format": "DTCG 2025.10";
-  readonly "status": "Approved brand colors/family; new dimensions, functional colors, and states are initial baseline for review.";
+  readonly "status": "Approved brand palette/family; original component and motion exploration for designer review.";
 };
 export declare function getPetalTheme(options?: { reduceMotion?: boolean }): typeof petalTheme;

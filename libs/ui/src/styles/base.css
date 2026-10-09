@@ -1,0 +1,19 @@
+/* Opt-in web styling. Font files are registered by the consuming application. */
+[data-petal-ui] {
+  color: var(--petal-color-text-primary);
+  background: var(--petal-color-background);
+  font-family: var(--petal-type-body-font-family);
+  font-size: var(--petal-type-body-font-size);
+  line-height: var(--petal-type-body-line-height);
+  font-weight: var(--petal-type-body-font-weight);
+}
+[data-petal-ui], [data-petal-ui] *, [data-petal-ui] *::before, [data-petal-ui] *::after { box-sizing: border-box; }
+:where([data-petal-ui]) :where(button, input, select, textarea) { font: inherit; }
+[data-petal-ui] button { cursor: pointer; }
+[data-petal-ui] button:disabled { cursor: not-allowed; }
+[data-petal-ui] :focus-visible {
+  outline: var(--petal-focus-width) solid var(--petal-color-focus);
+  outline-offset: var(--petal-focus-offset);
+}
+.petal-label { font-size: var(--petal-type-label-font-size); line-height: var(--petal-type-label-line-height); font-weight: var(--petal-type-label-font-weight); }
+.petal-muted { color: var(--petal-color-text-secondary); }

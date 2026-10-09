@@ -10,7 +10,7 @@ const sharpIndex = process.argv.indexOf('--sharp');
 const sharp = require(sharpIndex >= 0 ? process.argv[sharpIndex + 1] : 'sharp');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const master = JSON.parse(await fs.readFile(path.join(root, 'source/petal-logo-master.json'), 'utf8'));
-const { symbol, wordmark, palette } = master;
+const { symbol, wordmark, palette, layout } = master;
 const shapes = (part, fill) => `<path fill="${fill}" fill-rule="evenodd" d="${part.paths.join(' ')}"/>`;
 const group = (part, fill, x = 0, y = 0, scale = 1) => `<g transform="translate(${x} ${y}) scale(${scale})">${shapes(part, fill)}</g>`;
 const svg = (width, height, body, label) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" role="img" aria-label="${label}"><title>${label}</title>${body}</svg>\n`;
@@ -23,28 +23,28 @@ for (const color of ['primary', 'rose', 'plum', 'black', 'white']) {
   const markFill = color === 'primary' ? palette.rose : palette[color];
   const textFill = color === 'primary' ? palette.plum : palette[color];
   const pad = 24;
-  const x = wordmark.origin[0] - symbol.origin[0];
-  const y = symbol.origin[1] - wordmark.origin[1];
-  add('logo-horizontal', color, x + wordmark.width + 2 * pad, wordmark.height + 2 * pad,
-    group(symbol, markFill, pad, pad + y) + group(wordmark, textFill, pad + x, pad), 2048);
-  const scale = .65;
+  const x = wordmark.width + layout.horizontal.gap;
+  const y = layout.horizontal.symbolTop;
+  add('logo-horizontal', color, x + symbol.width + 2 * pad, wordmark.height + 2 * pad,
+    group(wordmark, textFill, pad, pad) + group(symbol, markFill, pad + x, pad + y), 2048);
+  const scale = layout.stacked.scale;
   const width = wordmark.width * scale + 2 * pad;
-  const wordY = pad + symbol.height + 32;
-  add('logo-stacked', color, width, wordY + wordmark.height * scale + pad,
-    group(symbol, markFill, (width - symbol.width) / 2, pad) + group(wordmark, textFill, pad, wordY, scale), 1024);
+  const symbolY = pad + wordmark.height * scale + layout.stacked.gap;
+  add('logo-stacked', color, width, symbolY + symbol.height * scale + pad,
+    group(wordmark, textFill, pad, pad, scale) + group(symbol, markFill, (width - symbol.width * scale) / 2, symbolY, scale), 1024);
 }
 for (const color of ['rose', 'plum', 'black', 'white']) {
   add('symbol', color, symbol.width + 48, symbol.height + 48, group(symbol, palette[color], 24, 24), 1024);
   add('wordmark', color, wordmark.width + 48, wordmark.height + 48, group(wordmark, palette[color], 24, 24), 2048);
 }
 for (const color of ['rose', 'plum', 'black']) {
-  const scale = 360 / symbol.width;
+  const scale = 360 / Math.max(symbol.width, symbol.height);
   add('icon-circle', color, 512, 512,
-    `<circle cx="256" cy="256" r="256" fill="${palette[color]}"/>` + group(symbol, palette.white, 76, (512 - symbol.height * scale) / 2, scale), 1024);
+    `<circle cx="256" cy="256" r="256" fill="${palette[color]}"/>` + group(symbol, palette.white, (512 - symbol.width * scale) / 2, (512 - symbol.height * scale) / 2, scale), 1024);
 }
 await fs.mkdir(path.join(root, 'svg'), { recursive: true });
 await fs.mkdir(path.join(root, 'png'), { recursive: true });
-const manifest = { name: 'Petal', version: 1, palette, variants: [] };
+const manifest = { name: 'Petal', version: master.version, identity: master.name, layout, palette, variants: [] };
 for (const variant of variants) {
   const svgPath = `svg/${variant.name}.svg`, pngPath = `png/${variant.name}.png`;
   await fs.writeFile(path.join(root, svgPath), variant.svg);
@@ -64,7 +64,7 @@ await fs.writeFile(path.join(root, 'source/petal-logo-master.svg'), variants[0].
 // A contact sheet for reviewing every variant on its intended background.
 const columns = 3, cellWidth = 480, cellHeight = 245, header = 120;
 const rows = Math.ceil(variants.length / columns), width = columns * cellWidth, height = header + rows * cellHeight;
-let body = `<rect width="${width}" height="${height}" fill="#FFF7FA"/><text x="28" y="48" font-family="sans-serif" font-size="30" fill="#33252D">Petal · approved open blossom</text><text x="28" y="82" font-family="sans-serif" font-size="16" fill="#745D69">Production variations · shared outlines · flat fills</text>`;
+let body = `<rect width="${width}" height="${height}" fill="#FFF7FA"/><text x="28" y="48" font-family="sans-serif" font-size="30" fill="#33252D">Petal · approved folded petal</text><text x="28" y="82" font-family="sans-serif" font-size="16" fill="#745D69">Wordmark first · preserved lettering · flat vector fills</text>`;
 for (let i = 0; i < variants.length; i++) {
   const v = variants[i], x = (i % columns) * cellWidth, y = header + Math.floor(i / columns) * cellHeight;
   const dark = v.color === 'white';

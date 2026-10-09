@@ -1,6 +1,6 @@
 # Artwork provenance
 
-The user approved the polished open blossom and custom wordmark in this design conversation. Flo was a study reference; its artwork and lettering were not used in this asset bundle.
+The user originally approved the v1 open blossom and custom wordmark in this design conversation. The wordmark remains current; the blossom was superseded by the approved v2 folded petal below. Flo was a study reference; its artwork and lettering were not used in this asset bundle.
 
 `petal-logo-approved-reference.png` is the accepted presentation image, created with the built-in ImageGen tool. Its upper lockup supplies the production outlines. `petal-logo-transparent-extraction.png` was created with the built-in ImageGen tool for this handoff using the following prompt:
 
@@ -9,3 +9,20 @@ The user approved the polished open blossom and custom wordmark in this design c
 Production vectors were traced directly from the approved reference to preserve its proportions rather than adopt any generative extraction drift. Small raster edge irregularities were smoothed into quadratic vector curves. This is a vector reconstruction of raster artwork, not an original editable Figma source. Both source images are preserved for comparison.
 
 Color, arrangement, PNG sizes, and the variation sheet are deterministic exports from the versioned vector outlines in `petal-logo-master.json`, using `export-assets.mjs`. No additional image-generation calls are required for these exports.
+
+## Approved v2 folded petal
+
+The designer selected the first folded-petal study, requested the symbol after the unchanged wordmark, requested a larger symbol, then approved the enlarged lockup with “Looks good, now we can use that.” `petal-logo-approved-reference-v2.png` preserves that reviewed layout. `petal-folded-symbol-reference.png` preserves the original built-in Image Gen output; the source output filename was `exec-88a0f604-d1eb-4583-991c-1eb3550ce384.png`.
+
+The original symbol was generated with the existing Petal horizontal-logo PNG as a style reference, using this exact prompt:
+
+> Use case: logo-brand. Design exploration for Petal, a private offline pill companion for adults, grounded in its existing flat, modern rose-and-white brand.
+> Target dimensions: square 1024 x 1024. Asset type: standalone brand SYMBOL study, no typography and no app UI.
+> Reference image: existing Petal horizontal logo, for visual weight and organic character only. The custom lowercase petal WORDMARK IS LOCKED AND MUST REMAIN UNCHANGED in the project. Do not output any lettering, wordmark, labels, or existing three-petal blossom.
+> Direction name: Folded petal.
+> Create one exceptionally simple distinctive asymmetric petal silhouette, softly curved and slightly leaning, with one wide curved negative-space incision that suggests a petal gently folding inward. Its exterior should feel sculptural and organic, with a rounded shoulder, one softly tapered tip, and a broad rounded base. Two connected lobes can suggest the fold, but the overall reads as one botanical shape. No literal leaf stem or veins. No alphabet P, no pill capsule, no feather, no generic teardrop droplet, no heart, no ribbon awareness emblem, no shield. Avoid a perfect ellipse or mirrored geometry.
+> Single solid Rose #B83D70 fill. True transparent background and true transparent incision. Crisp flat vector-friendly silhouette, smooth controlled Bézier-like edges, no gradient, texture, lighting, shadow, outline, 3D, decorative accents, or extra colors. Make the negative gap broad enough for a 24 px icon. Center a single symbol occupying about 60% of the canvas, ample clearspace. Only one concept and one symbol, no variations sheet. Original artwork, no copied Flo identity.
+
+Production reconstruction reads the original alpha silhouette at threshold 128, retains the primary closed contour, simplifies edge noise with a 1.5-source-pixel tolerance, and smooths it with quadratic curves. It does not modify the reference PNG. Native vector fills are normalized to the approved palette. `trace-symbol.mjs` records source bounds and tracing parameters in the master; `verify-assets.mjs` checks rendered silhouette overlap against the reference. The human-approved proportions are a 220-unit symbol height, 34-unit gap after the 644-unit wordmark, and 10-unit top offset. This is 25% taller than the 176-unit first lockup study, with the same optical center at 120 units.
+
+The wordmark object is identical to `archive/petal-logo-master-v1.json`. All eight standalone wordmark SVG/PNG files retain their original hashes from `archive/wordmark-checksums-v1.json`. The historical v1 master SVG, original approval reference, and transparent extraction remain for provenance. Current consumers use the canonical v2 exports, not the archived blossom.

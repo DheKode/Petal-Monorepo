@@ -1,0 +1,60 @@
+/* Original Petal web specimens. All shared appearance values come from tokens. */
+.petal-button {
+  max-width: 100%; overflow-wrap: anywhere; text-align: center;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--petal-component-button-gap); min-height: var(--petal-component-button-min-height);
+  padding: var(--petal-component-button-padding-block) var(--petal-component-button-padding-inline);
+  border: var(--petal-component-button-border-width) solid transparent;
+  border-radius: var(--petal-component-button-radius);
+  color: var(--petal-component-button-primary-foreground); background: var(--petal-component-button-primary-background);
+  font-size: var(--petal-component-button-type-font-size); line-height: var(--petal-component-button-type-line-height);
+  font-weight: var(--petal-component-button-type-font-weight);
+  transition: background-color var(--petal-component-button-transition) var(--petal-motion-easing), transform var(--petal-component-button-transition) var(--petal-motion-easing);
+}
+.petal-button:hover, .petal-button[data-state="hover"] { background: var(--petal-component-button-primary-hover); }
+.petal-button:active, .petal-button[data-state="pressed"] { background: var(--petal-component-button-primary-pressed); transform: scale(var(--petal-component-button-press-scale)); }
+.petal-button:focus-visible, .petal-button[data-state="focus"] { outline: var(--petal-component-button-focus-width) solid var(--petal-color-focus); outline-offset: var(--petal-component-button-focus-offset); }
+.petal-button[data-variant="secondary"] { color: var(--petal-component-button-secondary-foreground); background: var(--petal-component-button-secondary-background); border-color: var(--petal-component-button-secondary-border); }
+.petal-button[data-variant="secondary"]:hover { background: var(--petal-component-button-secondary-hover); }
+.petal-button[data-variant="secondary"]:active { background: var(--petal-component-button-secondary-pressed); }
+.petal-button[data-variant="tertiary"] { color: var(--petal-component-button-tertiary-foreground); background: var(--petal-component-button-tertiary-background); }
+.petal-button[data-variant="tertiary"]:hover { background: var(--petal-component-button-tertiary-hover); }
+.petal-button[data-variant="danger"] { color: var(--petal-component-button-danger-foreground); background: var(--petal-component-button-danger-background); }
+.petal-button:disabled, .petal-button:disabled:hover { background: var(--petal-component-button-disabled-background); color: var(--petal-component-button-disabled-foreground); border-color: transparent; transform: none; }
+.petal-field { display: grid; gap: var(--petal-component-field-gap); }
+.petal-field > label { font-size: var(--petal-component-field-label-type-font-size); font-weight: var(--petal-component-field-label-type-font-weight); }
+.petal-input {
+  width: 100%; min-height: var(--petal-component-field-min-height);
+  padding: var(--petal-component-field-padding-block) var(--petal-component-field-padding-inline);
+  border: var(--petal-component-field-border-width) solid var(--petal-component-field-border);
+  border-radius: var(--petal-component-field-radius); background: var(--petal-component-field-background); color: var(--petal-component-field-foreground);
+  font-size: var(--petal-component-field-type-font-size); line-height: var(--petal-component-field-type-line-height);
+  transition: border-color var(--petal-component-field-transition) var(--petal-motion-easing);
+}
+.petal-input::placeholder { color: var(--petal-component-field-placeholder); }
+.petal-input:focus-visible { border-color: var(--petal-component-field-focus-border); }
+.petal-input[aria-invalid="true"] { border-color: var(--petal-component-field-error-border); }
+.petal-input:disabled { background: var(--petal-component-field-disabled-background); color: var(--petal-component-field-disabled-foreground); }
+.petal-help { font-size: var(--petal-component-field-helper-type-font-size); line-height: var(--petal-component-field-helper-type-line-height); color: var(--petal-color-text-secondary); }
+.petal-error { color: var(--petal-color-feedback-error-text); }
+.petal-card { padding: var(--petal-component-card-padding); border: var(--petal-component-card-border-width) solid var(--petal-component-card-border); border-radius: var(--petal-component-card-radius); background: var(--petal-component-card-background); color: var(--petal-component-card-foreground); }
+.petal-card h3 { margin: 0; font-size: var(--petal-component-card-title-type-font-size); line-height: var(--petal-component-card-title-type-line-height); font-weight: var(--petal-component-card-title-type-font-weight); }
+.petal-proposal { padding: var(--petal-component-proposal-padding); border: var(--petal-border-width) solid var(--petal-component-proposal-border); border-radius: var(--petal-component-proposal-radius); background: var(--petal-component-proposal-background); color: var(--petal-component-proposal-foreground); }
+.petal-status { display: inline-flex; align-items: center; gap: var(--petal-component-status-gap); padding: var(--petal-component-status-padding-block) var(--petal-component-status-padding-inline); border-radius: var(--petal-component-status-radius); color: var(--petal-component-status-foreground); background: var(--petal-component-status-background); font-size: var(--petal-component-status-type-font-size); line-height: var(--petal-component-status-type-line-height); font-weight: var(--petal-component-status-type-font-weight); }
+.petal-selection { min-width: var(--petal-component-selection-min-target); min-height: var(--petal-component-selection-min-target); padding: var(--petal-space-inline); border: var(--petal-border-width) solid var(--petal-component-selection-border); border-radius: var(--petal-component-selection-radius); color: var(--petal-component-selection-foreground); background: var(--petal-component-selection-background); transition: background-color var(--petal-component-selection-transition) var(--petal-motion-easing); }
+.petal-selection[aria-pressed="true"] { color: var(--petal-component-selection-selected-foreground); background: var(--petal-component-selection-selected-background); border-color: var(--petal-component-selection-selected-background); }
+.petal-selection:disabled { color: var(--petal-color-action-disabled-text); background: var(--petal-color-action-disabled); }
+.petal-card-title { margin: 0; font-size: var(--petal-component-card-title-type-font-size); line-height: var(--petal-component-card-title-type-line-height); font-weight: var(--petal-component-card-title-type-font-weight); }
+.petal-card-content { margin-top: var(--petal-component-card-gap); }
+.petal-dialog p { margin: 0; }
+.petal-tab { min-height: var(--petal-component-navigation-min-target); padding-inline: var(--petal-component-navigation-padding-inline); border: 0; border-radius: var(--petal-component-navigation-radius); color: var(--petal-component-navigation-foreground); background: transparent; font-size: var(--petal-component-navigation-type-font-size); transition: background-color var(--petal-component-navigation-transition) var(--petal-motion-easing); }
+.petal-tab[aria-pressed="true"] { background: var(--petal-component-navigation-active-background); color: var(--petal-component-navigation-active-foreground); }
+.petal-feedback { padding: var(--petal-component-feedback-padding); border-radius: var(--petal-component-feedback-radius); font-size: var(--petal-component-feedback-type-font-size); line-height: var(--petal-component-feedback-type-line-height); }
+.petal-feedback[data-kind="success"] { color: var(--petal-color-feedback-success-text); background: var(--petal-color-feedback-success-surface); }
+.petal-feedback[data-kind="warning"] { color: var(--petal-color-feedback-warning-text); background: var(--petal-color-feedback-warning-surface); }
+.petal-feedback[data-kind="error"] { color: var(--petal-color-feedback-error-text); background: var(--petal-color-feedback-error-surface); }
+.petal-dialog { max-width: min(var(--petal-component-dialog-max-width), calc(100% - 2 * var(--petal-layout-gutter-compact))); max-height: calc(100dvh - 2 * var(--petal-layout-gutter-compact)); padding: var(--petal-component-dialog-padding); border: var(--petal-border-width) solid var(--petal-component-dialog-border); border-radius: var(--petal-component-dialog-radius); background: var(--petal-component-dialog-background); color: var(--petal-component-dialog-foreground); }
+.petal-dialog::backdrop { background: var(--petal-component-dialog-backdrop); }
+@media (prefers-reduced-motion: reduce) { .petal-button:active, .petal-button[data-state="pressed"] { transform: none; } }
+[data-reduce-motion="true"] .petal-button { transition: none; }
+[data-reduce-motion="true"] .petal-button:active, [data-reduce-motion="true"] .petal-button[data-state="pressed"] { transform: none; }

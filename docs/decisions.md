@@ -40,3 +40,24 @@ Issue #20 (sub-issue of #2), approved by @Kiko915.
 - Electron 44.4.5. Windows use `contextIsolation`, `sandbox`, no Node integration, deny new windows and navigation, and a strict CSP; the renderer reaches the main process only through the typed preload bridge.
 - The desktop app consumes the compiled `@petal/domain` package (no alias to its source). Desktop `dev`, `build` and `typecheck` build `@petal/domain` first.
 - `pnpm-workspace.yaml` allows the Electron install script (downloads its binary) and denies `electron-winstaller` (Squirrel, unused).
+
+## Original token specimens and offline preview
+
+For U01 / issue #11 and PRD §4, the human requested Petal’s own tokens and an HTML preview of every token, using component/icon/motion references only for study. `libs/ui/src/styles/` holds original shared web styling; `@petal/ui/styles.css` exports it. `libs/ui/preview.html` is generated from the same canonical source as web/native themes and embeds artwork, Geist Mono, and all rendering code for offline review. Font provenance and the SIL license live in `libs/assets/fonts/geist-mono/`. No UI library dependency is added. Button radius 12, icon slots 20/24/32, outline weight 1.75, and restrained motion are candidates pending designer/device review. This does not complete application integration or U01/L01 acceptance.
+
+## Desktop persistence — October 10, 2026
+
+Issue #8, approved by @Kiko915.
+
+- The desktop main process owns a `SqliteStore` that wraps `@petal/storage` (`LocalStore`) and opens `petal.db` in the app user-data folder. The renderer only reaches it through the typed IPC operations in `src/main/service.ts`, which re-validate every request and apply the shared domain rules (`applyIntake`) before the adapter is called. A failure to open the file shows an error and quits; the app never falls back to an in-memory store.
+- Setup goes through the adapter's validated replace-all import (it has no dedicated call); the service refuses setup when a pack already exists. Intake changes use the adapter's preview and confirm back to back, because the user's own logging action is the confirmation.
+- Undo is available only for corrections: it writes the earlier values back as a new correction with a fresh update time, because the adapter rejects going back in time and cannot remove an event (follow-up #37, item 7). New entries cannot be undone.
+- All store operations run one at a time (`PetalService`), so double clicks and overlapping requests cannot fail each other with a stale revision; undo bookkeeping changes only after a write succeeds, and a restore is never dated earlier than the correction it undoes. Setup is refused by the store itself unless the database is empty. Only one Petal copy can use a data folder (single-instance lock), and quitting waits for accepted writes before closing the database.
+- `@libsql/client` is a native module, so it is a real `dependency` of `@petal/desktop`, stays external in the main bundle, and is unpacked from the asar. The packaged Windows build was checked; macOS was not, and macOS packaging must run on a Mac.
+- `@petal/storage` declares only an `import` export condition, so the desktop test script resolves it with `tsx --conditions=import`. Adding a `default` condition is tracked in #37.
+
+## Shared web and React Native UI foundations
+
+For U01 / issue #40 under #11, @emperuna explicitly requested native components alongside the first shared component set. `@petal/ui/components`, `hooks`, and `layouts` select native implementations under the `react-native` export condition, with explicit `/native` entry points for applications whose resolution configuration differs. Root, theme, and utility imports remain framework-free. React `>=19.2.3 <20` and React Native `0.86.3` match the existing desktop and Android spike runtimes; optional peer declarations let theme-only and web consumers avoid loading native code. Development types/runtimes and their lockfile changes are isolated in dependency PR #42 before the implementation PR.
+
+Seven original controls share platform-neutral props, use approved token exports, and leave application writes and health interpretation to consumers. Confirmation exposes separate preview/confirm/cancel responsibilities; native text scaling remains enabled. Screen and Stack share semantic spacing and responsive widths; native apps supply measured safe-area insets and font registration. Native validation initially consists of real-platform typechecking, import resolution, and explicitly mocked host-contract tests. Actual Android rendering, TalkBack focus, keyboard behavior, and font registration require app-owner device evidence. The live component preview is a repository-only React web example served by the existing desktop Vite tool; the standalone generated token inventory remains available offline.
