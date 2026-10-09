@@ -1,10 +1,11 @@
+import { randomUUID } from 'node:crypto';
 import {
-  applyIntake, DomainValidationError, IdSchema, IntakeStatusSchema, TimePrecisionSchema, TimestampSchema, toZonedIso,
-  type IntakeEvent,
+  applyIntake, BleedingEntrySchema, DomainValidationError, IdSchema, IntakeStatusSchema, localDateIn, TimePrecisionSchema, TimestampSchema, toZonedIso,
+  type BleedingEntry, type IntakeEvent,
 } from '@petal/domain';
 import { deriveFromSetupInput } from '../shared/setup';
 import {
-  MAX_BATCH, type BatchOutcome, type ImportOutcome, type ImportPreview, type IntakeOutcome, type PetalState,
+  MAX_BATCH, type BatchOutcome, type BleedingInput, type ImportOutcome, type ImportPreview, type IntakeOutcome, type PetalState,
   type RecordIntakeInput, type Result, type SetupInput,
 } from '../shared/ipc';
 import { SetupExistsError, type PetalStore } from './store';
@@ -32,6 +33,21 @@ function importMessageOf(error: unknown): string {
   if (code === 'invalid-preview') return 'This preview has expired. Pick the file again. Nothing was replaced.';
   return 'The import did not finish. Your records were not changed.';
 }
+
+/** Plain-language reason for a bleeding entry that failed validation. Never repeats what the user typed. */
+function bleedingProblem(field: unknown): string {
+  switch (field) {
+    case 'startDate': return 'Enter a valid start date.';
+    case 'endDate': return 'Enter a valid end date, on or after the start date.';
+    case 'category': return 'Choose bleeding or spotting.';
+    case 'intensity': return 'Choose light, moderate or heavy, or leave it unset.';
+    case 'note': return 'The note is too long (4000 characters at most).';
+    default: return 'This entry cannot be saved.';
+  }
+}
+
+const sameBleeding = (a: BleedingEntry, b: BleedingEntry) =>
+  a.id === b.id && a.startDate === b.startDate && a.endDate === b.endDate && a.category === b.category && a.intensity === b.intensity && a.note === b.note;
 
 interface UndoEntry {
   /** The record as it was before the change, or `null` when the change created it (undo then removes it). */
@@ -173,6 +189,53 @@ export class PetalService {
   }
 
   /** The file text for a full backup. The main process writes it where the user chose; the renderer never sees a path. */
+  /** Create or edit a bleeding or spotting entry. The journal is the user's own record: nothing is inferred, predicted or
+      linked to tablets, and a date cannot be in the future (in the schedule's own time zone). Saving an entry that did not
+      change writes nothing. */
+  saveBleeding(input: BleedingInput): Promise<Result<PetalState>> {
+    return this.exclusive(async () => {
+      try {
+        const state = await this.store.load();
+        if (!state.pack) return fail('Finish setting up your pack first.');
+        const wantsEdit = input?.id !== undefined && input?.id !== null;
+        const existing = wantsEdit ? state.bleeding.find(e => e.id === input.id) : undefined;
+        if (wantsEdit && !existing) return fail('That entry no longer exists.');
+        const note = typeof input?.note === 'string' ? input.note.trim() : '';
+        const parsed = BleedingEntrySchema.safeParse({
+          id: existing?.id ?? `bleeding-${randomUUID()}`,
+          startDate: input?.startDate,
+          endDate: input?.endDate || null,
+          category: input?.category,
+          intensity: input?.intensity ?? null,
+          note: note === '' ? null : note,
+        });
+        if (!parsed.success) return fail(bleedingProblem(parsed.error.issues[0]?.path[0]));
+        const entry = parsed.data;
+        const today = localDateIn(this.now(), state.settings?.timeZone ?? 'UTC');
+        if (entry.startDate > today) return fail('The start date cannot be in the future.');
+        if (entry.endDate !== null && entry.endDate > today) return fail('The end date cannot be in the future.');
+        if (existing && sameBleeding(existing, entry)) return ok(state);
+        return ok(await this.store.putBleedingEntry(entry));
+      } catch (error) {
+        return fail(messageOf(error));
+      }
+    });
+  }
+
+  /** Delete a bleeding or spotting entry. The deleted values stay in the local audit trail. */
+  deleteBleeding(id: string): Promise<Result<PetalState>> {
+    return this.exclusive(async () => {
+      try {
+        if (!IdSchema.safeParse(id).success) return fail('That entry no longer exists.');
+        const state = await this.store.load();
+        if (!state.bleeding.some(e => e.id === id)) return fail('That entry no longer exists.');
+        return ok(await this.store.removeBleedingEntry(id));
+      } catch (error) {
+        return fail(messageOf(error));
+      }
+    });
+  }
+
   exportBackup(): Promise<Result<{ json: string; sensitivityNotice: string }>> {
     return this.exclusive(async () => {
       try {

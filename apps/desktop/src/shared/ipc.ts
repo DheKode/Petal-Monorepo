@@ -1,4 +1,4 @@
-import type { IntakeChange, IntakeEvent, Pack, PillProfile, ScheduledDose, Settings } from '@petal/domain';
+import type { BleedingEntry, IntakeChange, IntakeEvent, Pack, PillProfile, ScheduledDose, Settings } from '@petal/domain';
 
 export const IPC_APP_INFO = 'petal:app-info';
 export const IPC_GET_STATE = 'petal:get-state';
@@ -6,6 +6,8 @@ export const IPC_SAVE_SETUP = 'petal:save-setup';
 export const IPC_RECORD_INTAKE = 'petal:record-intake';
 export const IPC_UNDO_INTAKE = 'petal:undo-intake';
 export const IPC_RECORD_BATCH = 'petal:record-intake-batch';
+export const IPC_SAVE_BLEEDING = 'petal:save-bleeding';
+export const IPC_DELETE_BLEEDING = 'petal:delete-bleeding';
 export const IPC_BACKUP_EXPORT = 'petal:backup-export';
 export const IPC_BACKUP_PICK_IMPORT = 'petal:backup-pick-import';
 export const IPC_BACKUP_CONFIRM_IMPORT = 'petal:backup-confirm-import';
@@ -25,6 +27,8 @@ export interface PetalState {
   pack: Pack | null;
   doses: ScheduledDose[];
   events: IntakeEvent[];
+  /** Bleeding and spotting journal entries. Independent of tablets: nothing is inferred from them. */
+  bleeding: BleedingEntry[];
   persistence: 'memory' | 'disk';
 }
 
@@ -43,6 +47,16 @@ export interface RecordIntakeInput {
   status: IntakeEvent['status'];
   actualAt?: string | null;
   timePrecision?: IntakeEvent['timePrecision'];
+}
+
+/** One journal entry as typed by the user. `id` is present when editing an existing entry. */
+export interface BleedingInput {
+  id?: string;
+  startDate: string;
+  endDate?: string | null;
+  category: BleedingEntry['category'];
+  intensity?: BleedingEntry['intensity'];
+  note?: string | null;
 }
 
 export type Result<T> = { ok: true; value: T } | { ok: false; message: string };
@@ -98,6 +112,10 @@ export interface PetalBridge {
   undoIntake(doseId: string): Promise<Result<PetalState>>;
   /** Save several entries after the user confirmed a preview. All are validated before any is written. */
   recordIntakeBatch(inputs: RecordIntakeInput[]): Promise<Result<BatchOutcome>>;
+  /** Create or edit a bleeding or spotting entry. Validated and audited; nothing is inferred from it. */
+  saveBleeding(input: BleedingInput): Promise<Result<PetalState>>;
+  /** Delete a bleeding or spotting entry. The deleted values stay in the local change history. */
+  deleteBleeding(id: string): Promise<Result<PetalState>>;
   /** Ask where to save, then write the full backup as JSON. Plaintext: the file is not encrypted. */
   exportBackup(): Promise<Result<ExportOutcome>>;
   /** Ask which file to open, validate it and return a preview. Nothing is replaced until `confirmImport`. */

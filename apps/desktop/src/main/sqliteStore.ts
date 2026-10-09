@@ -1,5 +1,5 @@
 import { LocalStore } from '@petal/storage';
-import { BACKUP_VERSION, serializeBackup, type Backup, type IntakeEvent } from '@petal/domain';
+import { BACKUP_VERSION, serializeBackup, type Backup, type BleedingEntry, type IntakeEvent } from '@petal/domain';
 import type { ImportPreview, PetalState, RecordCounts } from '../shared/ipc';
 import { SetupExistsError, type PetalStore, type SavedSetup } from './store';
 
@@ -10,6 +10,7 @@ function toState(backup: Backup): PetalState {
     pack: backup.packs[0] ?? null,
     doses: backup.scheduledDoses,
     events: backup.intakeEvents,
+    bleeding: backup.bleedingEntries,
     persistence: 'disk',
   };
 }
@@ -91,6 +92,19 @@ export class SqliteStore implements PetalStore {
   /** The user's own logging action is the confirmation, so preview and confirm run back to back. */
   async putIntakeEvent(event: IntakeEvent): Promise<PetalState> {
     const preview = await this.db.previewIntakeCorrection(event, 'manual');
+    await this.db.confirm(preview.token);
+    return this.load();
+  }
+
+  /** The user's own save is the confirmation, so preview and confirm run back to back. */
+  async putBleedingEntry(entry: BleedingEntry): Promise<PetalState> {
+    const preview = await this.db.previewBleedingEntry(entry, 'manual');
+    await this.db.confirm(preview.token);
+    return this.load();
+  }
+
+  async removeBleedingEntry(id: string): Promise<PetalState> {
+    const preview = await this.db.previewBleedingRemoval(id, 'manual');
     await this.db.confirm(preview.token);
     return this.load();
   }

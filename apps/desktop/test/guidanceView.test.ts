@@ -11,13 +11,13 @@ const noEvidence = createEvidenceIndex([]);
 
 function stateWith(events: IntakeEvent[] = []): PetalState {
   const { profile, settings, pack, doses } = deriveFromSetupInput(setup);
-  return { profile, settings, pack, doses, events, persistence: 'disk' };
+  return { profile, settings, pack, doses, events, bleeding: [], persistence: 'disk' };
 }
 const eventFor = (state: PetalState, index: number, input: Parameters<typeof applyIntake>[2]) =>
   applyIntake(state.doses[index], undefined, input, NOW).event;
 
 test('before setup there is no guidance panel', () => {
-  assert.equal(guidanceFor({ profile: null, settings: null, pack: null, doses: [], events: [], persistence: 'disk' }, noEvidence), null);
+  assert.equal(guidanceFor({ profile: null, settings: null, pack: null, doses: [], events: [], bleeding: [], persistence: 'disk' }, noEvidence), null);
 });
 
 test('with unverified product details the panel says no guidance is available, with no actions or sources', () => {

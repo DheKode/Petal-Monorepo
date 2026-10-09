@@ -1,4 +1,4 @@
-import type { IntakeEvent, Pack, PillProfile, ScheduledDose, Settings } from '@petal/domain';
+import type { BleedingEntry, IntakeEvent, Pack, PillProfile, ScheduledDose, Settings } from '@petal/domain';
 import type { ImportPreview, PetalState } from '../shared/ipc';
 
 /** Thrown when setup is attempted on a database that already holds a pack, intake events or audit history. Setup is
@@ -26,6 +26,10 @@ export interface PetalStore {
   putIntakeEvent(event: IntakeEvent): Promise<PetalState>;
   /** Remove the current intake event of a dose (used to undo a mistaken new entry). The removal is audited. */
   removeIntakeEvent(doseId: string): Promise<PetalState>;
+  /** Create or edit a bleeding or spotting entry (matched by id). Audited. */
+  putBleedingEntry(entry: BleedingEntry): Promise<PetalState>;
+  /** Delete a bleeding or spotting entry. Audited; the deleted values stay in the audit trail. */
+  removeBleedingEntry(id: string): Promise<PetalState>;
   /** Full backup as JSON text (plaintext, not encrypted). */
   exportJson(): Promise<{ json: string; sensitivityNotice: string }>;
   /** Validate backup text and hold it as a pending preview. Changes nothing stored. Throws if the text is not a valid backup. */
@@ -36,7 +40,7 @@ export interface PetalStore {
 }
 
 export function emptyState(persistence: PetalState['persistence']): PetalState {
-  return { profile: null, settings: null, pack: null, doses: [], events: [], persistence };
+  return { profile: null, settings: null, pack: null, doses: [], events: [], bleeding: [], persistence };
 }
 
 /** Non-persistent store for tests. Returns defensive copies so callers cannot mutate stored records. */
@@ -49,7 +53,7 @@ export class MemoryStore implements PetalStore {
 
   async saveSetup(setup: SavedSetup): Promise<PetalState> {
     if (this.state.pack) throw new SetupExistsError();
-    this.state = { ...structuredClone(setup), events: [], persistence: 'memory' };
+    this.state = { ...structuredClone(setup), events: [], bleeding: [], persistence: 'memory' };
     return this.load();
   }
 
@@ -61,6 +65,17 @@ export class MemoryStore implements PetalStore {
 
   async removeIntakeEvent(doseId: string): Promise<PetalState> {
     this.state = { ...this.state, events: this.state.events.filter(e => e.doseId !== doseId) };
+    return this.load();
+  }
+
+  async putBleedingEntry(entry: BleedingEntry): Promise<PetalState> {
+    const others = this.state.bleeding.filter(e => e.id !== entry.id);
+    this.state = { ...this.state, bleeding: [...others, structuredClone(entry)] };
+    return this.load();
+  }
+
+  async removeBleedingEntry(id: string): Promise<PetalState> {
+    this.state = { ...this.state, bleeding: this.state.bleeding.filter(e => e.id !== id) };
     return this.load();
   }
 

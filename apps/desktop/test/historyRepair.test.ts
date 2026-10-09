@@ -10,7 +10,7 @@ const setup: SetupInput = { usualTime: '21:00', timeZone: 'Asia/Manila', anchor:
 
 function stateWith(events: IntakeEvent[] = []): PetalState {
   const { profile, settings, pack, doses } = deriveFromSetupInput(setup);
-  return { profile, settings, pack, doses, events, persistence: 'disk' };
+  return { profile, settings, pack, doses, events, bleeding: [], persistence: 'disk' };
 }
 const answers = (entries: [number, Answer][], state: PetalState) => new Map(entries.map(([position, answer]) => [state.doses[position - 1].id, answer]));
 
