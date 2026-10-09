@@ -45,7 +45,7 @@ Show human assignee, agent/session, area, and priority on cards where project fi
 
 Required updates, within the human-authorized task scope:
 
-- **Start:** record ownership, branch, starting commit, and scope; move to In Progress.
+- **Start:** record ownership, branch, starting commit, and scope; set the card's Branch field; move to In Progress.
 - **Scope or contract change:** coordinate with affected owners and document the agreement before implementing the change.
 - **Block:** move to Blocked and state what is needed, who can resolve it, and any independent work remaining.
 - **Review:** link the PR, summarize verification and limitations, and move to Review.
@@ -62,6 +62,20 @@ Do not post noisy token-by-token progress. Do not contact other people or chats 
 - Stay within assigned paths. If work requires another owner's files, agree on the change or split a follow-up task before proceeding.
 - Never discard another contributor's changes, delete their worktree, or resolve conflicts by blindly selecting an entire side. Understand both changes, preserve their intent, and verify the result.
 - Keep interface decisions in `docs/decisions.md` when that file exists or is introduced by an assigned documentation task. Keep live progress in issues and PRs.
+
+## Keeping branches mergeable
+
+Several tasks run in parallel, so conflicts come from long-lived branches and shared files. Branch protection is not available on this repository's plan; these rules replace it.
+
+- Start every task from freshly fetched `main`: `git fetch origin && git switch -c task/<issue>-<slug> origin/main`. Never branch from another task branch unless the issue records that dependency.
+- Before opening a PR, before moving it to Review, and again right before merge, run `git fetch origin && git merge origin/main`, then `pnpm install --frozen-lockfile`, `pnpm typecheck`, and `pnpm test`. A PR is not mergeable just because GitHub shows no conflict; it must also pass these checks on top of current `main`.
+- Merge small PRs quickly. Aim to merge within a few hours. If a branch falls more than about five commits behind `main`, update it before doing more work. Split large tasks into PRs that can merge independently.
+- Hotspot files cause most conflicts: `pnpm-lock.yaml`, root `package.json`, `pnpm-workspace.yaml`, `packages/*/src/index.ts`, `docs/decisions.md`, and CI under `.github/`. List any hotspot you will touch under "Allowed paths" in the issue. Check open PRs (`gh pr list --json number,files`) for the same file first. If two tasks need the same hotspot, merge one first or move the shared change into its own small PR that merges before both.
+- Put dependency additions in a PR that changes nothing else, or merge them first. Other branches then update from `main`.
+- Never hand-edit `pnpm-lock.yaml` conflicts. Take the `main` side of the manifest changes, keep your own manifest edits, run `pnpm install` (pnpm repairs lockfile conflicts), and commit the regenerated lockfile.
+- Keep package `index.ts` files to one `export * from './<module>.js';` line per module, with no other code. Add new lines at the end so concurrent additions rarely touch the same line. Put implementation in its own module file.
+- Append to shared docs such as `docs/decisions.md` in a new section rather than editing existing paragraphs. Do not reformat, reorder, or bulk-rename files you do not own.
+- If a conflict appears, resolve it on your task branch by merging `main` in. Do not rebase or force-push a branch that is already pushed unless its owner agrees. Follow the conflict rule above: understand both sides and rerun the checks.
 
 ## Petal product and architecture boundaries
 
@@ -93,7 +107,7 @@ Do not post noisy token-by-token progress. Do not contact other people or chats 
 - Test domain changes with meaningful fixtures for dose/time boundaries, uncertainty, pack transitions, and correction behavior. Evaluate clinical fixtures separately from LLM faithfulness.
 - For affected flows, verify restart persistence, confirmation/cancellation, malformed-import safety, and AI failure fallback. Device-dependent reminders, inference, installers, and offline behavior require actual target-device evidence; disclose unavailable checks.
 - PRs must explain the problem, linked issue/PRD requirements, changed behavior, interface or dependency changes, verification, and limitations. Use fictional demo records.
-- The human integration lead coordinates merges one at a time. Update the task branch against current `main` before final integration checks; do not rewrite a shared branch without coordinating with its owner. Resolve conflicts and obtain another teammate's review of the final changes.
+- The human integration lead coordinates merges one at a time, smallest and most foundational first (dependencies, shared contracts and CI before features). After each merge, other open PRs update from `main` as described in "Keeping branches mergeable". Update the task branch against current `main` before final integration checks; do not rewrite a shared branch without coordinating with its owner. Resolve conflicts and obtain another teammate's review of the final changes.
 - Use PRs into `main`, required checks where configured, and squash merges by default. Agents must not merge, bypass protections, force-push, or push directly to `main` unless a human explicitly authorizes that specific action. An explicit direct-push request is a workflow exception, not standing permission for later tasks.
 - After merge, verify the affected integrated user flow before marking Done. If automatic issue closure occurs earlier, retain Review status or reopen as appropriate until verification completes.
 - Do not expand features once MVP acceptance passes. Follow the team's feature cutoff and verify the official submission/code-freeze deadline; the PRD currently records October 10, 2026, 10:00 AM Asia/Manila. Report measured performance, working platforms, models, runtimes, and remaining limitations honestly.
@@ -112,4 +126,4 @@ Do not post noisy token-by-token progress. Do not contact other people or chats 
 ## Handoff: PR, latest result, blocker, next action
 ```
 
-These instructions define the workflow; they do not create a GitHub Project, provision agent access, or configure branch protection. Enforce repository checks and protections in GitHub as well as following this file.
+These instructions define the workflow; they do not create a GitHub Project, provision agent access, or configure branch protection. Enforce repository checks and protections in GitHub where the plan allows, as well as following this file.
