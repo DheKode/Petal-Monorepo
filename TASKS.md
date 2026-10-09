@@ -57,7 +57,7 @@ Record each outcome in `docs/decisions.md` and on the linked issue.
 | --- | --- | --- | --- |
 | DEC1 | Package manager and workspaces | npm or pnpm workspaces. Check that Metro (React Native's bundler) resolves the shared package first. | #2 |
 | DEC2 | Repo layout | `apps/mobile` (React Native), `apps/desktop` (Electron + Vite), `apps/landing`, `packages/domain` (shared TypeScript). `lib/` unused unless agreed. | #2 |
-| DEC3 | Model | Gemma 3 1B IT Q4 vs Qwen3-0.6B Q4 (thinking off). Choose by A01 result, not preference. | #3 |
+| DEC3 | Model | **Decided Oct 10: Gemma 3 1B IT Q4_K_M** (see `docs/decisions.md`). Candidates were Gemma 3 1B IT Q4 vs Qwen3-0.6B Q4 (thinking off). | #3 |
 | DEC4 | Model delivery | Download on first run (PRD) vs bundled with the app. Demo devices are prepared beforehand either way. | #15 |
 | DEC5 | Desktop chat in scope? | Decided at Gate 1. If the AI doesn't run offline on desktop by then, desktop = logging, guidance and backup only. | #3 |
 | DEC6 | Chat history persistence | Recommend **not persisted**; declare it in the README. | #9 |
