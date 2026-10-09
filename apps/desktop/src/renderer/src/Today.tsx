@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { localDateIn, selectTakenNowTarget, type ScheduledDose } from '@petal/domain';
+import { listUnresolvedDoses, localDateIn, selectTakenNowTarget, type ScheduledDose } from '@petal/domain';
 import type { PetalState, RecordIntakeInput } from '../../shared/ipc';
 import { doseLabel, doseTime, statusLabel, tabletTypeLabel } from './format';
+import { Repair } from './Repair';
 
 interface Notice {
   text: string;
@@ -17,6 +18,7 @@ export function Today({ state, onState }: { state: PetalState; onState: (state: 
   const [earlier, setEarlier] = useState(false);
   const [earlierAt, setEarlierAt] = useState('');
   const [precision, setPrecision] = useState<'exact' | 'approximate'>('exact');
+  const [repairing, setRepairing] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 30_000);
@@ -24,9 +26,16 @@ export function Today({ state, onState }: { state: PetalState; onState: (state: 
   }, []);
 
   const target = useMemo(() => selectTakenNowTarget(state.doses, state.events, now), [state.doses, state.events, now]);
+  const unresolvedCount = useMemo(() => listUnresolvedDoses(state.doses, state.events, now).length, [state.doses, state.events, now]);
   const dose = state.doses.find(d => d.id === selectedId) ?? target.dose;
   const eventOf = (d: ScheduledDose) => state.events.find(e => e.doseId === d.id);
   const why = selectedId ? 'selected' : target.reason === 'todays-dose' ? "today's tablet" : 'an earlier tablet that still has no entry';
+
+  function closeRepair(message?: string) {
+    setRepairing(false);
+    setError(null);
+    setNotice(message ? { text: message } : null);
+  }
 
   async function record(input: RecordIntakeInput, text: string) {
     setError(null);
@@ -68,7 +77,8 @@ export function Today({ state, onState }: { state: PetalState; onState: (state: 
 
   return (
     <>
-      <section aria-labelledby="today-heading">
+      {repairing && <Repair state={state} onState={onState} onClose={closeRepair} />}
+      <section aria-labelledby="today-heading" hidden={repairing}>
         <h2 id="today-heading">Today</h2>
         {notice && (
           <p role="status">
@@ -122,6 +132,13 @@ export function Today({ state, onState }: { state: PetalState; onState: (state: 
           </p>
         )}
         {target.nextUpcoming && <p>Next tablet: {doseLabel(target.nextUpcoming)}.</p>}
+        {unresolvedCount > 0 && (
+          <p>
+            <button type="button" onClick={() => setRepairing(true)}>
+              Fix my history ({unresolvedCount} tablet{unresolvedCount === 1 ? '' : 's'} without a confirmed entry)
+            </button>
+          </p>
+        )}
         {target.olderUnresolved.length > 0 && (
           <p>
             {target.olderUnresolved.length} earlier tablet{target.olderUnresolved.length === 1 ? ' has' : 's have'} no entry. That history is unknown, not missed. You can add what you remember from the pack below.

@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import {
-  IPC_APP_INFO, IPC_GET_STATE, IPC_SAVE_SETUP, IPC_RECORD_INTAKE, IPC_UNDO_INTAKE, type PetalBridge,
+  IPC_APP_INFO, IPC_GET_STATE, IPC_SAVE_SETUP, IPC_RECORD_INTAKE, IPC_UNDO_INTAKE, IPC_RECORD_BATCH, type PetalBridge,
 } from '../shared/ipc';
 
 const bridge: PetalBridge = {
@@ -9,6 +9,7 @@ const bridge: PetalBridge = {
   saveSetup: input => ipcRenderer.invoke(IPC_SAVE_SETUP, input),
   recordIntake: input => ipcRenderer.invoke(IPC_RECORD_INTAKE, input),
   undoIntake: doseId => ipcRenderer.invoke(IPC_UNDO_INTAKE, doseId),
+  recordIntakeBatch: inputs => ipcRenderer.invoke(IPC_RECORD_BATCH, inputs),
 };
 
 contextBridge.exposeInMainWorld('petal', bridge);
