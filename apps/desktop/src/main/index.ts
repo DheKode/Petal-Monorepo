@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { join } from 'node:path';
-import { DOMAIN_PACKAGE_VERSION } from '@petal/domain';
+import { getIntakeState } from '@petal/domain';
 import { IPC_APP_INFO, type AppInfo } from '../shared/ipc';
 
 function createWindow(): void {
@@ -32,7 +32,7 @@ function createWindow(): void {
 
 ipcMain.handle(IPC_APP_INFO, (): AppInfo => ({
   appVersion: app.getVersion(),
-  domainVersion: DOMAIN_PACKAGE_VERSION,
+  domainCheck: getIntakeState('scaffold-check', []),
   platform: process.platform,
 }));
 

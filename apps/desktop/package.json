@@ -5,11 +5,11 @@
   "description": "Petal desktop app (Electron)",
   "main": "./out/main/index.js",
   "scripts": {
-    "dev": "electron-vite dev",
-    "build": "electron-vite build",
+    "dev": "pnpm --filter @petal/domain build && electron-vite dev",
+    "build": "pnpm --filter @petal/domain build && electron-vite build",
     "preview": "electron-vite preview",
-    "typecheck": "tsc",
-    "package:dir": "electron-vite build && electron-builder --dir"
+    "typecheck": "pnpm --filter @petal/domain build && tsc",
+    "package:dir": "pnpm run build && electron-builder --dir"
   },
   "devDependencies": {
     "@petal/domain": "workspace:*",

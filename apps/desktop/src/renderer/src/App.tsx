@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { DOMAIN_PACKAGE_VERSION } from '@petal/domain';
+import { getIntakeState } from '@petal/domain';
 import type { AppInfo } from '../../shared/ipc';
 
 // Scaffold placeholder only. Visual direction belongs to the designer (#11).
@@ -13,10 +13,10 @@ export function App() {
   return (
     <main>
       <h1>Petal</h1>
-      <p>Desktop scaffold. Renderer domain package: {DOMAIN_PACKAGE_VERSION}</p>
+      <p>Desktop scaffold. Renderer domain check: {getIntakeState('scaffold-check', [])}</p>
       {info && (
         <p>
-          App {info.appVersion} on {info.platform}. Main-process domain package: {info.domainVersion}
+          App {info.appVersion} on {info.platform}. Main-process domain check: {info.domainCheck}
         </p>
       )}
     </main>

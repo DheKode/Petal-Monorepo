@@ -4,10 +4,28 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./backup.schema.json": "./schemas/backup-v1.schema.json",
+    "./evidence.schema.json": "./schemas/evidence.schema.json",
+    "./evidence.json": "./evidence/approved.json"
   },
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc",
-    "test": "tsx --test test/*.test.ts"
-  }
+    "test": "tsx --test test/*.test.ts",
+    "schema:generate": "tsx scripts/generate-schema.ts"
+  },
+  "dependencies": {
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts"
 }
