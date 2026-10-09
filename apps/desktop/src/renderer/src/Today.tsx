@@ -107,7 +107,7 @@ export function Today({ state, onState, view }: { state: PetalState; onState: (s
 
   const hero = (
     <section className="app-hero" data-compact={view === 'pack' || undefined} aria-labelledby="record-heading">
-      {view === 'today' && <img className="app-hero-art" src={art.hello} alt="" />}
+      <div className="app-hero-body">
       {dose ? (
         <>
           <p className="app-eyebrow">Recording for {why}</p>
@@ -147,6 +147,8 @@ export function Today({ state, onState, view }: { state: PetalState; onState: (s
           <p>No tablet is waiting for an entry right now. Choose a tablet in the pack to add or correct an entry.</p>
         </>
       )}
+      </div>
+      {view === 'today' && <img className="app-hero-art" src={art.hello} alt="" />}
     </section>
   );
 
