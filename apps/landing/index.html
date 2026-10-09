@@ -1,21 +1,21 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-petal-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="A little clarity, every day. Petal is a private, offline pill companion for recording your pack and reviewing uncertain days. Explore prototype downloads and setup." />
     <meta name="theme-color" content="#B83D70" />
-    <title>Petal — a little clarity, every day</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="../../libs/assets/brands/png/petal-icon-circle-rose-32.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="../../libs/assets/brands/png/petal-icon-circle-rose-192.png" />
-    <link rel="apple-touch-icon" href="../../libs/assets/brands/png/petal-icon-circle-rose-180.png" />
+    <title>Petal | A little clarity, every day</title>
+    <link rel="icon" type="image/png" sizes="32x32" data-asset="icon32" />
+    <link rel="icon" type="image/png" sizes="192x192" data-asset="icon192" />
+    <link rel="apple-touch-icon" data-asset="icon180" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="container header-inner">
         <a class="home-link" href="#top" aria-label="Petal home">
-          <img src="../../libs/assets/brands/svg/petal-logo-horizontal-primary.svg" alt="" width="160" height="52" />
+          <img data-asset="logo" alt="" width="160" height="52" />
         </a>
         <nav aria-label="Page sections">
           <ul class="nav-list">
@@ -27,56 +27,47 @@
       </div>
     </header>
     <main id="main" tabindex="-1">
-      <section id="top" class="hero container" aria-labelledby="hero-title">
+      <section id="top" class="hero-shell" aria-labelledby="hero-title"><div class="hero container">
         <div class="hero-copy">
-          <p class="eyebrow"><span class="brand-dot" aria-hidden="true"></span> Your private pill companion</p>
+          <p class="eyebrow">Your private pill companion</p>
           <h1 id="hero-title">A little clarity.<br /><span>Every day.</span></h1>
-          <p class="lead">Keep track of your pack, make space for the days you're unsure about, and keep your personal history close.</p>
+          <p class="lead">Keep track of your pack, review uncertain days, and keep your personal history close.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#download"><span data-primary-cta>Explore downloads</span><span aria-hidden="true">↗</span></a>
-            <a class="text-link" href="#about">Meet Petal <span aria-hidden="true">↓</span></a>
+            <a class="text-link" href="#about">Meet Petal <span aria-hidden="true">→</span></a>
           </div>
-          <p class="hero-note">On your device. At your pace. No account needed.</p>
-          <p class="release-label"><span data-release-status>Prototype</span> <span aria-hidden="true">·</span> v<span data-release-version>0.1.0</span></p>
         </div>
-        <figure class="hero-visual">
-          <div class="illustration-ground" aria-hidden="true"></div>
-          <img class="hero-character" src="../../libs/assets/images/illustrations/characters/petal-character-journaling-v1.png" alt="" width="1254" height="1254" fetchpriority="high" />
-          <div class="record-peek">
-            <div class="peek-heading"><span class="eyebrow">Your daily record</span><span class="record-mark" aria-hidden="true">✓</span></div>
-            <p>One day at a time.</p>
-            <div class="peek-entry"><span>Today's tablet</span><strong>Recorded · 8:14 PM</strong></div>
-          </div>
-          <figcaption>Illustrative preview · fictional record</figcaption>
-        </figure>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="illustration-ground"></div>
+          <img class="hero-leaves" data-asset="leaves" alt="" width="1254" height="1254" />
+          <img class="hero-character" data-asset="journaling" alt="" width="1254" height="1254" fetchpriority="high" />
+        </div>
+        </div>
       </section>
       <div class="promise-strip">
-        <div class="container promise-inner"><p>A record that makes room for real life.</p><span>Daily logging</span><span>History review</span><span>Local AI</span></div>
+        <div class="container promise-inner"><p>A record that makes room for real life.</p><p>On your device. At your pace. No account needed.</p></div>
       </div>
       <section id="about" class="section container" aria-labelledby="about-title">
-        <div class="section-heading"><p class="eyebrow">A calmer daily routine</p><h2 id="about-title">Your day. Your record.<br /><span>Your pace.</span></h2><p class="section-intro">A simple place for what happened, what you remember, and what you're still figuring out.</p></div>
+        <div class="section-heading"><h2 id="about-title">Your day. Your record.<br /><span>Your pace.</span></h2><p class="section-intro">A simple place for what happened, what you remember, and what you're still figuring out.</p></div>
         <div class="feature-layout">
           <article class="daily-feature">
-            <div class="feature-copy"><span class="feature-number">01 / Keep a record</span><h3>The little details,<br />in one place.</h3><p>Record intake times, look back through your pack, and journal bleeding or spotting. A blank day stays a blank day until you say what happened.</p></div>
-            <div class="journal-example" aria-label="Fictional journal example">
-              <p class="example-label">A week in your journal <span>Fictional example</span></p>
-              <div class="journal-row"><span class="journal-date">Thu <strong>8</strong></span><div><strong>Tablet 12</strong><p>Recorded at 8:14 PM</p></div><span class="record-mark" aria-hidden="true">✓</span></div>
-              <div class="journal-row"><span class="journal-date">Fri <strong>9</strong></span><div><strong>Tablet 13</strong><p>No record</p></div><span class="unknown-mark" aria-hidden="true">?</span></div>
-              <div class="journal-row"><span class="journal-date">Sat <strong>10</strong></span><div><strong>Tablet 14</strong><p>Marked as unsure</p></div><span class="unknown-mark" aria-hidden="true">?</span></div>
-            </div>
+            <div class="feature-copy"><h3>The little details,<br />in one place.</h3><p>Record intake times, look back through your pack, and journal bleeding or spotting.</p><p class="feature-footnote">A blank day stays a blank day until you say what happened.</p></div>
+            <img data-asset="journal" alt="" width="1254" height="1254" loading="lazy" />
           </article>
-          <article class="context-feature"><span class="feature-number">02 / Understand the context</span><img src="../../libs/assets/images/illustrations/characters/petal-character-reading-v2.png" alt="" width="1254" height="1254" loading="lazy" /><div><h3>Room for your questions.</h3><p>Read supported information alongside its sources. When the information is incomplete, Petal makes that limit visible.</p></div></article>
+          <article class="context-feature"><img data-asset="reading" alt="" width="1254" height="1254" loading="lazy" /><div><h3>Room for your questions.</h3><p>Read supported information alongside its sources. When the information is incomplete, Petal makes that limit visible.</p></div></article>
         </div>
       </section>
       <section id="history" class="section history-section" aria-labelledby="history-title">
-        <div class="container history-layout">
-          <div class="section-heading"><p class="eyebrow">03 / Review an uncertain day</p><h2 id="history-title">Can't quite remember?<br /><span>Start with what you know.</span></h2><p class="section-intro">Petal helps you review your record one question at a time. You see a proposed change before confirming it. If you still aren't sure, your record can stay unsure.</p><p class="small-note">AI can help organize a memory. It cannot recover a forgotten fact.</p></div>
+        <div class="container">
+          <div class="section-heading history-heading"><p class="eyebrow">For the days you're unsure</p><h2 id="history-title">Start with what you know.</h2><p class="section-intro">Review an uncertain day, see a proposed change, and decide what to save. Your record can stay unsure.</p></div>
+          <div class="history-layout">
+            <div class="history-art"><img data-asset="reflecting" alt="" width="1254" height="1254" loading="lazy" /><p>AI can help organize a memory.<br />It cannot recover a forgotten fact.</p></div>
           <div class="history-example">
-            <p class="example-label">A closer look <span>Fictional walkthrough</span></p>
+            <p class="example-label">Explore history review <span>Fictional walkthrough</span></p>
             <div class="review-steps" role="group" aria-label="Explore the history review walkthrough">
-              <button type="button" aria-pressed="true" aria-controls="review-panel" data-review-step="0">1. Review</button>
-              <button type="button" aria-pressed="false" aria-controls="review-panel" data-review-step="1">2. Preview</button>
-              <button type="button" aria-pressed="false" aria-controls="review-panel" data-review-step="2">3. Confirm</button>
+              <button type="button" aria-pressed="true" aria-controls="review-panel" data-review-step="0">Review</button>
+              <button type="button" aria-pressed="false" aria-controls="review-panel" data-review-step="1">Preview</button>
+              <button type="button" aria-pressed="false" aria-controls="review-panel" data-review-step="2">Confirm</button>
             </div>
             <div id="review-panel" class="review-panel" aria-live="polite" aria-atomic="true">
               <p class="review-state" data-review-label>No record ≠ a missed tablet</p>
@@ -87,29 +78,44 @@
             <p class="small-note">This walkthrough changes no personal records.</p>
           </div>
         </div>
+      </div>
       </section>
-      <section id="privacy" class="section container privacy-layout" aria-labelledby="privacy-title">
-        <div class="privacy-art"><img src="../../libs/assets/images/illustrations/objects/petal-object-folder-v1.png" alt="" width="1254" height="1254" loading="lazy" /></div>
-        <div class="section-heading"><p class="eyebrow">Personal means personal</p><h2 id="privacy-title">Your history has<br /><span>a home. Your device.</span></h2><p class="section-intro">The offline core works without an account. Your records and AI conversations stay on your device.</p><ul class="privacy-facts"><li><strong>Local by default</strong><span>Optional encrypted sync stays off until you choose it.</span></li><li><strong>Clarity about storage</strong><span>Local records and exported backups are not encrypted at rest. Keep your device and backup files secure.</span></li><li><strong>A quiet website</strong><span>No health-data collection. No analytics.</span></li></ul></div>
+      <section id="privacy" class="section container" aria-labelledby="privacy-title">
+        <div class="privacy-heading">
+          <div class="section-heading"><h2 id="privacy-title">Your history has a home.<br /><span>Your device.</span></h2><p class="section-intro">The offline core works without an account. Your records and AI conversations stay on your device.</p></div>
+          <img data-asset="folder" alt="" width="1254" height="1254" loading="lazy" />
+        </div>
+        <ul class="privacy-facts">
+          <li><strong>Local by default</strong><p>Optional encrypted sync stays off until you choose it.</p></li>
+          <li><strong>Clarity about storage</strong><p>Local records and exported backups are not encrypted at rest. Keep your device and backup files secure.</p></li>
+          <li><strong>A quiet website</strong><p>No health-data collection. No analytics.</p></li>
+        </ul>
       </section>
       <section id="download" class="section download-section" aria-labelledby="download-title">
         <div class="container">
-          <div class="download-heading"><div class="section-heading"><p class="eyebrow">Make a little space for Petal</p><h2 id="download-title">A companion,<br /><span>where you need it.</span></h2></div><p class="section-intro">Explore the prototype for your device. Petal supports one product: the Trust 28-tablet pack.<br /><a class="text-link" href="#setup">Read installation steps <span aria-hidden="true">↗</span></a></p></div>
-          <ul class="download-grid" data-download-list></ul>
-          <noscript><p class="notice">Turn on JavaScript to see platform availability and download links.</p></noscript>
+          <div class="download-layout">
+            <div class="download-heading">
+              <p class="release-label"><span data-release-status>Prototype</span> · Version <span data-release-version>0.1.0</span></p>
+              <h2 id="download-title">A companion,<br /><span>where you need it.</span></h2>
+              <p class="section-intro">Explore the prototype for your device. Petal supports one product: the Trust 28-tablet pack.</p>
+              <a class="text-link" href="#setup">Read installation steps <span aria-hidden="true">→</span></a>
+              <img class="download-art" data-asset="orbit" alt="" width="1254" height="1254" loading="lazy" />
+            </div>
+            <div><ul class="download-grid" data-download-list></ul><noscript><p class="notice">Turn on JavaScript to see platform availability and download links.</p></noscript></div>
+          </div>
           <div class="download-notes"><p><strong>About the local AI</strong><br />Explanations and history review may need a one-time model download. Logging works before the model is ready; supported fixed guidance does not depend on generation.</p><p><strong>A prototype, with clear limits</strong><br />Product-specific guidance needs verified product details and reviewed evidence. Where those are unavailable, Petal stays in tracking-only mode.</p></div>
         </div>
       </section>
       <section id="setup" class="section container" aria-labelledby="setup-title">
-        <div class="setup-layout"><div class="section-heading"><p class="eyebrow">Getting started</p><h2 id="setup-title">A few steps.<br /><span>Then, your routine.</span></h2><p class="section-intro">These are unsigned prototype builds. Your device may ask you to confirm the installation.</p></div><div class="setup-list">
-          <article aria-labelledby="setup-android"><h3 id="setup-android">Android</h3><ol><li>Download the <code>.apk</code> on your phone.</li><li>Open it. If asked, allow your browser or file app to install unknown apps.</li><li>Tap <strong>Install</strong>, then open Petal.</li></ol></article>
-          <article aria-labelledby="setup-windows"><h3 id="setup-windows">Windows</h3><ol><li>Download and run the <code>.exe</code> installer.</li><li>If SmartScreen appears, choose <strong>More info</strong>, then <strong>Run anyway</strong>.</li><li>Open Petal from the Start menu.</li></ol></article>
-          <article aria-labelledby="setup-macos"><h3 id="setup-macos">macOS · Apple Silicon</h3><ol><li>Open the <code>.dmg</code> and drag Petal into <strong>Applications</strong>.</li><li>If blocked, go to <strong>System Settings → Privacy &amp; Security</strong> and choose <strong>Open Anyway</strong>.</li><li>Confirm once; later launches open normally.</li></ol></article>
+        <div class="setup-layout"><div class="section-heading"><h2 id="setup-title">A few steps.<br /><span>Then, your routine.</span></h2><p class="section-intro">These are unsigned prototype builds. Your device may ask you to confirm the installation.</p></div><div class="setup-list">
+          <details><summary id="setup-android">Android</summary><ol><li>Download the <code>.apk</code> on your phone.</li><li>Open it. If asked, allow your browser or file app to install unknown apps.</li><li>Tap <strong>Install</strong>, then open Petal.</li></ol></details>
+          <details><summary id="setup-windows">Windows</summary><ol><li>Download and run the <code>.exe</code> installer.</li><li>If SmartScreen appears, choose <strong>More info</strong>, then <strong>Run anyway</strong>.</li><li>Open Petal from the Start menu.</li></ol></details>
+          <details><summary id="setup-macos">macOS · Apple Silicon</summary><ol><li>Open the <code>.dmg</code> and drag Petal into <strong>Applications</strong>.</li><li>If blocked, go to <strong>System Settings → Privacy &amp; Security</strong> and choose <strong>Open Anyway</strong>.</li><li>Confirm once; later launches open normally.</li></ol></details>
         </div></div>
         <p class="setup-note">Once you're in, confirm your product, choose a first or current pack, and set your usual time. Past days you leave blank stay marked as no record.</p>
       </section>
     </main>
-    <footer class="site-footer"><div class="container footer-inner"><a class="home-link" href="#top" aria-label="Petal home"><img src="../../libs/assets/brands/svg/petal-logo-horizontal-primary.svg" alt="" width="160" height="52" /></a><p>Made for a little more clarity.<br /><span>Petal is a hackathon prototype, not a clinically validated product or a substitute for advice from a clinician or pharmacist.</span></p><a class="text-link" href="#top">Back to top <span aria-hidden="true">↑</span></a></div></footer>
+    <footer class="site-footer"><div class="container footer-inner"><a class="home-link" href="#top" aria-label="Petal home"><img data-asset="logo" alt="" width="160" height="52" /></a><p>Made for a little more clarity.<br /><span>Petal is a hackathon prototype, not a clinically validated product or a substitute for advice from a clinician or pharmacist.</span></p><a class="text-link" href="#top">Back to top <span aria-hidden="true">↑</span></a></div></footer>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

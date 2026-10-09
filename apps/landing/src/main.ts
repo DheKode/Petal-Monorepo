@@ -2,6 +2,9 @@ import '@petal/ui/fonts.css';
 import '@petal/ui/theme.css';
 import './style.css';
 import {detectPlatform, downloads, release, type PlatformDownload} from './downloads';
+import {loadArtwork} from './assets';
+
+loadArtwork();
 
 function el<K extends keyof HTMLElementTagNameMap>(tag: K, className?: string, text?: string) {
   const node = document.createElement(tag);
@@ -25,7 +28,9 @@ function renderCard(d: PlatformDownload, recommended: boolean): HTMLLIElement {
     ['Size', d.sizeLabel ?? 'Not yet published'],
   ];
   for (const [term, value] of rows) meta.append(el('dt', undefined, term), el('dd', undefined, value));
-  card.append(meta);
+  const details = el('details', 'download-details');
+  details.append(el('summary', undefined, 'File details'), meta);
+  card.append(el('p', 'download-requirement', d.requirement), details);
 
   if (d.url) {
     const link = el('a', 'button button-primary', `Download ${d.fileType}`);
