@@ -1,0 +1,5 @@
+.container { width: 100%; max-width: var(--petal-layout-content-max); margin-inline: auto; padding-inline: var(--petal-layout-gutter-wide); }
+.section { padding-block: var(--petal-primitive-spacing-s96); }
+.section-heading { max-width: var(--petal-layout-reading-max); }
+.section-intro { max-width: 46ch; margin-top: var(--petal-primitive-spacing-s24); color: var(--petal-color-text-secondary); font-size: var(--petal-type-body-large-font-size); line-height: var(--petal-type-body-large-line-height); }
+.eyebrow { color: var(--petal-color-action-primary); font-size: var(--petal-type-label-font-size); font-weight: var(--petal-type-label-font-weight); margin-bottom: var(--petal-primitive-spacing-s24); }

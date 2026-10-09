@@ -1,0 +1,5 @@
+.site-footer { border-top:var(--petal-border-width) solid var(--petal-color-border-subtle); }
+.footer-inner { display:grid; grid-template-columns:auto 1fr auto; align-items:start; gap:var(--petal-primitive-spacing-s64); padding-block:var(--petal-primitive-spacing-s40); }
+.footer-inner p { max-width:60ch; font-size:var(--petal-type-label-font-size); }
+.footer-inner p span { display:block; color:var(--petal-color-text-secondary); font-size:var(--petal-type-caption-font-size); margin-top:var(--petal-space-related); }
+

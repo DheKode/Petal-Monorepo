@@ -1,0 +1,59 @@
+@media (max-width:64rem) {
+  .hero-character { top:-4%; width:115%; left:-8%; }
+  .hero { min-height:calc(var(--petal-primitive-spacing-s96) * 5.3); }
+  .hero-visual { height:calc(var(--petal-primitive-spacing-s96) * 4.4); }
+  .daily-feature { padding:var(--petal-primitive-spacing-s32); }
+  .history-layout,.download-layout,.setup-layout { gap:var(--petal-primitive-spacing-s32); }
+  .download-card { grid-template-columns:1fr; }
+  .download-card > .button { grid-column:1; grid-row:auto; justify-self:start; }
+  .privacy-heading { gap:var(--petal-primitive-spacing-s32); }
+  .footer-inner { gap:var(--petal-primitive-spacing-s32); }
+}
+@media (max-width:47.999rem) {
+  .container { padding-inline:var(--petal-layout-gutter-compact); }
+  .section { padding-block:var(--petal-primitive-spacing-s64); }
+  .header-inner { min-height:var(--petal-primitive-spacing-s64); }
+  .home-link img { width:calc(var(--petal-primitive-spacing-s64) * 2); }
+  .nav-list { gap:var(--petal-primitive-spacing-s4); }
+  .nav-list a { padding-inline:var(--petal-primitive-spacing-s8); }
+  .nav-list .nav-download { padding-inline:var(--petal-space-related); }
+  .nav-list li:nth-child(2) { display:none; }
+  .hero { grid-template-columns:1fr; gap:0; padding-top:var(--petal-primitive-spacing-s40); padding-bottom:var(--petal-primitive-spacing-s24); min-height:auto; }
+  h1 { font-size:clamp(calc(var(--petal-type-display-font-size) * 1.35), 9.8vw, calc(var(--petal-type-display-font-size) * 2)); }
+  .hero-copy .eyebrow { margin-bottom:var(--petal-space-group); }
+  .hero-actions { gap:var(--petal-primitive-spacing-s24); margin-top:var(--petal-primitive-spacing-s24); }
+  .hero-visual { height:auto; aspect-ratio:1.15; max-width:30rem; width:100%; justify-self:center; margin-top:var(--petal-primitive-spacing-s16); }
+  .hero-character { width:108%; top:-10%; left:-3%; }
+  .hero-leaves { right:0; }
+  .promise-inner { flex-direction:column; align-items:flex-start; gap:var(--petal-space-inline); padding-block:var(--petal-space-section); }
+  .feature-layout { grid-template-columns:1fr; margin-top:var(--petal-primitive-spacing-s32); gap:var(--petal-primitive-spacing-s20); }
+  .daily-feature,.context-feature { padding:var(--petal-primitive-spacing-s24); }
+  .daily-feature img { max-width:24rem; width:85%; }
+  .context-feature img { width:80%; max-width:22rem; }
+  .history-layout { grid-template-columns:1fr; gap:var(--petal-primitive-spacing-s32); margin-top:var(--petal-primitive-spacing-s24); }
+  .history-art img { width:85%; max-width:22rem; margin-inline:auto; }
+  .history-example { padding:var(--petal-primitive-spacing-s24); }
+  .review-panel { min-height:calc(var(--petal-primitive-spacing-s96) * 3.6); }
+  .privacy-heading { grid-template-columns:1fr; gap:var(--petal-space-group); }
+  .privacy-heading img { width:70%; max-width:20rem; }
+  .privacy-facts { grid-template-columns:1fr; gap:var(--petal-primitive-spacing-s24); padding-top:var(--petal-primitive-spacing-s24); }
+  .download-layout,.setup-layout { grid-template-columns:1fr; gap:var(--petal-primitive-spacing-s32); }
+  .download-art { width:calc(var(--petal-primitive-spacing-s96) * 1.8); margin-inline:auto; }
+  .download-card { grid-template-columns:1fr auto; column-gap:var(--petal-space-related); padding:var(--petal-primitive-spacing-s20); }
+  .download-card > .button { grid-column:2; grid-row:1 / 4; padding-inline:var(--petal-space-related); }
+  .download-notes { grid-template-columns:1fr; gap:var(--petal-primitive-spacing-s24); }
+  .footer-inner { grid-template-columns:1fr auto; gap:var(--petal-space-section); }
+  .footer-inner p { grid-column:1 / -1; grid-row:2; }
+}
+@media (max-width:23rem) {
+  .nav-list li:first-child { display:none; }
+  .hero-actions { gap:var(--petal-space-group); }
+  .download-card { grid-template-columns:1fr; }
+  .download-card > .button { grid-column:1; grid-row:auto; }
+  .history-example { padding:var(--petal-space-group); }
+}
+@media (prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+  *,*::before,*::after { animation:none !important; transition:none !important; }
+  .button:active:not(:disabled),.nav-download:active { transform:none; }
+}
