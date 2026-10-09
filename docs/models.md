@@ -69,6 +69,7 @@ Prompts are fictional ([`prompts/fictional.json`](../apps/inference-spike/node/p
 | Measurement | Qwen3-0.6B | Gemma 3 1B |
 | --- | --- | --- |
 | **First load ever per executable** (Metal pipeline compile) | Node: **50.1 s** (runtime init 47.8 s); Electron: **38.8 s** | not observed (ran after the Node binary had already warmed Metal) |
+| First run from a fresh clone (new binary path, Metal already warmed by another copy) | Node: 8.1 s (runtime init 6.2 s) | not measured |
 | Warm load, Node: runtime + model + context (n) | **2.6–3.1 s** (3) | **2.3–3.3 s** (2) |
 | Warm load, Electron main process | 1.8–2.0 s (2) | 2.2 s (1) |
 | Process start → load start (includes SHA-256 check of the file) | 0.8–1.8 s | not split out (wall clock 21–24 s for 4 generations) |
