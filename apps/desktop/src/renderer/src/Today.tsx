@@ -165,29 +165,42 @@ export function Today({ state, onState, view }: { state: PetalState; onState: (s
   );
 
   const pack = (
-    <Card title="All 28 tablets">
+    <Card title="Pack calendar">
       <Stack>
-        <ol className="app-pack" aria-label="Your 28-tablet schedule">
-          {state.doses.map(d => {
-            const { word, icon } = shortStatus(eventOf(d));
-            const isToday = d.localDate === localDateIn(now, d.timeZone);
-            const { weekday, day } = dayParts(d.localDate);
-            return (
-              <li key={d.id}>
-                <PackCell
-                  position={d.position}
-                  dateText={`${weekday} ${day}`}
-                  icon={icon}
-                  word={word}
-                  pressed={d.id === dose?.id}
-                  isToday={isToday}
-                  ariaLabel={`Tablet ${d.position}, ${d.localDate} at ${doseTime(d)}, ${tabletTypeLabel(d.tabletKind)}, ${statusLabel(d, eventOf(d))}${isToday ? ', today' : ''}. Record or correct.`}
-                  onPress={() => chooseDose(d)}
-                />
-              </li>
-            );
-          })}
-        </ol>
+        <div className="app-calendar">
+          <div className="app-calendar-head" aria-hidden="true">
+            {state.doses.slice(0, 7).map(d => <span key={d.id}>{dayParts(d.localDate).weekday}</span>)}
+          </div>
+          <ol className="app-pack" aria-label="Your 28-tablet schedule">
+            {state.doses.map((d, index) => {
+              const { word, icon } = shortStatus(eventOf(d));
+              const isToday = d.localDate === localDateIn(now, d.timeZone);
+              const { weekday, day, month } = dayParts(d.localDate);
+              const kind = tabletTypeLabel(d.tabletKind);
+              return (
+                <li key={d.id}>
+                  <PackCell
+                    day={day}
+                    month={index === 0 || day === '1' ? month : undefined}
+                    position={d.position}
+                    icon={icon}
+                    word={word}
+                    pressed={d.id === dose?.id}
+                    isToday={isToday}
+                    ariaLabel={`Tablet ${d.position}, ${weekday} ${d.localDate} at ${doseTime(d)}, ${kind}, ${statusLabel(d, eventOf(d))}${isToday ? ', today' : ''}. Record or correct.`}
+                    onPress={() => chooseDose(d)}
+                  />
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+        <ul className="app-legend" aria-label="Status key">
+          <li><Icon name="taken" size="small" /> Taken</li>
+          <li><Icon name="missed" size="small" /> Confirmed missed</li>
+          <li><Icon name="unsure" size="small" /> Unsure</li>
+          <li><Icon name="no-entry" size="small" /> No entry (unknown, not missed)</li>
+        </ul>
       </Stack>
     </Card>
   );

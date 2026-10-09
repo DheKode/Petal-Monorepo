@@ -35,7 +35,11 @@ export function shortStatus(event: IntakeEvent | undefined): { word: string; ico
 }
 
 /** Short weekday and day of month for a local date like 2026-10-09. It is already a local date, so no zone shift applies. */
-export function dayParts(localDate: string): { weekday: string; day: string } {
+export function dayParts(localDate: string): { weekday: string; day: string; month: string } {
   const date = new Date(`${localDate}T12:00:00Z`);
-  return { weekday: date.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' }), day: String(Number(localDate.slice(8, 10))) };
+  return {
+    weekday: date.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' }),
+    day: String(Number(localDate.slice(8, 10))),
+    month: date.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' }),
+  };
 }
