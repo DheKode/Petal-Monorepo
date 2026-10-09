@@ -8,6 +8,7 @@ import { Button, Card, Feedback, StatusBadge } from '@petal/ui/components';
 import { Stack } from '@petal/ui/layouts';
 import { Icon } from '@petal/ui/icons';
 import { IconLabelButton } from './IconLabelButton';
+import { DayChip, PackCell } from './StatusButtons';
 import { art } from './art';
 
 interface Notice {
@@ -101,19 +102,17 @@ export function Today({ state, onState }: { state: PetalState; onState: (state: 
             const { word, icon } = shortStatus(eventOf(d));
             const isToday = d.localDate === localDateIn(now, d.timeZone);
             return (
-              <button
+              <DayChip
                 key={d.id}
-                type="button"
-                className="app-day"
-                aria-pressed={d.id === dose?.id}
-                aria-current={isToday ? 'date' : undefined}
-                aria-label={`Tablet ${d.position}, ${weekday} ${d.localDate}${isToday ? ', today' : ''}: ${word}`}
-                onClick={() => chooseDose(d)}
-              >
-                <span className="app-day-weekday">{isToday ? 'Today' : weekday}</span>
-                <span className="app-day-number">{day}</span>
-                <span className="app-day-status"><Icon name={icon} size="small" /> {word}</span>
-              </button>
+                weekday={weekday}
+                day={day}
+                icon={icon}
+                word={word}
+                pressed={d.id === dose?.id}
+                isToday={isToday}
+                ariaLabel={`Tablet ${d.position}, ${weekday} ${d.localDate}${isToday ? ', today' : ''}: ${word}`}
+                onPress={() => chooseDose(d)}
+              />
             );
           })}
         </nav>
@@ -211,19 +210,16 @@ export function Today({ state, onState }: { state: PetalState; onState: (state: 
                 const { weekday, day } = dayParts(d.localDate);
                 return (
                   <li key={d.id}>
-                    <button
-                      type="button"
-                      className="app-cell"
-                      aria-pressed={d.id === dose?.id}
-                      aria-current={isToday ? 'date' : undefined}
-                      aria-label={`Tablet ${d.position}, ${d.localDate} at ${doseTime(d)}, ${tabletTypeLabel(d.tabletKind)}, ${statusLabel(d, eventOf(d))}${isToday ? ', today' : ''}. Record or correct.`}
-                      onClick={() => chooseDose(d)}
-                    >
-                      <span className="app-cell-number">{d.position}</span>
-                      <span className="app-cell-date">{weekday} {day}</span>
-                      <span className="app-cell-status"><Icon name={icon} size="small" /> {word}</span>
-                      {isToday && <span className="app-cell-today">Today</span>}
-                    </button>
+                    <PackCell
+                      position={d.position}
+                      dateText={`${weekday} ${day}`}
+                      icon={icon}
+                      word={word}
+                      pressed={d.id === dose?.id}
+                      isToday={isToday}
+                      ariaLabel={`Tablet ${d.position}, ${d.localDate} at ${doseTime(d)}, ${tabletTypeLabel(d.tabletKind)}, ${statusLabel(d, eventOf(d))}${isToday ? ', today' : ''}. Record or correct.`}
+                      onPress={() => chooseDose(d)}
+                    />
                   </li>
                 );
               })}

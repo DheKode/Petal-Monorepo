@@ -1,6 +1,8 @@
 import { Icon, type IconName } from '@petal/ui/icons';
+import { useIconPlay } from './useIconPlay';
 
-/** A shared-theme button with a leading icon and a visible text label. The icon is decorative because the label names the action. */
+/** A shared-theme button with a leading icon and a visible text label. The icon is decorative because the label names the action.
+    The icon plays its micro-animation on hover, focus and press (AnimateIcons through @petal/ui). */
 export function IconLabelButton({ icon, label, onPress, variant, disabled, expanded, submit }: {
   icon: IconName;
   label: string;
@@ -10,6 +12,7 @@ export function IconLabelButton({ icon, label, onPress, variant, disabled, expan
   expanded?: boolean;
   submit?: boolean;
 }) {
+  const play = useIconPlay(disabled);
   return (
     <button
       type={submit ? 'submit' : 'button'}
@@ -17,9 +20,10 @@ export function IconLabelButton({ icon, label, onPress, variant, disabled, expan
       data-variant={variant}
       disabled={disabled}
       aria-expanded={expanded}
-      onClick={onPress}
+      onClick={() => { play.icon.current?.startAnimation(); onPress?.(); }}
+      {...play.handlers}
     >
-      <Icon name={icon} size="small" />
+      <Icon ref={play.icon} name={icon} size="small" />
       {label}
     </button>
   );
