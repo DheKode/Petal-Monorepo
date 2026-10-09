@@ -48,3 +48,15 @@ These functions are pure validation/serialization, not an import operation. Plat
 ## Verification
 
 Run `pnpm typecheck`, `pnpm test`, `pnpm build`. Tests cover complete round-trip, uncertain times, separate same-day doses, malformed/oversized/unsupported imports, secret-field rejection, broken references, audit corrections/deletion, profile metadata, unsupported guidance, offline evidence, and independent JSON Schema validation. Native adapters still require actual-device checks.
+
+## Schedule derivation and intake helpers
+
+Issue #32 (sub-issue of #5), TASKS.md D02-D04, DEC7, DEC8. Pure functions in `src/schedule.ts`; they have no clock, storage or UI access (callers pass `now`) and contain **no late/missed thresholds or clinical actions**.
+
+- `deriveSchedule({packId, profile, usualTime, timeZone, startDate})` returns the `Pack` and its 28 `ScheduledDose` records. Dose IDs are deterministic (`<packId>:<position>`), tablet kinds come from the profile map (unverified stays unverified), and each dose carries an offset timestamp, local date and zone. `startDateFromPosition({position, date})` converts a mid-pack setup ("tablet 10 is today") to the date of tablet 1; doses before it stay history-unknown, with no events created. `nextPackStartDate` returns the date 28 days later and does not handle delayed starts, which are a clinical flag.
+- Zones are handled with `Intl` only. A wall time skipped by a DST jump resolves to the first moment after the gap; an ambiguous time resolves to its first occurrence. `toZonedIso`, `localDateIn`, `addDays` and `utcOffsetMinutes` are exported.
+- `applyIntake(dose, existing, input, now)` creates or corrects the one current event for a dose (`intakeEventId` is `intake:<doseId>`). Repeating an identical entry returns `unchanged`, which prevents accidental duplicate confirmation. Corrections keep the event ID and `createdAt`. It does not write audit entries: the storage layer appends them from the prior and new snapshots. A known time defaults to `exact`; `approximate` and `unknown` are preserved. Missed and unsure events cannot carry a time, and times more than 5 minutes in the future are rejected.
+- `listUnresolvedDoses` returns due doses with no entry or an `unsure` entry. `selectTakenNowTarget` picks the "Taken now" dose and always returns alternatives and older gaps so the UI can show which dose is being recorded.
+- `compareZones(scheduleZone, deviceZone, now)` reports `same`, `equivalent-offset` or `different` (DEC8). The schedule never moves automatically.
+
+**Refinement of DEC7.** DEC7 recommended "the earliest unresolved dose". For mid-pack onboarding that would pick tablet 1. `selectTakenNowTarget` instead prefers today's dose when it is due and unresolved, then the earliest unresolved dose within a 36-hour lookback, and reports older unresolved doses separately without choosing them. The team should confirm this before the UI is treated as final.
