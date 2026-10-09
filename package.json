@@ -1,0 +1,21 @@
+{
+  "name": "petal-monorepo",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "build": "pnpm -r build",
+    "dev:sync": "pnpm --filter @petal/sync-api dev",
+    "dev:sync-demo": "pnpm --filter @petal/sync-demo dev",
+    "db:migrate": "pnpm --filter @petal/sync-api db:migrate"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2",
+    "tsx": "4.23.15",
+    "@types/node": "26.6.4"
+  }
+}

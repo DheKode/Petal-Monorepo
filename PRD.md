@@ -25,7 +25,7 @@ This is a hackathon prototype, not a clinically validated product. Improved adhe
 | --- | --- | --- |
 | Platforms | Android, Windows, macOS Apple Silicon | Intel Mac after testing; iOS |
 | Distribution | Download landing page with APK and desktop installers | Store distribution and signed update pipeline |
-| Storage | Local database; no account needed | Optional Clerk authentication and end-to-end encrypted Turso sync |
+| Storage | Local database; no account needed; optional Clerk login and client-encrypted Turso sync approved October 9 | Native secure-key adapters and production sync hardening |
 | Routine | Setup, pack view, timestamp logging, reminders, corrections | Additional pill products |
 | Guidance | Verified limited rules, traceable results, uncertainty handling | Additional reviewed clinical scenarios |
 | Chat | English-only local explanations, FAQs, proposed record corrections | Other languages |
@@ -184,13 +184,13 @@ Chat persistence is optional and must be declared; the complete backup covers du
 
 ## 11. Privacy and portability
 
-No login, health-data upload, remote inference, or sensitive telemetry in the core release. Remove sensitive records from console/crash logs. Explain local storage and whether at-rest encryption is implemented; do not advertise encryption that has not been verified.
+No required login, plaintext health-data upload, remote inference, or sensitive telemetry in the core release. Optional cloud sync is disabled by default and requires explicit opt-in. Remove sensitive records from console/crash logs. Explain local storage and whether at-rest encryption is implemented; do not advertise encryption that has not been verified.
 
 JSON backups include schema/app version and export time. Provide a sensitivity notice and label encryption status. Recommended initial import mode: replace current records after preview and explicit confirmation; create a recovery backup first. Validate schema, identifiers, dates, file size, and supported profile compatibility in a transaction. No silent merge or partial replacement.
 
-### Roadmap: optional encrypted sync
+### Approved extension: optional encrypted sync
 
-Clerk supplies authentication; Turso stores encrypted records behind an authorized service. Neither alone provides end-to-end encryption. Require client-side encryption, keys unavailable to the backend, a user-controlled device-link/recovery flow, authorization isolation, conflict resolution, deletion semantics, and clear metadata disclosure. Never place privileged database credentials in clients. Local operation remains possible without signing in.
+Approved by the user on October 9, 2026: pnpm workspaces and an Express sync service, preserving React Native and Electron client direction. Clerk supplies optional authentication; Turso stores encrypted records behind an authorized service. Neither alone provides end-to-end encryption. Require client-side encryption, keys unavailable to the backend, a user-controlled device-link/recovery flow, authorization isolation, conflict resolution, deletion semantics, and clear metadata disclosure. Never place privileged database credentials in clients. Local operation remains possible without signing in.
 
 ## 12. Hardware and performance validation
 
@@ -231,7 +231,7 @@ Four teammates may work across the stack; workstreams are temporary ownership of
 5. Add bleeding journal, approved pack estimate, backup/import, and installer checks.
 6. Freeze features with time reserved for recording, README, public repository, and submission.
 
-Trim optional animation, embeddings, and broad chat before sacrificing persistence, verified guidance, or actual local inference. Cloud sync is explicitly deferred. If cross-platform packaging fails, state exactly which targets work instead of listing broken downloads.
+Trim optional animation, embeddings, and broad chat before sacrificing persistence, verified guidance, or actual local inference. Optional encrypted sync is an explicitly approved extension; it must not gate the offline core. If cross-platform packaging fails, state exactly which targets work instead of listing broken downloads.
 
 ## 15. Demo and submission
 

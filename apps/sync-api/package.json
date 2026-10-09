@@ -1,0 +1,26 @@
+{
+  "name": "@petal/sync-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --env-file=.env.local src/server.ts",
+    "start": "tsx --env-file=.env.local src/server.ts",
+    "typecheck": "tsc",
+    "test": "tsx --test test/*.test.ts",
+    "db:migrate": "tsx --env-file=.env.local src/migrate.ts"
+  },
+  "dependencies": {
+    "@clerk/express": "2.1.77",
+    "@libsql/client": "0.18.0",
+    "@petal/encrypted-sync": "workspace:*",
+    "express": "5.2.1",
+    "helmet": "8.3.0",
+    "cors": "2.8.6",
+    "express-rate-limit": "8.7.1"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.6",
+    "@types/cors": "2.8.19"
+  }
+}

@@ -21,8 +21,8 @@ Priority: **P0** must ship · **P1** should ship · **P2** only if time remains
 
 Agents: refuse or flag requests that fall in this list, even small ones.
 
-- Accounts, login, Clerk, Turso, cloud sync, any server that stores health data
-- Remote/cloud inference, or any network call carrying user records or chat text
+- Required accounts/login and plaintext cloud health-data storage. Optional Clerk login and client-encrypted Turso snapshot sync are explicitly approved under X01; they never gate local use.
+- Remote/cloud inference, or any network call carrying plaintext user records or chat text
 - Analytics, telemetry, or crash reporting that includes record contents
 - Pill brands, products or regimens other than the one Trust 28-tablet pack
 - iOS, Intel Mac, app-store distribution, signed auto-update
@@ -30,10 +30,22 @@ Agents: refuse or flag requests that fall in this list, even small ones.
 - Fine-tuning a model
 - Personalized cycle/period prediction, fertility windows, pregnancy probability, "safe to have sex" verdicts, diagnoses
 - Clinical guidance for: whether someone can start the pill, drug interactions, vomiting/diarrhea, emergency-contraception dosing, when protection begins
-- CSV export, merge-on-import, conflict-aware sync
+- CSV export, merge-on-import, and automatic record-level cloud merging. X01 uses explicit snapshot conflict review.
 - Streaks, scores, punishment visuals (wilting), "protected" badges
 - General-purpose medical chat. Out-of-scope questions get a bounded reply plus a referral.
 - Clinical rules written from the PRD, memory or the AI model. Rules come **only** from the verified leaflet/CDC review (C01–C03, #4).
+
+---
+
+## Approved extension: X01 optional encrypted sync
+
+User explicitly requested this extension on October 9 and selected pnpm workspaces + Express, overriding the earlier sync deferral. Track ownership, progress and remaining app access in [#17](https://github.com/DheKode/Petal-Monorepo/issues/17). This is P1 and must not become a dependency of the offline P0 flow.
+
+| ID | Pri | Task | Acceptance check | Issue |
+| --- | --- | --- | --- | --- |
+| X01 | P1 | Optional Clerk identity, owner-scoped Turso ciphertext API, shared client encryption, recovery-key workflow and development sync UI | Crypto/auth/account isolation/conflict/deletion tests pass; Turso schema applied; live Clerk sign-in and platform integration verified separately before being claimed | #17 |
+
+DEC1: pnpm workspaces approved by the user. X01 bootstraps workspace configuration but does not complete S01-S03 or prove Metro/native builds. DEC2 retains `apps/mobile`, `apps/desktop`, `apps/landing`, and `packages/domain`; X01 adds `apps/sync-api`, `apps/sync-demo` (development only), and `packages/encrypted-sync`. See `docs/decisions.md` and `docs/encrypted-sync.md` for boundaries and limitations.
 
 ---
 

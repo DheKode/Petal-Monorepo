@@ -12,7 +12,7 @@ These rules are required for every coding agent working in this repository. Huma
 
 ## Repository layout and tooling
 
-- The repository is a scaffold; do not invent existing build, lint, or test commands. Agree on a package manager and toolchain with the human before introducing them, then document the actual commands here.
+- The user approved pnpm workspaces, TypeScript, an Express optional-sync API, and a React/Vite development sync demo. Use Node.js 22 or newer and the pinned pnpm version. Commands: `pnpm install --frozen-lockfile`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm dev:sync`, `pnpm dev:sync-demo`, and `pnpm db:migrate`. Migration requires server-only credentials. Native Android and desktop apps remain separate tasks.
 - `apps/` contains deployable applications; `packages/` contains shared packages; `lib/`, `docs/`, and `scripts/` are available for library code, documentation, and maintenance scripts. Agree on the distinction between `packages/` and `lib/` before adding shared code.
 - Teammates use Windows (PowerShell/Git Bash) and macOS. Keep scripts cross-platform or explicitly document supported shells.
 - `CLAUDE.md` imports this file so Claude Code and other agents share the same guidance. Maintain shared rules here.
@@ -40,7 +40,7 @@ Use repository issues as cards in one shared GitHub Project. Markdown belongs in
 | Review | PR is ready with verification evidence and known limitations |
 | Done | Change is merged and relevant integrated behavior is verified |
 
-Show human assignee, agent/session, area, and priority on cards where project fields permit. Keep branch, allowed paths, dependencies, and the latest handoff in the issue body or comments. Link the team's Project in the README when configured; do not invent its URL.
+Show human assignee, agent/session, area, and priority on cards where project fields permit. Keep branch, allowed paths, dependencies, and the latest handoff in the issue body or comments. The shared Project is https://github.com/orgs/DheKode/projects/1 (DheKode Project 1). Keep its link in the README.
 
 Required updates, within the human-authorized task scope:
 
@@ -66,7 +66,7 @@ Do not post noisy token-by-token progress. Do not contact other people or chats 
 
 - Build the complete logging -> clarification -> confirmation -> guidance -> explanation -> evidence flow before optional polish. Prioritize local inference viability on Android and desktop, stable shared contracts, persistence, and uncertainty reconstruction.
 - Follow the PRD's Android, Windows, and macOS Apple Silicon targets. React Native/native Android and Electron/React desktop use shared TypeScript domain logic with platform-specific SQLite and inference adapters. Technical direction remains subject to the PRD's runtime spike; record agreed changes.
-- No account, health-data upload, remote inference, or sensitive telemetry in the core release. Cloud sync, additional pill products, iOS, and untested platform claims remain outside scope.
+- The offline core requires no account, plaintext health-data upload, remote inference, or sensitive telemetry. Optional Clerk login and client-encrypted Turso sync are user-approved extensions, disabled by default. Never expose server credentials or recovery keys to the backend. Additional pill products, iOS, and untested platform claims remain outside scope.
 - Structured records are authoritative for personal facts; deterministic rules control clinical actions; approved local passages support explanations; the local LLM explains or proposes clarification. Never let generated text override fixed actions.
 - Enable product-specific guidance only after exact Trust formulation/leaflet verification and reviewed evidence-backed rules and fixtures. The PRD is not a medication protocol. Evidence gaps require affected branches to remain disabled with tracking-only behavior.
 - Preserve scheduled dose identity, separate same-day doses, unknown versus confirmed-missed states, approximate time precision, offsets, and time-zone context. Never fabricate history or exact times. Corrections retain an audit trail and recalculate guidance.
