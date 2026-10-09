@@ -1,6 +1,6 @@
 // Device helper for the Android spike (needs `adb` on PATH or ANDROID_HOME set).
 //   node tools/device.mjs info                 # record phone model, Android version, RAM, ABI
-//   node tools/device.mjs push-model [file]    # copy the GGUF into the app's private storage and verify SHA-256
+//   node tools/device.mjs push-model [file]    # copy the GGUF into the app-specific external dir and verify SHA-256
 //   node tools/device.mjs bench [--seconds 180] [--out result.json]
 //        # cold-start the app, sample memory every 500 ms, collect PETAL_BENCH log lines
 // The default model file is the desktop spike's verified download.
@@ -42,15 +42,16 @@ if (command === "info") {
     const source = rest[0] ?? path.join(process.env.PETAL_MODELS_DIR || path.join(os.homedir(), ".cache", "petal", "models"), MODEL_FILE);
     if (!existsSync(source))
         throw new Error(`Model not found: ${source}. Run the desktop spike's fetch-model first.`);
-    console.log(`Pushing ${source}`);
-    adb("push", source, `/data/local/tmp/${MODEL_FILE}`);
-    adb("shell", "run-as", PACKAGE, "mkdir", "-p", "files");
-    adb("shell", "run-as", PACKAGE, "cp", `/data/local/tmp/${MODEL_FILE}`, `files/${MODEL_FILE}`);
-    adb("shell", "rm", `/data/local/tmp/${MODEL_FILE}`);
-    const onDevice = adb("shell", "run-as", PACKAGE, "sha256sum", `files/${MODEL_FILE}`).split(/\s+/)[0];
+    // Release builds are not debuggable, so `run-as` is unavailable; use the
+    // app-specific external directory, which the app reads without permissions.
+    const target = `/sdcard/Android/data/${PACKAGE}/files/${MODEL_FILE}`;
+    console.log(`Pushing ${source}\n  to ${target}`);
+    adb("shell", "mkdir", "-p", path.posix.dirname(target));
+    adb("push", source, target);
+    const onDevice = adb("shell", "sha256sum", target).split(/\s+/)[0];
     if (onDevice !== MODEL_SHA256)
         throw new Error(`SHA-256 on device ${onDevice} != expected ${MODEL_SHA256}`);
-    console.log(`Verified on device: /data/user/0/${PACKAGE}/files/${MODEL_FILE}\n  sha256 ${onDevice}`);
+    console.log(`Verified on device: ${target}\n  sha256 ${onDevice}`);
 } else if (command === "bench") {
     const seconds = Number(option("seconds", "180"));
     const out = option("out");
