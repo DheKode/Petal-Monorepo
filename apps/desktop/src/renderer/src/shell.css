@@ -1,0 +1,209 @@
+/* Minimal Petal look for the desktop screens (DESIGN.md): flat, mostly white and soft white, rose only for the main action
+   and the current page, Geist Mono, text labels never replaced by color. Only @petal/ui tokens; no raw brand values.
+   Plain elements are styled here so the existing screens keep their markup; draft #57 can replace this file. */
+
+html, body { margin: 0; background: var(--petal-color-background); }
+
+/* ---------- Shell ---------- */
+.shell { display: grid; grid-template-columns: 15rem minmax(0, 1fr); min-height: 100vh; }
+.shell-loading { padding: var(--petal-space-page); }
+
+.shell-rail {
+  position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column; gap: var(--petal-space-section);
+  padding: var(--petal-space-page) var(--petal-space-group);
+  background: var(--petal-color-surface);
+  border-right: var(--petal-border-width) solid var(--petal-color-border-subtle);
+}
+.shell-logo { width: 7.5rem; height: auto; margin-left: var(--petal-space-related); }
+.shell-rail ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--petal-component-navigation-gap); }
+.shell-rail li button {
+  width: 100%; min-height: var(--petal-component-navigation-min-target);
+  padding-inline: var(--petal-space-related); border: 0; text-align: left;
+  border-radius: var(--petal-component-navigation-radius);
+  background: transparent; color: var(--petal-component-navigation-foreground);
+  font-size: var(--petal-component-navigation-type-font-size);
+  font-weight: var(--petal-component-navigation-type-font-weight);
+  transition: background-color var(--petal-component-navigation-transition) var(--petal-motion-easing);
+}
+.shell-rail li button:hover:not(:disabled):not([aria-current]) { background: var(--petal-color-background); color: var(--petal-color-text-primary); }
+.shell-rail li button[aria-current="page"] {
+  background: var(--petal-component-navigation-active-background);
+  color: var(--petal-component-navigation-active-foreground);
+  font-weight: var(--petal-primitive-font-weight-semibold);
+}
+.shell-rail li button:disabled { color: var(--petal-color-action-disabled-text); }
+.shell-rail-note {
+  margin: auto 0 0; padding-inline: var(--petal-space-related);
+  color: var(--petal-color-text-secondary);
+  font-size: var(--petal-type-caption-font-size); line-height: var(--petal-type-caption-line-height);
+}
+
+.shell-main {
+  width: 100%; max-width: var(--petal-layout-content-max);
+  padding: var(--petal-space-page) var(--petal-layout-gutter-wide) calc(2 * var(--petal-space-page));
+  display: flex; flex-direction: column; gap: var(--petal-space-section);
+}
+/* Focus moves here on page change for screen readers; it is not a control, so no outline. */
+.shell-header h1:focus { outline: none; }
+.shell-header h1 {
+  margin: 0;
+  font-size: var(--petal-type-display-font-size); line-height: var(--petal-type-display-line-height);
+  font-weight: var(--petal-type-display-font-weight); letter-spacing: var(--petal-type-display-letter-spacing);
+}
+.shell-header p { margin: var(--petal-space-inline) 0 0; }
+.shell-stack { display: flex; flex-direction: column; gap: var(--petal-space-section); }
+.shell-about { margin: 0; font-size: var(--petal-type-caption-font-size); }
+
+/* Visible limitations stay visible, but quiet. */
+.shell-notice {
+  margin: 0; padding: var(--petal-space-related) var(--petal-space-group);
+  border-radius: var(--petal-radius-control);
+  background: var(--petal-color-surface-subtle); color: var(--petal-color-text-secondary);
+  font-size: var(--petal-type-label-font-size); line-height: var(--petal-type-label-line-height);
+}
+.shell-notice[data-kind="warning"] { background: var(--petal-color-feedback-warning-surface); color: var(--petal-color-feedback-warning-text); }
+
+/* ---------- Screens: each section is a flat white card ---------- */
+.shell-main section {
+  padding: var(--petal-component-card-padding);
+  border: var(--petal-component-card-border-width) solid var(--petal-component-card-border);
+  border-radius: var(--petal-component-card-radius);
+  background: var(--petal-component-card-background); color: var(--petal-component-card-foreground);
+}
+.shell-main section section { padding: 0; border: 0; }
+.shell-main section > :first-child { margin-top: 0; }
+.shell-main section > :last-child { margin-bottom: 0; }
+.shell-main h2 {
+  margin: 0 0 var(--petal-space-group);
+  font-size: var(--petal-type-title-font-size); line-height: var(--petal-type-title-line-height);
+  font-weight: var(--petal-type-title-font-weight); letter-spacing: var(--petal-type-title-letter-spacing);
+}
+.shell-main h3 {
+  margin: var(--petal-space-section) 0 var(--petal-space-related);
+  font-size: var(--petal-type-body-large-font-size); line-height: var(--petal-type-body-large-line-height);
+  font-weight: var(--petal-primitive-font-weight-semibold);
+}
+.shell-main p { margin: 0 0 var(--petal-space-related); }
+.shell-main small { color: var(--petal-color-text-secondary); font-size: var(--petal-type-caption-font-size); }
+.shell-main strong { font-weight: var(--petal-primitive-font-weight-semibold); }
+.shell-main code { font-size: var(--petal-type-caption-font-size); overflow-wrap: anywhere; }
+
+/* ---------- Buttons: quiet by default, rose for the one main action ---------- */
+.shell-main button:not(.petal-button) {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: var(--petal-component-button-min-height); max-width: 100%;
+  margin: 0 var(--petal-space-inline) var(--petal-space-inline) 0;
+  padding: var(--petal-component-button-padding-block) var(--petal-space-group);
+  border: var(--petal-component-button-border-width) solid var(--petal-component-button-secondary-border);
+  border-radius: var(--petal-component-button-radius);
+  background: var(--petal-component-button-secondary-background); color: var(--petal-component-button-secondary-foreground);
+  font-size: var(--petal-component-button-type-font-size); line-height: var(--petal-component-button-type-line-height);
+  font-weight: var(--petal-component-button-type-font-weight); overflow-wrap: anywhere; text-align: center;
+  transition: background-color var(--petal-component-button-transition) var(--petal-motion-easing);
+}
+.shell-main button:not(.petal-button):hover:not(:disabled) { background: var(--petal-component-button-secondary-hover); }
+.shell-main button:not(.petal-button):active:not(:disabled) { background: var(--petal-component-button-secondary-pressed); }
+.shell-main button:not(.petal-button):disabled {
+  background: var(--petal-component-button-disabled-background); color: var(--petal-component-button-disabled-foreground);
+  border-color: transparent;
+}
+/* Main actions: a form's submit button, and "Taken now" (first button of the row that also holds "Taken earlier"). */
+.shell-main button[type="submit"]:not(.petal-button),
+.shell-main p:has(> button[aria-expanded]) > button:first-child {
+  border-color: transparent;
+  background: var(--petal-component-button-primary-background); color: var(--petal-component-button-primary-foreground);
+}
+.shell-main button[type="submit"]:not(.petal-button):hover:not(:disabled),
+.shell-main p:has(> button[aria-expanded]) > button:first-child:hover { background: var(--petal-component-button-primary-hover); }
+.shell-main button[type="submit"]:not(.petal-button):disabled { background: var(--petal-component-button-disabled-background); color: var(--petal-component-button-disabled-foreground); }
+.shell-main .petal-button { margin: 0 var(--petal-space-inline) var(--petal-space-inline) 0; }
+
+/* ---------- Fields ---------- */
+.shell-main label { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--petal-space-inline); font-size: var(--petal-component-field-label-type-font-size); }
+.shell-main input:not([type="radio"]):not([type="checkbox"]), .shell-main select, .shell-main textarea {
+  min-height: var(--petal-component-field-min-height); max-width: 100%;
+  padding: var(--petal-component-field-padding-block) var(--petal-component-field-padding-inline);
+  border: var(--petal-component-field-border-width) solid var(--petal-component-field-border);
+  border-radius: var(--petal-component-field-radius);
+  background: var(--petal-component-field-background); color: var(--petal-component-field-foreground);
+  font-size: var(--petal-component-field-type-font-size);
+}
+.shell-main textarea { width: 100%; min-height: 6rem; resize: vertical; }
+.shell-main label:has(> textarea) { display: grid; width: 100%; }
+.shell-main input:focus-visible, .shell-main select:focus-visible, .shell-main textarea:focus-visible { border-color: var(--petal-component-field-focus-border); }
+.shell-main input[type="radio"], .shell-main input[type="checkbox"] { accent-color: var(--petal-color-action-primary); width: 1.125rem; height: 1.125rem; }
+.shell-main fieldset {
+  margin: 0 0 var(--petal-space-group); padding: var(--petal-space-group);
+  border: var(--petal-border-width) solid var(--petal-color-border-subtle); border-radius: var(--petal-radius-control);
+}
+.shell-main legend { padding-inline: var(--petal-space-inline); font-weight: var(--petal-primitive-font-weight-semibold); }
+
+/* ---------- Tables: the pack and history lists ---------- */
+.shell-main table { width: 100%; border-collapse: collapse; font-size: var(--petal-type-label-font-size); }
+.shell-main caption { caption-side: top; text-align: left; padding-bottom: var(--petal-space-related); color: var(--petal-color-text-secondary); }
+.shell-main th, .shell-main td { padding: var(--petal-space-inline) var(--petal-space-related); text-align: left; vertical-align: middle; border-bottom: var(--petal-border-width) solid var(--petal-color-border-subtle); }
+.shell-main thead th { color: var(--petal-color-text-secondary); font-weight: var(--petal-type-label-font-weight); }
+.shell-main tbody tr:last-child > * { border-bottom: 0; }
+.shell-main tr[aria-current="date"] > * { background: var(--petal-color-surface-subtle); }
+.shell-main tr[aria-current="date"] > th { font-weight: var(--petal-primitive-font-weight-semibold); }
+.shell-main td button:not(.petal-button) {
+  min-height: auto; margin: 0; padding: var(--petal-space-inline) var(--petal-space-related);
+  border-color: transparent; background: transparent; color: var(--petal-component-button-tertiary-foreground);
+  font-size: var(--petal-type-caption-font-size);
+}
+.shell-main td button:not(.petal-button):hover:not(:disabled) { background: var(--petal-component-button-tertiary-hover); }
+
+/* ---------- Disclosures, lists, messages ---------- */
+.shell-main details { margin: 0 0 var(--petal-space-related); }
+.shell-main summary { cursor: pointer; padding: var(--petal-space-inline) 0; color: var(--petal-color-text-link); font-weight: var(--petal-type-label-font-weight); }
+.shell-main details[open] > summary { margin-bottom: var(--petal-space-related); }
+.shell-main ul, .shell-main ol { margin: 0 0 var(--petal-space-related); padding-left: var(--petal-space-section); }
+.shell-main li + li { margin-top: var(--petal-space-inline); }
+.shell-main blockquote {
+  margin: 0 0 var(--petal-space-related); padding: var(--petal-space-related) var(--petal-space-group);
+  border-left: var(--petal-focus-width) solid var(--petal-color-border-control); background: var(--petal-color-surface-subtle);
+  border-radius: 0 var(--petal-radius-control) var(--petal-radius-control) 0;
+}
+.shell-main [role="alert"] {
+  padding: var(--petal-component-feedback-padding); border-radius: var(--petal-component-feedback-radius);
+  background: var(--petal-color-feedback-error-surface); color: var(--petal-color-feedback-error-text);
+}
+.shell-main section [role="status"] {
+  padding: var(--petal-component-feedback-padding); border-radius: var(--petal-component-feedback-radius);
+  background: var(--petal-color-feedback-success-surface); color: var(--petal-color-feedback-success-text);
+}
+.shell-main section [role="status"]:is(span) { display: inline-block; padding-block: var(--petal-space-inline); background: transparent; color: var(--petal-color-text-secondary); }
+
+/* ---------- Ask Petal ---------- */
+.shell-main ol[aria-label="Conversation"] { list-style: none; padding: 0; display: grid; gap: var(--petal-space-group); }
+.shell-main ol[aria-label="Conversation"] > li {
+  margin: 0; padding: var(--petal-space-group);
+  border-radius: var(--petal-radius-container); background: var(--petal-color-surface-subtle);
+}
+.shell-main ol[aria-label="Conversation"]:empty { display: none; }
+/* A proposed change is never styled like a saved record (DESIGN.md: keep facts, proposals and guidance distinct). */
+.shell-main [aria-label="Proposed change"] {
+  padding: var(--petal-component-proposal-padding);
+  border: var(--petal-border-width) dashed var(--petal-component-proposal-border);
+  border-radius: var(--petal-component-proposal-radius);
+  background: var(--petal-component-proposal-background); color: var(--petal-component-proposal-foreground);
+}
+.shell-main [aria-label="Proposed change"] h3 { margin-top: 0; }
+
+@media (max-width: 52rem) {
+  .shell { grid-template-columns: 1fr; }
+  .shell-rail { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; padding: var(--petal-space-group); border-right: 0; border-bottom: var(--petal-border-width) solid var(--petal-color-border-subtle); }
+  .shell-rail ul { display: flex; flex-wrap: wrap; }
+  .shell-rail-note { margin: 0; flex-basis: 100%; }
+  .shell-main { padding: var(--petal-space-section) var(--petal-layout-gutter-compact); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shell-main button, .shell-rail button { transition: none; }
+}
+
+/* The page title already names these screens; keep their own headings for screen readers only. */
+#today-heading, #ask-petal-heading, #settings-heading {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}

@@ -29,6 +29,8 @@ export function Chat({ state, onState }: { state: PetalState; onState: (state: P
   const [notice, setNotice] = useState('');
   const mounted = useRef(true);
   const pendingToken = useRef<string | null>(null);
+  // True only while this screen's own question is being answered.
+  const asking = useRef(false);
 
   useEffect(() => {
     mounted.current = true;
@@ -36,9 +38,10 @@ export function Chat({ state, onState }: { state: PetalState; onState: (state: P
       .then(info => { if (mounted.current) setModel(info); })
       .catch(() => { if (mounted.current) setError('Model status is unavailable. You can still track tablets.'); });
     return () => {
-      // The conversation is transient: leaving the screen cancels any answer and any unconfirmed proposal.
+      // The conversation is transient: leaving the screen cancels this screen's answer and any unconfirmed proposal.
+      // Only cancel when this screen asked something, so leaving it never interrupts a request it did not start.
       mounted.current = false;
-      void window.petal.cancelAi().catch(() => {});
+      if (asking.current) void window.petal.cancelAi().catch(() => {});
       if (pendingToken.current) void window.petal.discardAiCorrection(pendingToken.current).catch(() => {});
     };
   }, []);
@@ -64,6 +67,7 @@ export function Chat({ state, onState }: { state: PetalState; onState: (state: P
     setBusy(true);
     setError(null);
     const submitted = question.trim();
+    asking.current = true;
     try {
       const result = await window.petal.askAi({ question: submitted, discussedDoseId: doseId || null });
       if (!mounted.current) return;
@@ -76,6 +80,7 @@ export function Chat({ state, onState }: { state: PetalState; onState: (state: P
     } catch {
       if (mounted.current) setError('The answer did not finish. Your records were not changed.');
     } finally {
+      asking.current = false;
       if (mounted.current) setBusy(false);
     }
   }
@@ -171,13 +176,13 @@ export function Chat({ state, onState }: { state: PetalState; onState: (state: P
   const previewDose = preview ? state.doses.find(d => d.id === preview.doseId) : undefined;
 
   return (
-    <section aria-labelledby="ask-petal-heading" className="petal-card">
+    <section aria-labelledby="ask-petal-heading">
       <h2 id="ask-petal-heading">Ask Petal</h2>
       <p>Check recorded history, review a correction, or read supported FAQs. Medical guidance is unavailable while Trust evidence awaits review. This conversation is kept only while this screen is open.</p>
       <p>{model?.message ?? 'Checking local model setup…'}</p>
       {model && <small>{model.title}</small>}
       <p>
-        <button type="button" className="petal-button" onClick={pickModel} disabled={busy || selecting}>
+        <button type="button" className="petal-button" data-variant="secondary" onClick={pickModel} disabled={busy || selecting}>
           {selecting ? 'Verifying file…' : 'Choose downloaded Gemma model'}
         </button>
       </p>
@@ -232,7 +237,7 @@ export function Chat({ state, onState }: { state: PetalState; onState: (state: P
               <p>Before: {previewDose ? statusLabel(previewDose, preview.before ?? undefined) : 'see the current pack'}.</p>
               <p>After: {previewDose ? statusLabel(previewDose, preview.after) : preview.after.status}. Time taken: {preview.after.actualAt ?? 'unknown'} ({preview.after.timePrecision}).</p>
               <p>Nothing is saved until you confirm.</p>
-              <button type="button" onClick={confirm} disabled={saving}>Confirm change</button>{' '}
+              <button type="button" className="petal-button" onClick={confirm} disabled={saving}>Confirm change</button>{' '}
               <button type="button" onClick={discard} disabled={saving}>Cancel proposal</button>
             </div>
           ) : (

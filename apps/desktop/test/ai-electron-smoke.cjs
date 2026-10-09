@@ -64,6 +64,10 @@ const DOM_HELPERS = `
   true;
 `;
 
+// Ask Petal is its own page in the main navigation.
+const OPEN_ASK = `window.__smoke.waitFor(() => [...document.querySelectorAll('nav button')].find(b => b.textContent === 'Ask Petal'), 10000)
+  .then(() => { [...document.querySelectorAll('nav button')].find(b => b.textContent === 'Ask Petal').click(); return true; })`;
+
 async function ask(evaluate, question, extra = {}) {
   const started = Date.now();
   const result = await evaluate(`window.petal.askAi(${JSON.stringify({ question, ...extra })})`);
@@ -77,6 +81,7 @@ app.whenReady().then(async () => {
     const win = await waitForWindow();
     const evaluate = code => win.webContents.executeJavaScript(code);
     await evaluate(DOM_HELPERS);
+    await evaluate(OPEN_ASK);
     await evaluate(`window.__smoke.waitFor(() => window.__smoke.section(), 10000).then(() => true)`);
     assert.equal(await evaluate('typeof window.petal.askAi'), 'function');
     done('real renderer mounts Ask Petal; preload exposes AI methods');
@@ -186,6 +191,7 @@ app.whenReady().then(async () => {
       win.webContents.reload();
       await new Promise(resolve => win.webContents.once('did-finish-load', resolve));
       await evaluate(DOM_HELPERS);
+      await evaluate(OPEN_ASK);
       await evaluate(`window.__smoke.waitFor(() => window.__smoke.section()?.querySelector('form select'), 10000).then(() => true)`);
       const asked = await evaluate(`(async () => {
         const s = window.__smoke;
