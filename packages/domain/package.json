@@ -1,0 +1,19 @@
+{
+  "name": "@petal/domain",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./backup.schema.json": "./schemas/backup-v1.schema.json"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc",
+    "test": "tsx --test test/*.test.ts",
+    "schema:generate": "tsx scripts/generate-schema.ts"
+  }
+}
