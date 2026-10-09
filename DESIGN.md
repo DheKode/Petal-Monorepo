@@ -15,18 +15,18 @@ typography:
     fontFamily: Geist Mono
 omitted:
   - section: spacing
-    reason: The initial spacing baseline is maintained in libs/ui/themes/petal.tokens.json.
+    reason: The initial spacing baseline is maintained in libs/ui/src/themes/petal.tokens.json.
   - section: rounded
-    reason: The initial radius baseline is maintained in libs/ui/themes/petal.tokens.json.
+    reason: The initial radius baseline is maintained in libs/ui/src/themes/petal.tokens.json.
   - section: components
-    reason: Initial control tokens live in libs/ui/themes/petal.tokens.json; screen-level component design remains pending.
+    reason: Initial control tokens live in libs/ui/src/themes/petal.tokens.json; screen-level component design remains pending.
 ---
 
 # Petal Brand Identity and Design Study
 
 ## Overview
 
-This document uses the section structure from [Google's DESIGN.md specification](https://github.com/google-labs-code/design.md/blob/main/docs/spec.md) to record Petal's original brand decisions alongside reference research. The rose-and-white palette and Geist Mono font family are approved. The [shared theme](libs/ui/themes/README.md) provides an initial baseline for typography sizing, spacing, radii, control states, focus, and motion. Screen layouts, illustrations, and actual-device checks remain to be completed. Flo and the community kit remain reference material.
+This document uses the section structure from [Google's DESIGN.md specification](https://github.com/google-labs-code/design.md/blob/main/docs/spec.md) to record Petal's original brand decisions alongside reference research. The rose-and-white palette and Geist Mono font family are approved. The [shared theme](libs/ui/src/themes/README.md) provides an initial baseline for typography sizing, spacing, radii, control states, focus, and motion. Screen layouts, illustrations, and actual-device checks remain to be completed. Flo and the community kit remain reference material.
 
 The selected direction is flat, modern, and UX-driven: clear hierarchy, readable content, and purposeful color use. Brand expression should support daily logging and history review.
 
@@ -108,7 +108,7 @@ The design intent is a precise, contemporary type voice balanced by the warm ros
 
 Keep sentence case, natural spacing, and a clear hierarchy. Monospaced text can require more horizontal space; allow labels to wrap and keep explanations concise. Essential instructions must remain readable, and text scaling must preserve the main task and its actions.
 
-The initial type scale and role-specific weights, line heights, and letter spacing are defined in [the theme source](libs/ui/themes/petal.tokens.json), with usage guidance in its README. Body starts at 16/24 and screen headings at 24/32 logical units. Verify the scale at mobile sizes and with text scaling. Bundle the chosen font files with the eventual app so typography remains available offline.
+The initial type scale and role-specific weights, line heights, and letter spacing are defined in [the theme source](libs/ui/src/themes/petal.tokens.json), with usage guidance in its README. Body starts at 16/24 and screen headings at 24/32 logical units. Verify the scale at mobile sizes and with text scaling. Bundle the chosen font files with the eventual app so typography remains available offline.
 
 ### Reference lesson
 
@@ -148,7 +148,7 @@ The shared theme defines initial radii: 12 for controls, 16 for containers, and 
 
 ## Components
 
-Shared defaults for buttons, fields, cards, navigation, neutral status containers, and dialogs are in `libs/ui/themes/petal.tokens.json`. These are reusable appearance values; implementing components and validating screens remain separate tasks. Future shared component, hook, layout, and helper code belongs in the corresponding `libs/ui/` folders.
+Shared defaults for buttons, fields, cards, navigation, neutral status containers, and dialogs are in `libs/ui/src/themes/petal.tokens.json`. These are reusable appearance values; implementing components and validating screens remain separate tasks. Future shared component, hook, layout, and helper code belongs in the corresponding `libs/ui/src/` folders.
 
 ### Study considerations
 

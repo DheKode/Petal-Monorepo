@@ -25,11 +25,11 @@ Issue #20 owns desktop scaffold/root configuration and must consume this package
 
 ## Shared UI themes and assets
 
-The human selected `libs/ui/themes/` for the shared Petal appearance, with sibling `components/`, `hooks/`, `layouts/`, and `utils/`. The human moved the existing artwork to `libs/assets/brands/`, reserved `libs/assets/images/`, removed the extra `petal/` folder wrappers, and removed the old `lib/` root. Preserve that layout.
+The human selected `libs/ui/` and then moved its source folders under `src/`, putting the theme in `libs/ui/src/themes/` for the shared Petal appearance, with sibling `components/`, `hooks/`, `layouts/`, and `utils/`. The human moved the existing artwork to `libs/assets/brands/`, reserved `libs/assets/images/`, removed the extra `petal/` folder wrappers, and removed the old `lib/` root. Preserve that layout.
 
-`libs/ui/themes/petal.tokens.json` is the canonical DTCG-format source. Generated CSS and typed JavaScript/native exports share its values. Approved palette/font identity is preserved; new type, spacing, radius, functional-color, and motion values are an initial baseline pending screen/device review. The appearance is light only. Fonts must be bundled and registered by the application owners.
+`libs/ui/src/themes/petal.tokens.json` is the canonical DTCG-format source. Generated CSS and typed JavaScript/native exports share its values. Approved palette/font identity is preserved; new type, spacing, radius, functional-color, and motion values are an initial baseline pending screen/device review. The appearance is light only. Fonts must be bundled and registered by the application owners.
 
-This U01/#11 work introduces no workspace package, root tooling, app dependencies, or component/hook/layout implementations. The UI sibling directories are placeholders; consumers use relative imports until app owners agree on package exports and bundler integration. Existing `packages/` domain/service contracts remain unchanged. App integration, accessibility checks on the phone, and the L01 landing page remain separate acceptance work.
+The human subsequently requested completion of the root `libs/ui/index.ts` and `package.json` scaffolds. `@petal/ui` is registered through `libs/*` and builds ESM plus TypeScript declarations. Public exports cover the package root, `theme`, `theme/native`, `theme.css`, and `tokens.json`; runtime imports have no dependencies. Root recursive checks include this package. The workspace/lockfile change adds only registration and its empty importer, preserving existing versions and build policies. Apps opt in with `@petal/ui: workspace:*`; no app dependencies or component/hook/layout implementations are added. Existing `packages/` domain/service contracts remain unchanged. App bundler integration, accessibility checks on the phone, and the L01 landing page remain separate acceptance work.
 
 ## Desktop app tooling — October 9, 2026
 
