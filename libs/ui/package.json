@@ -10,7 +10,8 @@
   ],
   "files": [
     "dist",
-    "src/themes/petal.tokens.json"
+    "src/themes/petal.tokens.json",
+    "src/icons/THIRD_PARTY_NOTICES.md"
   ],
   "exports": {
     ".": {
@@ -80,7 +81,28 @@
       "types": "./dist/src/utils/index.d.ts",
       "import": "./dist/src/utils/index.js",
       "default": "./dist/src/utils/index.js"
-    }
+    },
+    "./icons": {
+      "react-native": {
+        "types": "./dist/src/icons/index.native.d.ts",
+        "import": "./dist/src/icons/index.native.js",
+        "default": "./dist/src/icons/index.native.js"
+      },
+      "types": "./dist/src/icons/index.d.ts",
+      "import": "./dist/src/icons/index.js",
+      "default": "./dist/src/icons/index.js"
+    },
+    "./icons/native": {
+      "types": "./dist/src/icons/index.native.d.ts",
+      "import": "./dist/src/icons/index.native.js",
+      "default": "./dist/src/icons/index.native.js"
+    },
+    "./icons/catalog": {
+      "types": "./dist/src/icons/catalog.d.ts",
+      "import": "./dist/src/icons/catalog.js",
+      "default": "./dist/src/icons/catalog.js"
+    },
+    "./icons/notices": "./src/icons/THIRD_PARTY_NOTICES.md"
   },
   "scripts": {
     "build": "node src/themes/scripts/build.mjs && tsc -p tsconfig.build.json && node scripts/copy-theme.mjs",
@@ -91,13 +113,25 @@
   },
   "peerDependencies": {
     "react": ">=19.2.3 <20",
-    "react-native": "0.86.3"
+    "react-native": "0.86.3",
+    "@animateicons/react": "0.12.0",
+    "lucide-react-native": "1.52.0",
+    "react-native-svg": "15.15.5"
   },
   "peerDependenciesMeta": {
     "react": {
       "optional": true
     },
     "react-native": {
+      "optional": true
+    },
+    "@animateicons/react": {
+      "optional": true
+    },
+    "lucide-react-native": {
+      "optional": true
+    },
+    "react-native-svg": {
       "optional": true
     }
   },
@@ -106,6 +140,9 @@
     "@types/react-dom": "19.3.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "react-native": "0.86.3"
+    "react-native": "0.86.3",
+    "@animateicons/react": "0.12.0",
+    "lucide-react-native": "1.52.0",
+    "react-native-svg": "15.15.5"
   }
 }

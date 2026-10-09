@@ -1,0 +1,17 @@
+// Cloudflare Worker + static assets for the landing page (L01, #11).
+// Deploy: build, stage downloads, then `npx wrangler@4.139.0 deploy` from this directory.
+{
+  "name": "petal-landing",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // Only download paths run the Worker; everything else is served as static files.
+    "run_worker_first": ["/download/*", "/downloads/*"]
+  },
+  // Custom Domain: Cloudflare creates and manages the DNS record and certificate.
+  "routes": [{"pattern": "petal.necookie.dev", "custom_domain": true}],
+  "workers_dev": true,
+  "observability": {"enabled": false}
+}

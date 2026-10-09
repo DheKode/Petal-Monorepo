@@ -1,7 +1,26 @@
 import { LocalStore } from '@petal/storage';
 import { BACKUP_VERSION, serializeBackup, type Backup, type IntakeEvent } from '@petal/domain';
-import type { PetalState } from '../shared/ipc';
+import type { ImportPreview, PetalState, RecordCounts } from '../shared/ipc';
 import { SetupExistsError, type PetalStore, type SavedSetup } from './store';
+
+function toState(backup: Backup): PetalState {
+  return {
+    profile: backup.profiles[0] ?? null,
+    settings: backup.settings,
+    pack: backup.packs[0] ?? null,
+    doses: backup.scheduledDoses,
+    events: backup.intakeEvents,
+    persistence: 'disk',
+  };
+}
+
+function countsOf(backup: Backup): RecordCounts {
+  return {
+    profiles: backup.profiles.length, packs: backup.packs.length, scheduledDoses: backup.scheduledDoses.length,
+    intakeEvents: backup.intakeEvents.length, auditEntries: backup.auditEntries.length,
+    bleedingEntries: backup.bleedingEntries.length, evidence: backup.evidence.length,
+  };
+}
 
 /** Durable store backed by `@petal/storage` (local SQLite file, plaintext, not encrypted at rest). Must only be used in the
     main process: the renderer reaches it through the narrow IPC operations in `service.ts`, never directly.
@@ -19,15 +38,28 @@ export class SqliteStore implements PetalStore {
   }
 
   async load(): Promise<PetalState> {
-    const { backup } = await this.db.read();
-    return {
-      profile: backup.profiles[0] ?? null,
-      settings: backup.settings,
-      pack: backup.packs[0] ?? null,
-      doses: backup.scheduledDoses,
-      events: backup.intakeEvents,
-      persistence: 'disk',
-    };
+    return toState((await this.db.read()).backup);
+  }
+
+  async exportJson(): Promise<{ json: string; sensitivityNotice: string }> {
+    const { json, sensitivityNotice } = await this.db.exportJson();
+    return { json, sensitivityNotice };
+  }
+
+  /** Counts only leave this class: the file's records stay in the main process until the user confirms. */
+  async previewImport(json: string): Promise<ImportPreview> {
+    const { backup: current } = await this.db.read();
+    const preview = await this.db.previewImport(json);
+    return { token: preview.token, incoming: preview.counts, current: countsOf(current), sensitivityNotice: preview.sensitivityNotice };
+  }
+
+  async confirmImport(token: string): Promise<{ state: PetalState; recoveryKept: boolean }> {
+    const { recoveryId } = await this.db.confirm(token);
+    return { state: await this.load(), recoveryKept: recoveryId !== null };
+  }
+
+  cancelImport(token: string): void {
+    this.db.cancel(token);
   }
 
   /** Setup has no dedicated adapter call, so it goes through the adapter's validated replace-all import. That would erase

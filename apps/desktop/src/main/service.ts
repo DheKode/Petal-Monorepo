@@ -3,7 +3,10 @@ import {
   type IntakeEvent,
 } from '@petal/domain';
 import { deriveFromSetupInput } from '../shared/setup';
-import { MAX_BATCH, type BatchOutcome, type IntakeOutcome, type PetalState, type RecordIntakeInput, type Result, type SetupInput } from '../shared/ipc';
+import {
+  MAX_BATCH, type BatchOutcome, type ImportOutcome, type ImportPreview, type IntakeOutcome, type PetalState,
+  type RecordIntakeInput, type Result, type SetupInput,
+} from '../shared/ipc';
 import { SetupExistsError, type PetalStore } from './store';
 
 const fail = (message: string): { ok: false; message: string } => ({ ok: false, message });
@@ -14,6 +17,20 @@ function messageOf(error: unknown): string {
   if (error instanceof SetupExistsError) return 'Setup already exists. Changing it needs a confirmation step that is not built yet.';
   if (error instanceof DomainValidationError) return error.issues.map(issue => issue.message).join('; ') || error.message;
   return 'Something went wrong. Your records were not changed.';
+}
+
+/** Import failures say what went wrong in general terms only: never the file's contents or paths inside it. */
+function importMessageOf(error: unknown): string {
+  if (error instanceof DomainValidationError) {
+    return error.issues.some(i => i.message === 'Backup exceeds size limit')
+      ? 'That file is too large to be a Petal backup. Your records were not changed.'
+      : 'That file is not a valid Petal backup, or it comes from an incompatible version. Your records were not changed.';
+  }
+  if (error instanceof SyntaxError) return 'That file is not a valid Petal backup. Your records were not changed.';
+  const code = (error as { code?: unknown } | null)?.code;
+  if (code === 'stale-preview') return 'Your records changed after this preview was made. Pick the file again. Nothing was replaced.';
+  if (code === 'invalid-preview') return 'This preview has expired. Pick the file again. Nothing was replaced.';
+  return 'The import did not finish. Your records were not changed.';
 }
 
 interface UndoEntry {
@@ -150,6 +167,49 @@ export class PetalService {
       } catch (error) {
         return fail(messageOf(error));
       }
+    });
+  }
+
+  /** The file text for a full backup. The main process writes it where the user chose; the renderer never sees a path. */
+  exportBackup(): Promise<Result<{ json: string; sensitivityNotice: string }>> {
+    return this.exclusive(async () => {
+      try {
+        return ok(await this.store.exportJson());
+      } catch {
+        return fail('The backup could not be created. Your records were not changed.');
+      }
+    });
+  }
+
+  /** Validate file text and hold it as a preview. Nothing stored changes. */
+  previewImport(json: string): Promise<Result<ImportPreview>> {
+    return this.exclusive(async () => {
+      try {
+        if (typeof json !== 'string') return fail('That file is not a valid Petal backup. Your records were not changed.');
+        return ok(await this.store.previewImport(json));
+      } catch (error) {
+        return fail(importMessageOf(error));
+      }
+    });
+  }
+
+  confirmImport(token: string): Promise<Result<ImportOutcome>> {
+    return this.exclusive(async () => {
+      try {
+        if (typeof token !== 'string') return fail('This preview has expired. Pick the file again. Nothing was replaced.');
+        const outcome = await this.store.confirmImport(token);
+        this.undo.clear(); // Undo entries refer to records that no longer exist.
+        return ok(outcome);
+      } catch (error) {
+        return fail(importMessageOf(error));
+      }
+    });
+  }
+
+  cancelImport(token: string): Promise<Result<null>> {
+    return this.exclusive(async () => {
+      if (typeof token === 'string') this.store.cancelImport(token);
+      return ok(null);
     });
   }
 }

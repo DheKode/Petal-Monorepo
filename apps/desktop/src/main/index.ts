@@ -1,8 +1,11 @@
 import { app, BrowserWindow, dialog, ipcMain, Menu, type IpcMainInvokeEvent } from 'electron';
-import { join } from 'node:path';
+import { readFile, stat, writeFile } from 'node:fs/promises';
+import { basename, join } from 'node:path';
+import { MAX_BACKUP_BYTES } from '@petal/domain';
 import {
   IPC_APP_INFO, IPC_GET_STATE, IPC_SAVE_SETUP, IPC_RECORD_INTAKE, IPC_UNDO_INTAKE, IPC_RECORD_BATCH,
-  type AppInfo, type RecordIntakeInput, type SetupInput,
+  IPC_BACKUP_EXPORT, IPC_BACKUP_PICK_IMPORT, IPC_BACKUP_CONFIRM_IMPORT, IPC_BACKUP_CANCEL_IMPORT,
+  type AppInfo, type ExportOutcome, type PickImportOutcome, type RecordIntakeInput, type Result, type SetupInput,
 } from '../shared/ipc';
 import { SqliteStore } from './sqliteStore';
 import { PetalService } from './service';
@@ -15,6 +18,24 @@ app.setName('Petal');
 if (!app.isPackaged && !app.commandLine.hasSwitch('user-data-dir')) {
   app.setPath('userData', join(app.getPath('appData'), 'Petal-dev'));
 }
+
+// Log only the kind of failure, never its message: an unexpected error's text can quote the data it was handling
+// (a JSON parse error, for example, repeats part of the input). Electron's default handler would print and show it all.
+function reportUnexpected(error: unknown): string {
+  const name = error instanceof Error ? error.name : typeof error;
+  console.error(`Petal hit an unexpected error (${name})`);
+  return name;
+}
+process.on('uncaughtException', error => {
+  const name = reportUnexpected(error);
+  if (app.isReady()) {
+    dialog.showErrorBox('Petal hit an unexpected error', `Petal will close. Your saved records were not changed. (Error: ${name})`);
+  }
+  app.exit(1);
+});
+process.on('unhandledRejection', reason => {
+  reportUnexpected(reason);
+});
 
 let store: SqliteStore | null = null;
 let service: PetalService | null = null;
@@ -75,12 +96,60 @@ function handle<A extends unknown[], R>(channel: string, fn: (...args: A) => R):
   });
 }
 
-handle(IPC_APP_INFO, (): AppInfo => ({ appVersion: app.getVersion(), platform: process.platform }));
+handle(IPC_APP_INFO, (): AppInfo => ({ appVersion: app.getVersion(), platform: process.platform, dataFolder: app.getPath('userData') }));
 handle(IPC_GET_STATE, () => requireService().getState());
 handle(IPC_SAVE_SETUP, (input: SetupInput) => requireService().saveSetup(input));
 handle(IPC_RECORD_INTAKE, (input: RecordIntakeInput) => requireService().recordIntake(input));
 handle(IPC_UNDO_INTAKE, (doseId: string) => requireService().undoIntake(doseId));
 handle(IPC_RECORD_BATCH, (inputs: RecordIntakeInput[]) => requireService().recordIntakeBatch(inputs));
+
+const jsonFilter = [{ name: 'Petal backup (JSON)', extensions: ['json'] }];
+
+/** The user picks the destination in a system dialog; the renderer never supplies or sees a path. */
+handle(IPC_BACKUP_EXPORT, async (): Promise<Result<ExportOutcome>> => {
+  const win = mainWindow;
+  if (!win) return { ok: false, message: 'The window is not available.' };
+  const made = await requireService().exportBackup();
+  if (!made.ok) return made;
+  const day = new Date().toISOString().slice(0, 10);
+  const chosen = await dialog.showSaveDialog(win, {
+    title: 'Save Petal backup',
+    defaultPath: join(app.getPath('documents'), `petal-backup-${day}.json`),
+    filters: jsonFilter,
+  });
+  if (chosen.canceled || !chosen.filePath) return { ok: true, value: { canceled: true } };
+  try {
+    // The system dialog already asked the user to confirm replacing an existing file.
+    await writeFile(chosen.filePath, made.value.json, 'utf8');
+  } catch {
+    return { ok: false, message: 'The backup could not be saved to that location. Try another folder.' };
+  }
+  const fileName = basename(chosen.filePath);
+  return { ok: true, value: { canceled: false, fileName, sensitivityNotice: made.value.sensitivityNotice } };
+});
+
+handle(IPC_BACKUP_PICK_IMPORT, async (): Promise<Result<PickImportOutcome>> => {
+  const win = mainWindow;
+  if (!win) return { ok: false, message: 'The window is not available.' };
+  const chosen = await dialog.showOpenDialog(win, { title: 'Choose a Petal backup', properties: ['openFile'], filters: jsonFilter });
+  const path = chosen.filePaths[0];
+  if (chosen.canceled || !path) return { ok: true, value: { canceled: true } };
+  let json: string;
+  try {
+    // Check the size before reading so a huge file is never loaded into memory.
+    if ((await stat(path)).size > MAX_BACKUP_BYTES) {
+      return { ok: false, message: 'That file is too large to be a Petal backup. Your records were not changed.' };
+    }
+    json = await readFile(path, 'utf8');
+  } catch {
+    return { ok: false, message: 'That file could not be read. Your records were not changed.' };
+  }
+  const preview = await requireService().previewImport(json);
+  return preview.ok ? { ok: true, value: { canceled: false, preview: preview.value } } : preview;
+});
+
+handle(IPC_BACKUP_CONFIRM_IMPORT, (token: string) => requireService().confirmImport(token));
+handle(IPC_BACKUP_CANCEL_IMPORT, (token: string) => requireService().cancelImport(token));
 
 app.whenReady().then(async () => {
   if (!hasInstanceLock) return;

@@ -1,0 +1,4 @@
+.petal-icon { display: inline-flex; flex-shrink: 0; vertical-align: middle; line-height: 0; }
+.petal-icon > div { display: inline-flex; align-items: center; justify-content: center; }
+.petal-icon svg, .petal-icon svg * { stroke-width: var(--petal-icon-stroke-width); vector-effect: non-scaling-stroke; }
+.petal-icon-button { min-width: var(--petal-size-touch-target); padding: 0; flex-shrink: 0; }

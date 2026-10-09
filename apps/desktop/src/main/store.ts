@@ -1,5 +1,5 @@
 import type { IntakeEvent, Pack, PillProfile, ScheduledDose, Settings } from '@petal/domain';
-import type { PetalState } from '../shared/ipc';
+import type { ImportPreview, PetalState } from '../shared/ipc';
 
 /** Thrown when setup is attempted on a database that already holds a pack, intake events or audit history. Setup is
     first-time only: the adapter implements it as a replace-all import, which would silently erase those records. */
@@ -24,6 +24,13 @@ export interface PetalStore {
   load(): Promise<PetalState>;
   saveSetup(setup: SavedSetup): Promise<PetalState>;
   putIntakeEvent(event: IntakeEvent): Promise<PetalState>;
+  /** Full backup as JSON text (plaintext, not encrypted). */
+  exportJson(): Promise<{ json: string; sensitivityNotice: string }>;
+  /** Validate backup text and hold it as a pending preview. Changes nothing stored. Throws if the text is not a valid backup. */
+  previewImport(json: string): Promise<ImportPreview>;
+  /** Replace everything with the previewed backup in one transaction, keeping a recovery copy. Throws on a stale or unknown token. */
+  confirmImport(token: string): Promise<{ state: PetalState; recoveryKept: boolean }>;
+  cancelImport(token: string): void;
 }
 
 export function emptyState(persistence: PetalState['persistence']): PetalState {
@@ -49,4 +56,18 @@ export class MemoryStore implements PetalStore {
     this.state = { ...this.state, events: [...others, structuredClone(event)] };
     return this.load();
   }
+
+  async exportJson(): Promise<never> {
+    throw new Error('MemoryStore has no backup');
+  }
+
+  async previewImport(): Promise<never> {
+    throw new Error('MemoryStore has no backup');
+  }
+
+  async confirmImport(): Promise<never> {
+    throw new Error('MemoryStore has no backup');
+  }
+
+  cancelImport(): void {}
 }

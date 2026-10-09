@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { AppInfo, PetalState } from '../../shared/ipc';
+import { Backup } from './Backup';
+import { Privacy } from './Privacy';
 import { Setup } from './Setup';
 import { Today } from './Today';
 
@@ -26,7 +28,9 @@ export function App() {
         <p role="status">Your records are saved on this device only. They are not encrypted, so anyone who can open your user account can read them.</p>
       )}
       <p>Product details are not verified yet, so Petal is tracking only and shows no guidance.</p>
+      <Privacy info={info} />
       {state.pack ? <Today state={state} onState={setState} /> : <Setup onSaved={setState} />}
+      <Backup onState={setState} />
       {info && <footer><small>Petal {info.appVersion} · {info.platform}</small></footer>}
     </main>
   );

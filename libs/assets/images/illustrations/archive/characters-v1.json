@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "collectionVersion": "0.1.0",
+  "note": "Original character proposals retained for comparison with the v2 silhouette revisions.",
+  "assets": [
+    {
+      "id": "character-reading",
+      "family": "characters",
+      "title": "Take a closer look",
+      "description": "An adult with shoulder-length wavy hair reading a blank open book.",
+      "path": "characters/petal-character-reading-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1334416,
+      "contentBounds": [
+        435,
+        142,
+        844,
+        1148
+      ],
+      "sha256": "b9577baf0450358e3295300f2d11149e9e20f14af23057cc5a87fcdff68b7dd1",
+      "bytes": 339865,
+      "approval": "proposal"
+    },
+    {
+      "id": "character-reminders",
+      "family": "characters",
+      "title": "At your own pace",
+      "description": "A short-haired adult holding a simple round clock with an understated smile.",
+      "path": "characters/petal-character-reminders-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1352069,
+      "contentBounds": [
+        455,
+        155,
+        806,
+        1135
+      ],
+      "sha256": "4c2713ea526fc565018c74540b3b5d5ca3da3c5a536a409c3b6be88754928840",
+      "bytes": 310370,
+      "approval": "proposal"
+    },
+    {
+      "id": "character-organizing",
+      "family": "characters",
+      "title": "Keep things together",
+      "description": "An adult with a long plum braid holding a simple rose folder.",
+      "path": "characters/petal-character-organizing-v1.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "transparentPixels": 1354854,
+      "contentBounds": [
+        452,
+        155,
+        800,
+        1135
+      ],
+      "sha256": "4dc09477d369c0f6dc1d37c822dadbc5a3ce7f26b1530dbc01bdf751bab7b6d8",
+      "bytes": 310365,
+      "approval": "proposal"
+    }
+  ],
+  "prompts": [
+    {
+      "assetId": "character-reading",
+      "tool": "built-in image_gen",
+      "operation": "generate",
+      "sourceOutput": "exec-389a5dc3-8c7a-4fe9-b392-166383c50e78.png",
+      "styleReference": "characters/petal-character-welcome-v1.png",
+      "prompt": "Use case: illustration-story. Asset type: individual original Petal character illustration, transparent square PNG.\nInput image 1 is a STYLE reference ONLY, our original Petal hello illustration. Create the new subject below, preserving the simple dot-face, rounded graphic clothing, adult proportions, friendly restrained expressions, rose/plum palette and clean flat silhouettes. Do NOT redraw the reference pose.\nFlat 2D editorial vector-like art made of large uniform solid fills, with VERY few internal lines. No lighting, gradients, grain, 3D shading, detailed realistic face, fine hair strands, black outlines or opaque exterior keyline. Exact palette anchors Rose #B83D70, Blush #FCE8EF, Soft white #FFF7FA, White #FFFFFF, Deep plum #33252D, Muted plum #745D69; natural warm skin tones are allowed. Each illustration has one adult and their indicated single prop. Center the whole figure/prop together, full body/feet/hands visible with at least 12 percent transparent padding on EVERY edge. No ground plane, backdrop shapes, scenery, card, text, letters, logos, marks, watermark or confetti. Genuine transparent alpha with clean antialiased silhouette edges. Gentle adult app art, never a reward, punishment, health/protection state, medical instruction or clinical diagram.\nSubject: An adult woman with warm olive skin and rounded shoulder-length deep-plum wavy hair, blush blouse, deep-plum relaxed trousers and soft-white shoes. Standing in an easy three-quarter posture, holding an open rose-and-white book at chest height with both hands, looking attentively toward the blank pages. Simple dot eyes and calm slightly smiling mouth. No text on the book. Full figure and feet within the canvas, distinct pose from the reference."
+    },
+    {
+      "assetId": "character-reminders",
+      "tool": "built-in image_gen",
+      "operation": "generate",
+      "sourceOutput": "exec-312b4ec2-9cc8-4650-bebd-028a001ab9e9.png",
+      "styleReference": "characters/petal-character-welcome-v1.png",
+      "prompt": "Use case: illustration-story. Asset type: individual original Petal character illustration, transparent square PNG.\nInput image 1 is a STYLE reference ONLY, our original Petal hello illustration. Create the new subject below, preserving the simple dot-face, rounded graphic clothing, adult proportions, friendly restrained expressions, rose/plum palette and clean flat silhouettes. Do NOT redraw the reference pose.\nFlat 2D editorial vector-like art made of large uniform solid fills, with VERY few internal lines. No lighting, gradients, grain, 3D shading, detailed realistic face, fine hair strands, black outlines or opaque exterior keyline. Exact palette anchors Rose #B83D70, Blush #FCE8EF, Soft white #FFF7FA, White #FFFFFF, Deep plum #33252D, Muted plum #745D69; natural warm skin tones are allowed. Each illustration has one adult and their indicated single prop. Center the whole figure/prop together, full body/feet/hands visible with at least 12 percent transparent padding on EVERY edge. No ground plane, backdrop shapes, scenery, card, text, letters, logos, marks, watermark or confetti. Genuine transparent alpha with clean antialiased silhouette edges. Gentle adult app art, never a reward, punishment, health/protection state, medical instruction or clinical diagram.\nSubject: A medium warm-brown-skinned adult woman with short rounded deep-plum cropped hair, muted-plum loose top, blush trousers and soft-white shoes. Standing relaxed, holding a single simple rose round clock near her waist, its face soft white with just TWO dark plum hands and NO numbers, ticks, checkmarks or labels. Other hand softly supports the clock. Friendly tiny-dot face and small kind smile. The illustration depicts time generally, not an adherence score or a dose instruction."
+    },
+    {
+      "assetId": "character-organizing",
+      "tool": "built-in image_gen",
+      "operation": "generate",
+      "sourceOutput": "exec-9516ee47-953d-4900-8d08-c1055c738d71.png",
+      "styleReference": "characters/petal-character-welcome-v1.png",
+      "prompt": "Use case: illustration-story. Asset type: individual original Petal character illustration, transparent square PNG.\nInput image 1 is a STYLE reference ONLY, our original Petal hello illustration. Create the new subject below, preserving the simple dot-face, rounded graphic clothing, adult proportions, friendly restrained expressions, rose/plum palette and clean flat silhouettes. Do NOT redraw the reference pose.\nFlat 2D editorial vector-like art made of large uniform solid fills, with VERY few internal lines. No lighting, gradients, grain, 3D shading, detailed realistic face, fine hair strands, black outlines or opaque exterior keyline. Exact palette anchors Rose #B83D70, Blush #FCE8EF, Soft white #FFF7FA, White #FFFFFF, Deep plum #33252D, Muted plum #745D69; natural warm skin tones are allowed. Each illustration has one adult and their indicated single prop. Center the whole figure/prop together, full body/feet/hands visible with at least 12 percent transparent padding on EVERY edge. No ground plane, backdrop shapes, scenery, card, text, letters, logos, marks, watermark or confetti. Genuine transparent alpha with clean antialiased silhouette edges. Gentle adult app art, never a reward, punishment, health/protection state, medical instruction or clinical diagram.\nSubject: An adult woman with light warm beige skin and a simple long deep-plum braid, rose blouse, blush relaxed trousers and muted-plum shoes. Standing in a softly angled full-body pose, holding one closed soft-white and rose folder gently in both arms against her torso. Tiny-dot face and calm friendly expression. Folder completely blank, no padlock, shield, checkmark, cloud symbol or encryption claim. Full feet and hands included; a discreet personal organization illustration."
+    }
+  ]
+}
