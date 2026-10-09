@@ -38,6 +38,16 @@ export class SqliteStore implements PetalStore {
     this.db.close();
   }
 
+  /** AI proposals are held by the storage adapter, never applied until explicit confirmation. */
+  async previewChatCorrection(event: IntakeEvent): Promise<string> {
+    return (await this.db.previewIntakeCorrection(event, 'chat')).token;
+  }
+  async confirmChatCorrection(token: string): Promise<PetalState> {
+    await this.db.confirm(token);
+    return this.load();
+  }
+  cancelChatCorrection(token: string): void { this.db.cancel(token); }
+
   async load(): Promise<PetalState> {
     return toState((await this.db.read()).backup);
   }

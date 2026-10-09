@@ -20,3 +20,9 @@ mac:
   target:
     - target: dmg
       arch: arm64
+
+# Native inference binaries must remain outside the asar; model weights are user-selected, not bundled.
+asarUnpack:
+  - node_modules/node-llama-cpp/**
+  - node_modules/@node-llama-cpp/**
+  - node_modules/@libsql/**

@@ -1,3 +1,4 @@
+import {AI_ASK,AI_CANCEL,AI_MODEL_INFO,AI_MODEL_PICK,AI_PREVIEW,AI_CONFIRM,AI_DISCARD} from '../shared/ai';
 import { contextBridge, ipcRenderer } from 'electron';
 import {
   IPC_APP_INFO, IPC_GET_STATE, IPC_SAVE_SETUP, IPC_RECORD_INTAKE, IPC_UNDO_INTAKE, IPC_RECORD_BATCH,
@@ -5,6 +6,13 @@ import {
 } from '../shared/ipc';
 
 const bridge: PetalBridge = {
+  askAi: input=>ipcRenderer.invoke(AI_ASK,input),
+  cancelAi: ()=>ipcRenderer.invoke(AI_CANCEL),
+  getAiModelInfo: ()=>ipcRenderer.invoke(AI_MODEL_INFO),
+  pickAiModel: ()=>ipcRenderer.invoke(AI_MODEL_PICK),
+  previewAiCorrection: input=>ipcRenderer.invoke(AI_PREVIEW,input),
+  confirmAiCorrection: token=>ipcRenderer.invoke(AI_CONFIRM,token),
+  discardAiCorrection: token=>ipcRenderer.invoke(AI_DISCARD,token),
   getAppInfo: () => ipcRenderer.invoke(IPC_APP_INFO),
   getState: () => ipcRenderer.invoke(IPC_GET_STATE),
   saveSetup: input => ipcRenderer.invoke(IPC_SAVE_SETUP, input),

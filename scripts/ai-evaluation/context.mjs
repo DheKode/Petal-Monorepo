@@ -93,7 +93,7 @@ export function planResponse(c) {
   } else if (/last week|this week|every day|whole week/.test(q)) {
     ask('date-range', 'Which start and end dates would you like to check? I need a precise range before claiming a complete week of intake history.');
   } else if (/pill \d+|position|tablet \d+/.test(q)) {
-    mode = 'history'; const d = /yesterday/.test(q) ? yesterday[0] : today[0];
+    mode = 'history'; const d = selected ?? (/yesterday/.test(q) ? yesterday[0] : today[0]);
     if (d) add('scheduled-position', `The scheduled tablet position for ${d.localDate} was ${d.position}. ${summary(d)} Scheduled position does not establish that it was taken.`);
     else ask('missing-schedule', 'Which scheduled date or pack do you mean? No matching dose is in the retrieved window.');
   } else if (/never took|fix it|correct/.test(q)) {
