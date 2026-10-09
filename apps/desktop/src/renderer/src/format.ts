@@ -24,3 +24,17 @@ export function errorText(error: unknown): string {
   if (error instanceof DomainValidationError) return error.issues.map(issue => issue.message).join('; ') || 'Invalid entry.';
   return 'Something went wrong.';
 }
+
+/** Short status word for compact views (week strip, pack cells). Always shown as text, never by color alone. */
+export function shortStatus(event: IntakeEvent | undefined): { word: string; mark: string } {
+  if (!event) return { word: 'No entry', mark: '–' };
+  if (event.status === 'confirmed-missed') return { word: 'Missed', mark: '✕' };
+  if (event.status === 'unsure') return { word: 'Unsure', mark: '?' };
+  return { word: 'Taken', mark: '✓' };
+}
+
+/** Short weekday and day of month for a local date like 2026-10-09. It is already a local date, so no zone shift applies. */
+export function dayParts(localDate: string): { weekday: string; day: string } {
+  const date = new Date(`${localDate}T12:00:00Z`);
+  return { weekday: date.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'UTC' }), day: String(Number(localDate.slice(8, 10))) };
+}
