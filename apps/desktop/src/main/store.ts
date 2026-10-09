@@ -10,6 +10,12 @@ export class SetupExistsError extends Error {
   }
 }
 
+/** The settings and the scheduled doses as they should be after a change of usual time. Nothing else is touched. */
+export interface ScheduleChange {
+  settings: Settings;
+  doses: ScheduledDose[];
+}
+
 export interface SavedSetup {
   profile: PillProfile;
   settings: Settings;
@@ -30,6 +36,8 @@ export interface PetalStore {
   putBleedingEntry(entry: BleedingEntry): Promise<PetalState>;
   /** Delete a bleeding or spotting entry. Audited; the deleted values stay in the audit trail. */
   removeBleedingEntry(id: string): Promise<PetalState>;
+  /** Replace the settings and scheduled doses, keeping every intake entry, bleeding entry and audit entry. */
+  updateSchedule(change: ScheduleChange): Promise<PetalState>;
   /** Full backup as JSON text (plaintext, not encrypted). */
   exportJson(): Promise<{ json: string; sensitivityNotice: string }>;
   /** Validate backup text and hold it as a pending preview. Changes nothing stored. Throws if the text is not a valid backup. */
@@ -76,6 +84,11 @@ export class MemoryStore implements PetalStore {
 
   async removeBleedingEntry(id: string): Promise<PetalState> {
     this.state = { ...this.state, bleeding: this.state.bleeding.filter(e => e.id !== id) };
+    return this.load();
+  }
+
+  async updateSchedule(change: ScheduleChange): Promise<PetalState> {
+    this.state = { ...this.state, settings: structuredClone(change.settings), doses: structuredClone(change.doses) };
     return this.load();
   }
 

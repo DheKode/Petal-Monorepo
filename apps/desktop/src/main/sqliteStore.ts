@@ -1,7 +1,7 @@
 import { LocalStore } from '@petal/storage';
 import { BACKUP_VERSION, serializeBackup, type Backup, type BleedingEntry, type IntakeEvent } from '@petal/domain';
 import type { ImportPreview, PetalState, RecordCounts } from '../shared/ipc';
-import { SetupExistsError, type PetalStore, type SavedSetup } from './store';
+import { SetupExistsError, type PetalStore, type SavedSetup, type ScheduleChange } from './store';
 
 function toState(backup: Backup): PetalState {
   return {
@@ -109,6 +109,16 @@ export class SqliteStore implements PetalStore {
   /** The user's own save is the confirmation, so preview and confirm run back to back. */
   async putBleedingEntry(entry: BleedingEntry): Promise<PetalState> {
     const preview = await this.db.previewBleedingEntry(entry, 'manual');
+    await this.db.confirm(preview.token);
+    return this.load();
+  }
+
+  /** The adapter has no dedicated call for settings or doses, so this goes through its validated replace-all import with the
+      current records carried over unchanged. That keeps a recovery copy and writes an audit entry for each changed record. */
+  async updateSchedule(change: ScheduleChange): Promise<PetalState> {
+    const { backup } = await this.db.read();
+    const next: Backup = { ...backup, exportedAt: new Date().toISOString(), settings: change.settings, scheduledDoses: change.doses };
+    const preview = await this.db.previewImport(serializeBackup(next));
     await this.db.confirm(preview.token);
     return this.load();
   }
