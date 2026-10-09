@@ -30,6 +30,9 @@ importers:
       '@petal/storage':
         specifier: workspace:*
         version: link:../../packages/storage
+      '@petal/ui':
+        specifier: workspace:*
+        version: link:../../libs/ui
       '@types/react':
         specifier: 19.3.0
         version: 19.3.0
