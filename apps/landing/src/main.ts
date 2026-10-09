@@ -1,6 +1,4 @@
-import '@fontsource/geist-mono/400.css';
-import '@fontsource/geist-mono/500.css';
-import '@fontsource/geist-mono/600.css';
+import '@petal/ui/fonts.css';
 import '@petal/ui/theme.css';
 import './style.css';
 import {detectPlatform, downloads, release, type PlatformDownload} from './downloads';
@@ -13,9 +11,11 @@ function el<K extends keyof HTMLElementTagNameMap>(tag: K, className?: string, t
 }
 
 function renderCard(d: PlatformDownload, recommended: boolean): HTMLLIElement {
-  const card = el('li', recommended ? 'card download-card is-recommended' : 'card download-card');
-  if (recommended) card.append(el('p', 'card-tag', 'Your device'));
-  card.append(el('h3', undefined, d.name));
+  const card = el('li', recommended ? 'download-card is-recommended' : 'download-card');
+  const heading = el('div', 'download-card-heading');
+  heading.append(el('h3', undefined, d.name));
+  if (recommended) heading.append(el('p', 'card-tag', 'Your device'));
+  card.append(heading);
 
   const meta = el('dl', 'meta');
   const rows: [string, string][] = [
@@ -53,5 +53,44 @@ for (const node of document.querySelectorAll('[data-release-version]')) node.tex
 for (const node of document.querySelectorAll('[data-release-status]')) node.textContent = release.status;
 
 const match = downloads.find((d) => d.id === detected);
-const cta = document.querySelector<HTMLAnchorElement>('[data-primary-cta]');
-if (cta && match) cta.textContent = `Download for ${match.name}`;
+const cta = document.querySelector('[data-primary-cta]');
+if (cta && match?.url) cta.textContent = `Get Petal for ${match.name}`;
+
+// A fictional marketing walkthrough. It holds no health data and writes nothing.
+const reviewSteps = [
+  {
+    label: 'No record ≠ a missed tablet',
+    title: '“I remember Saturday, but not Friday.”',
+    copy: 'Friday, October 9 has no record. Do you remember taking tablet 13 that day?',
+    status: 'No record',
+  },
+  {
+    label: 'A proposed change, for you to review',
+    title: '“I took it after dinner.”',
+    copy: 'Petal proposes marking tablet 13 as taken. The exact time remains unknown. You review the change before anything is saved.',
+    status: 'No record → Taken · time unknown',
+  },
+  {
+    label: 'Your confirmation comes first',
+    title: 'A clearer record. Still your decision.',
+    copy: 'In the app, confirming saves the change and keeps an audit trail. Canceling changes nothing. Any guidance is reevaluated from the confirmed record.',
+    status: 'After confirmation: Taken · time unknown',
+  },
+] as const;
+
+for (const button of document.querySelectorAll<HTMLButtonElement>('[data-review-step]')) {
+  button.addEventListener('click', () => {
+    const step = reviewSteps[Number(button.dataset.reviewStep)];
+    if (!step) return;
+    for (const other of document.querySelectorAll('[data-review-step]')) {
+      other.setAttribute('aria-pressed', String(other === button));
+    }
+    for (const [selector, value] of [
+      ['[data-review-label]', step.label], ['[data-review-title]', step.title],
+      ['[data-review-copy]', step.copy], ['[data-review-status]', step.status],
+    ]) {
+      const node = document.querySelector(selector);
+      if (node) node.textContent = value;
+    }
+  });
+}
