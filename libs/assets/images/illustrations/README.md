@@ -4,7 +4,7 @@ Original raster illustration proposals for U01/L01 / PRD §4 and F15. Human desi
 
 ## Art direction
 
-Flat, modern editorial illustration: expressive rounded silhouettes, clean solid fills, minimal facial detail and restrained internal lines. Rose, blush, soft white, white, deep plum, and muted plum link the collection to Petal's approved identity. Natural skin tones belong to the artwork only; no UI token changes. Transparent backgrounds allow use on Petal surfaces. No shadows, gradients, grain, embedded text, or UI screenshots.
+Flat, modern editorial illustration: expressive rounded silhouettes, minimal facial detail and restrained internal lines. Rose, blush, soft white, white, deep plum, and muted plum anchor the collection to Petal's approved identity. Natural skin tones belong to the artwork only; no UI token changes. Transparent backgrounds allow use on Petal surfaces. The briefs request solid fills without shadows, gradients, grain, embedded text, or UI screenshots. Generated raster fills and edges have small color variations; these are not color-normalized vector masters.
 
 The first collection contains six adult characters, two blossom companion poses, four everyday objects, and four abstract compositions. The companion is a proposal distinct from the approved logo. It never wilts, judges missed doses, or implies protection. All imagery is illustrative rather than a medical diagram or instruction.
 
@@ -16,4 +16,28 @@ Review every asset on white and soft-white surfaces before selecting it for a sc
 
 ## Files and provenance
 
-The offline `preview.html` gallery, `manifest.json`, and `prompts.json` will accompany the individual PNGs. Names describe subject and pose, without dates or inferred clinical states. Generation output is raster even when its appearance resembles vector artwork. The prompt log records the exact generation brief and any original Petal style reference. No third-party artwork is bundled.
+The [offline gallery](preview.html), [manifest](manifest.json), and [exact prompt log](prompts.json) accompany 16 separate 1254 × 1254 RGBA PNGs (7,390,858 bytes combined). Names describe subject and pose, without dates or inferred clinical states. Generation output is raster even when its appearance resembles vector artwork. No third-party artwork is bundled.
+
+| Folder | Subjects | Count |
+| --- | --- | --- |
+| `characters/` | Welcome, journaling, reflecting, reading, reminders, organizing | 6 |
+| `companion/` | Blossom hello and thinking poses | 2 |
+| `objects/` | Journal, calendar, clock, folder | 4 |
+| `abstract/` | Petal orbit, ribbon loop, leaf cluster, pebble stack | 4 |
+
+Each filename follows `petal-{family-subject}-v1.png`, such as `characters/petal-character-welcome-v1.png`. Manifest paths are relative to this directory. The manifest records dimensions, full transparency extrema, transparent pixel counts, content bounds at alpha ≥ 128, SHA-256 hashes, and proposal status. Preserve the supplied padding rather than cropping to those measured bounds.
+
+Codex used the built-in `image_gen` tool. Characters use the original welcome asset as their style reference; the thinking companion uses the hello companion as its edit reference. The prompt log preserves those references, exact submitted prompts, operations, and source output filenames. Retrying the same prompt can produce different artwork. The [Flo design-system article](https://medium.com/flo-health/flo-design-system-part-1-1eb8b731a48c) informed the study of illustration/UI consistency; its artwork was not used as a generation reference.
+
+## Review and validation
+
+Open `preview.html` from the checkout for an offline review. Filter by family and switch between white, soft white, deep plum, and a transparency grid. Deep plum is an alpha inspection surface; plum details have limited contrast there. The gallery supplies captions outside the images and uses the existing Petal theme and local Geist Mono font.
+
+Rebuild or check with Node.js 22 or newer, from the repository root:
+
+```sh
+node libs/assets/images/illustrations/scripts/build-preview.mjs
+node libs/assets/images/illustrations/scripts/build-preview.mjs --check
+```
+
+The script checks PNG signatures, dimensions, RGBA format, content hashes, prompt coverage, local references, and deterministic gallery output. Alpha statistics were measured from the source PNGs during packaging. Browser review covers the gallery and visual edges; it does not certify native rendering, final screen sizes, animation, or actual-device accessibility. Designer selection and application placement remain pending.
