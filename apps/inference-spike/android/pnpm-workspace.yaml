@@ -1,0 +1,12 @@
+# Standalone workspace root: keeps this React Native spike's lockfile separate
+# from the root workspace (root globs apps/*; this dir is apps/*/android).
+packages: []
+
+# Metro and React Native autolinking expect a flat node_modules.
+nodeLinker: hoisted
+
+# llama.rn's postinstall downloads prebuilt Android JNI libs from its own
+# GitHub release (v<package version>) and verifies a SHA-256 pinned in the
+# package, which avoids compiling llama.cpp with the NDK.
+allowBuilds:
+  llama.rn: true
