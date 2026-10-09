@@ -1,0 +1,11 @@
+.calendar-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: var(--petal-space-inline); }
+.shell-main .calendar-toolbar h3 { margin: 0 auto 0 0; }
+.calendar-weekdays, .calendar-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--petal-space-inline); }
+.calendar-weekdays { text-align: center; color: var(--petal-color-text-secondary); margin-block: var(--petal-space-related); }
+.shell-main .calendar-days button { margin: 0; padding: var(--petal-space-inline); min-height: 5rem; display: flex; flex-direction: column; justify-content: space-between; gap: var(--petal-space-inline); }
+.shell-main .calendar-days button[aria-pressed="true"] { background: var(--petal-color-surface-subtle); border-color: var(--petal-color-action-primary); }
+.calendar-number { font-weight: var(--petal-primitive-font-weight-semibold); }
+.calendar-days button[aria-current="date"] .calendar-number { text-decoration: underline; text-underline-offset: var(--petal-space-inline); }
+.calendar-markers { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--petal-space-inline); }
+.calendar-bleeding { color: var(--petal-color-action-primary); font-weight: var(--petal-primitive-font-weight-semibold); }
+.calendar-legend { color: var(--petal-color-text-secondary); }
