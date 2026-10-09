@@ -58,21 +58,19 @@ test('taken now records one event; repeating it is a no-op', async () => {
   assert.equal(again.state.events.length, 1);
 });
 
-test('undo restores the record before the last change, or removes a new one', async () => {
+test('only corrections can be undone: a new entry cannot be removed, a correction restores the earlier values', async () => {
   const { service, ready } = setup();
   const dose = value(await ready).doses[8];
-  value(await service.recordIntake({ doseId: dose.id, status: 'taken', actualAt: NOW.toISOString() }));
-  value(await service.recordIntake({ doseId: dose.id, status: 'confirmed-missed' }));
-  let state = value(await service.undoIntake(dose.id));
+  const created = value(await service.recordIntake({ doseId: dose.id, status: 'taken', actualAt: NOW.toISOString() }));
+  assert.equal(created.undoable, false);
+  assert.equal((await service.undoIntake(dose.id)).ok, false);
+  const corrected = value(await service.recordIntake({ doseId: dose.id, status: 'confirmed-missed' }));
+  assert.equal(corrected.undoable, true);
+  const state = value(await service.undoIntake(dose.id));
   assert.equal(state.events[0].status, 'taken');
   assert.equal(state.events[0].actualAt, NOW.toISOString());
-  const second = await service.undoIntake(dose.id);
-  assert.equal(second.ok, false);
-  const fresh = setup();
-  const d2 = value(await fresh.ready).doses[0];
-  value(await fresh.service.recordIntake({ doseId: d2.id, status: 'unsure' }));
-  state = value(await fresh.service.undoIntake(d2.id));
-  assert.deepEqual(state.events, []);
+  assert.equal(state.events[0].createdAt, created.state.events[0].createdAt);
+  assert.equal((await service.undoIntake(dose.id)).ok, false);
 });
 
 test('missed, unsure and no entry stay distinct, and two doses on one day stay separate', async () => {

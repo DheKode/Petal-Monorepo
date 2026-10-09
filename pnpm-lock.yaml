@@ -19,10 +19,17 @@ importers:
         version: 7.0.2
 
   apps/desktop:
+    dependencies:
+      '@libsql/client':
+        specifier: 0.18.0
+        version: 0.18.0
     devDependencies:
       '@petal/domain':
         specifier: workspace:*
         version: link:../../packages/domain
+      '@petal/storage':
+        specifier: workspace:*
+        version: link:../../packages/storage
       '@types/react':
         specifier: 19.3.0
         version: 19.3.0
@@ -4223,7 +4230,7 @@ snapshots:
       es6-error: 4.1.1
       matcher: 3.0.0
       roarr: 2.15.4
-      semver: 7.7.4
+      semver: 7.8.5
       serialize-error: 7.0.1
     optional: true
 
@@ -4526,11 +4533,11 @@ snapshots:
 
   node-abi@4.37.0:
     dependencies:
-      semver: 7.7.4
+      semver: 7.8.5
 
   node-api-version@0.2.1:
     dependencies:
-      semver: 7.7.4
+      semver: 7.8.5
 
   node-gyp@12.4.0:
     dependencies:
@@ -4539,7 +4546,7 @@ snapshots:
       graceful-fs: 4.2.11
       nopt: 9.0.0
       proc-log: 6.1.0
-      semver: 7.7.4
+      semver: 7.8.5
       tar: 7.5.22
       tinyglobby: 0.2.17
       undici: 6.29.0

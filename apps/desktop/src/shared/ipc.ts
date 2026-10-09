@@ -43,6 +43,8 @@ export type Result<T> = { ok: true; value: T } | { ok: false; message: string };
 export interface IntakeOutcome {
   state: PetalState;
   change: IntakeChange;
+  /** True when this change was a correction that can be undone. New entries cannot be undone (#37). */
+  undoable: boolean;
 }
 
 export interface PetalBridge {
@@ -50,6 +52,6 @@ export interface PetalBridge {
   getState(): Promise<PetalState>;
   saveSetup(input: SetupInput): Promise<Result<PetalState>>;
   recordIntake(input: RecordIntakeInput): Promise<Result<IntakeOutcome>>;
-  /** Restore the dose's record to what it was before the most recent change made in this session. */
+  /** Restore the dose's record to what it was before its most recent correction in this session. */
   undoIntake(doseId: string): Promise<Result<PetalState>>;
 }

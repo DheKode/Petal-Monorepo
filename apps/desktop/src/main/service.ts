@@ -1,5 +1,5 @@
 import {
-  applyIntake, DomainValidationError, IdSchema, IntakeStatusSchema, TimePrecisionSchema, TimestampSchema,
+  applyIntake, DomainValidationError, IdSchema, IntakeStatusSchema, TimePrecisionSchema, TimestampSchema, toZonedIso,
   type IntakeEvent,
 } from '@petal/domain';
 import { deriveFromSetupInput } from '../shared/setup';
@@ -18,8 +18,8 @@ function messageOf(error: unknown): string {
 /** Applies the shared domain rules to renderer requests. The renderer is never trusted: setup is re-derived and intake
     input is re-validated here, and every change goes through `applyIntake`. */
 export class PetalService {
-  /** Record of each dose before the most recent change in this session, for undo. `null` means there was none. */
-  private readonly undo = new Map<string, IntakeEvent | null>();
+  /** Each dose's record before its most recent correction in this session, for undo. New entries are not stored here. */
+  private readonly undo = new Map<string, IntakeEvent>();
 
   constructor(private readonly store: PetalStore, private readonly now: () => Date = () => new Date()) {}
 
@@ -50,9 +50,11 @@ export class PetalService {
       if (!dose) return fail('That tablet is not part of the current pack.');
       const existing = state.events.find(e => e.doseId === dose.id);
       const { event, change } = applyIntake(dose, existing, { status: status.data, actualAt: actualAt.data, timePrecision: precision.data }, this.now());
-      if (change === 'unchanged') return ok({ state, change });
-      this.undo.set(dose.id, existing ?? null);
-      return ok({ state: await this.store.putIntakeEvent(event), change });
+      if (change === 'unchanged') return ok({ state, change, undoable: false });
+      // Only corrections can be undone: the storage adapter cannot remove a newly created event (#37).
+      if (existing) this.undo.set(dose.id, existing);
+      else this.undo.delete(dose.id);
+      return ok({ state: await this.store.putIntakeEvent(event), change, undoable: existing !== undefined });
     } catch (error) {
       return fail(messageOf(error));
     }
@@ -60,10 +62,11 @@ export class PetalService {
 
   async undoIntake(doseId: string): Promise<Result<PetalState>> {
     try {
-      if (!this.undo.has(doseId)) return fail('There is nothing to undo for that tablet.');
-      const previous = this.undo.get(doseId) ?? null;
+      const previous = this.undo.get(doseId);
+      if (!previous) return fail('There is nothing to undo for that tablet.');
       this.undo.delete(doseId);
-      return ok(previous ? await this.store.putIntakeEvent(previous) : await this.store.removeIntakeEvent(doseId));
+      // Restoring is itself a correction: the earlier values with a new update time, so the audit trail keeps both changes.
+      return ok(await this.store.putIntakeEvent({ ...previous, updatedAt: toZonedIso(this.now(), previous.timeZone) }));
     } catch (error) {
       return fail(messageOf(error));
     }
