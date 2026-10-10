@@ -1,0 +1,21 @@
+{
+  "path": "petal-group-women-together-v1.png",
+  "width": 2172,
+  "height": 724,
+  "mode": "RGBA",
+  "bitDepth": 8,
+  "bytes": 1428512,
+  "sha256": "a1af08d4a5ff38777b26d73388be003ce34ccd06fa3d3ed976076928c7de57aa",
+  "approval": "designer-review-proposal",
+  "alphaExtrema": [
+    0,
+    255
+  ],
+  "contentBounds": [
+    0,
+    21,
+    2172,
+    724
+  ],
+  "transparentPixels": 457628
+}

@@ -67,6 +67,12 @@ HTML partials use `<!-- @include ./relative/file.html -->`, relative to the incl
 
 ## Navigation refinement
 
-The header uses a 64px content row (56px on small screens) plus its border, quieter plum text links with a fine rose underline for hover/focus, and a 40px visible primary-action fill inside the shared 48px touch target. Its optical logo width is 144px on desktop and 128px on mobile; supplied outlines, proportions and clearspace are preserved. Footer logo sizing stays independent. Hover effects apply only to fine pointers; keyboard focus remains visible and reduced motion disables transitions.
+The header uses a 64px content row (56px on small screens) plus its border, quieter plum text links with a fine rose underline for hover/focus, and a 40px visible primary-action fill inside the shared 48px touch target. Its optical logo width is 144px on desktop and 128px on mobile; supplied outlines, proportions and clearspace are preserved. Hover effects apply only to fine pointers; keyboard focus remains visible and reduced motion disables transitions.
 
 Study references: [Linear](https://linear.app/) for restrained link/action hierarchy and [Headspace](https://www.headspace.com/) for straightforward wellness navigation. This is original Petal styling using existing shared tokens, with no downloaded component or reference identity.
+
+## Illustrated footer
+
+The footer pairs an editorial message with Explore/Project links and a decorative crowd of women along the bottom edge. It has no repeated logo row, standalone download call to action or prototype disclaimer; prototype limits remain in the download section. The crowd is centered at 90% width on desktop for breathing room. The human-provided screenshots inform the composition only; all lettering, links, styling and generated people belong to Petal. Rose/plum/blush/soft-white UI colors, Geist Sans, spacing, focus and touch targets come from the existing shared theme.
+
+The original transparent group artwork lives at `libs/assets/images/illustrations/groups/petal-group-women-together-v1.png`, with generation prompts and packaging metadata beside it. This landing-specific addition is kept separately from the earlier 16-asset gallery manifest. On narrow screens the text and links stack, while the center of the wide illustration becomes a closer view; its aspect ratio is preserved. The people are decorative, with `alt=""` and an inaccessible art wrapper, and do not imply a community feature or medical outcome. The repository link opens a new tab with a screen-reader notice.

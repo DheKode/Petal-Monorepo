@@ -1,5 +1,58 @@
-.site-footer { border-top:var(--petal-border-width) solid var(--petal-color-border-subtle); }
-.footer-inner { display:grid; grid-template-columns:auto 1fr auto; align-items:start; gap:var(--petal-primitive-spacing-s64); padding-block:var(--petal-primitive-spacing-s40); }
-.footer-inner p { max-width:60ch; font-size:var(--petal-type-label-font-size); }
-.footer-inner p span { display:block; color:var(--petal-color-text-secondary); font-size:var(--petal-type-caption-font-size); margin-top:var(--petal-space-related); }
-
+.site-footer {
+  background: var(--petal-color-background);
+  border-top: var(--petal-border-width) solid var(--petal-color-border-subtle);
+}
+.footer-inner { padding-top: var(--petal-primitive-spacing-s64); }
+.footer-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--petal-primitive-spacing-s64);
+}
+.footer-eyebrow {
+  margin-bottom: var(--petal-primitive-spacing-s24);
+  font-size: var(--petal-type-label-font-size);
+  color: var(--petal-color-text-secondary);
+}
+.footer-message h2 {
+  font-size: clamp(var(--petal-type-display-font-size), 4.7vw, calc(var(--petal-type-display-font-size) * 2));
+  font-weight: var(--petal-type-display-font-weight);
+}
+.footer-navigation {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--petal-primitive-spacing-s32);
+  padding-top: var(--petal-primitive-spacing-s4);
+}
+.footer-group-title {
+  color: var(--petal-color-text-secondary);
+  font-size: var(--petal-type-caption-font-size);
+  margin-bottom: var(--petal-space-group);
+}
+.footer-link-group ul { padding: 0; list-style: none; }
+.footer-link-group a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--petal-space-inline);
+  min-height: var(--petal-size-touch-target);
+  font-size: var(--petal-type-label-font-size);
+  font-weight: var(--petal-type-label-font-weight);
+  color: var(--petal-color-text-primary);
+  text-decoration: none;
+  text-underline-offset: var(--petal-primitive-spacing-s4);
+  transition: color var(--petal-motion-duration-fast) var(--petal-motion-easing);
+}
+.footer-link-group a:is(:hover, :focus-visible) {
+  color: var(--petal-color-text-link);
+  text-decoration: underline;
+}
+.footer-art { margin-top: var(--petal-primitive-spacing-s48); overflow: hidden; }
+.footer-art img { width: 90%; max-width: none; margin-inline: auto; margin-bottom: calc(var(--petal-space-group) * -1); }
+.footer-sr-only {
+  position: absolute;
+  width: var(--petal-border-width);
+  height: var(--petal-border-width);
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

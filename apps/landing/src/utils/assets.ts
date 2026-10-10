@@ -11,8 +11,9 @@ import journal from '../../../../libs/assets/images/illustrations/objects/petal-
 import folder from '../../../../libs/assets/images/illustrations/objects/petal-object-folder-v1.png?url';
 import leaves from '../../../../libs/assets/images/illustrations/abstract/petal-abstract-leaf-cluster-v1.png?url';
 import orbit from '../../../../libs/assets/images/illustrations/abstract/petal-abstract-petal-orbit-v1.png?url';
+import womenTogether from '../../../../libs/assets/images/illustrations/groups/petal-group-women-together-v1.png?url';
 
-const assets = {logo, icon32, icon192, icon180, journaling, reading, reflecting, journal, folder, leaves, orbit};
+const assets = {logo, icon32, icon192, icon180, journaling, reading, reflecting, journal, folder, leaves, orbit, womenTogether};
 type AssetName = keyof typeof assets;
 
 export function loadArtwork(): void {
