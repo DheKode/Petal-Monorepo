@@ -1,0 +1,24 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build & Release
+release/
+preview/dist/
+android/app/src/main/assets/web/
+*.apk
+*.aab
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.kotlin/
+android/.idea/
+android/*.iml
+
+# OS
+.DS_Store
+Thumbs.db
