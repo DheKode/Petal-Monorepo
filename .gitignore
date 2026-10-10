@@ -8,3 +8,5 @@ dist/
 *.db-*
 *.sqlite*
 .DS_Store
+*.apk
+*.aab

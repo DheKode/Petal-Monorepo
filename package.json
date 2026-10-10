@@ -12,7 +12,10 @@
     "dev:sync": "pnpm --filter @petal/sync-api dev",
     "dev:sync-demo": "pnpm --filter @petal/sync-demo dev",
     "db:migrate": "pnpm --filter @petal/sync-api db:migrate",
-    "dev:desktop": "pnpm --filter @petal/desktop dev"
+    "dev:desktop": "pnpm --filter @petal/desktop dev",
+    "dev:mobile": "pnpm --filter @petal/mobile dev",
+    "preview:mobile": "pnpm --filter @petal/mobile preview",
+    "build:apk": "pnpm --filter @petal/mobile build:apk"
   },
   "devDependencies": {
     "typescript": "7.0.2",

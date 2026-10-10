@@ -128,8 +128,11 @@ test('overlapping identical taps are serialized: one entry, no failure, one audi
   assert.equal((await service.getState()).events.length, 1);
   store.close();
   const raw = await LocalStore.open(path);
-  t.after(() => raw.close());
-  assert.equal((await raw.read()).backup.auditEntries.filter(a => a.entityType === 'intake-event').length, 1);
+  try {
+    assert.equal((await raw.read()).backup.auditEntries.filter(a => a.entityType === 'intake-event').length, 1);
+  } finally {
+    raw.close();
+  }
 });
 
 test('overlapping setups: exactly one succeeds and nothing is erased', async t => {
@@ -188,8 +191,11 @@ test('undoing a new entry removes it from the database with an audit entry, and 
   second.store.close();
 
   const raw = await LocalStore.open(path);
-  t.after(() => raw.close());
-  const audits = (await raw.read()).backup.auditEntries.filter(a => a.entityType === 'intake-event');
-  assert.deepEqual(audits.map(a => [a.priorValue === null, a.newValue === null]), [[true, false], [false, true], [true, false]], 'create, removal and re-create are all audited');
-  assert.equal((audits[1].priorValue as { status: string }).status, 'taken', 'the removed values stay in the audit trail');
+  try {
+    const audits = (await raw.read()).backup.auditEntries.filter(a => a.entityType === 'intake-event');
+    assert.deepEqual(audits.map(a => [a.priorValue === null, a.newValue === null]), [[true, false], [false, true], [true, false]], 'create, removal and re-create are all audited');
+    assert.equal((audits[1].priorValue as { status: string }).status, 'taken', 'the removed values stay in the audit trail');
+  } finally {
+    raw.close();
+  }
 });
