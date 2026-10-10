@@ -1,9 +1,14 @@
-import {detectPlatform, downloads, release} from '../downloads';
+import {detectPlatform, downloads, release, type PlatformDownload, type PlatformId} from '../downloads';
 import {renderDownloadCard} from '../components/downloadCard';
+
+export function orderPlatformDownloads(items: readonly PlatformDownload[], detected: PlatformId | null): PlatformDownload[] {
+  return [...items].sort((a, b) =>
+    Number(Boolean(b.url)) - Number(Boolean(a.url)) || Number(b.id === detected) - Number(a.id === detected));
+}
 
 export function initializeDownloads(): void {
   const detected = detectPlatform(navigator.userAgent, navigator.maxTouchPoints);
-  const ordered = [...downloads].sort((a, b) => Number(b.id === detected) - Number(a.id === detected));
+  const ordered = orderPlatformDownloads(downloads, detected);
   document.querySelector('[data-download-list]')?.replaceChildren(...ordered.map((d) => renderDownloadCard(d, d.id === detected)));
 
   for (const node of document.querySelectorAll('[data-release-version]')) node.textContent = release.version;

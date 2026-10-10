@@ -13,7 +13,10 @@ test('homepage composes accessible static sections and all internal anchor targe
   assert.ok(!html.includes('@include'));
   assert.match(html, /<h1 id="hero-title">A little clarity/);
   assert.match(html, /<main id="main" tabindex="-1">/);
-  assert.equal((html.match(/<section\b/g) ?? []).length, 6);
+  assert.equal((html.match(/<section\b/g) ?? []).length, 5);
+  const downloadSection = html.slice(html.indexOf('<section id="download"'), html.indexOf('</section>', html.indexOf('<section id="download"')));
+  assert.match(downloadSection, /id="setup"/, 'installation instructions stay with the downloads');
+  for (const platform of ['android', 'windows', 'macos']) assert.match(downloadSection, new RegExp(`id="setup-${platform}"`));
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   assert.equal(new Set(ids).size, ids.length, 'section/control IDs remain unique');
   for (const match of html.matchAll(/href="#([^"]+)"/g)) assert.ok(ids.includes(match[1]), `missing anchor ${match[1]}`);

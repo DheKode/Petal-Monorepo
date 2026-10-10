@@ -1,6 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {detectPlatform, downloads} from '../src/downloads';
+import {orderPlatformDownloads} from '../src/hooks/initializeDownloads';
 
 test('detects each supported platform', () => {
   assert.equal(detectPlatform('Mozilla/5.0 (Linux; Android 14; ANY-LX2) AppleWebKit/537.36'), 'android');
@@ -25,4 +26,18 @@ test('a published download has a real https URL, size and checksum', () => {
     assert.ok(d.sizeLabel, `${d.id} sizeLabel`);
     assert.match(d.sha256 ?? '', /^[0-9a-f]{64}$/, `${d.id} sha256`);
   }
+});
+
+test('published builds precede pending device matches without mutating release data', () => {
+  const fixtures = downloads.map((item) => ({...item, url: item.id === 'macos' ? 'https://example.test/petal.dmg' : null}));
+  const originalOrder = fixtures.map((item) => item.id);
+  assert.deepEqual(orderPlatformDownloads(fixtures, 'android').map((item) => item.id), ['macos', 'android', 'windows']);
+  assert.deepEqual(orderPlatformDownloads(fixtures, 'windows').map((item) => item.id), ['macos', 'windows', 'android']);
+  assert.deepEqual(fixtures.map((item) => item.id), originalOrder);
+});
+
+test('device match wins among available builds and unknown devices keep their order', () => {
+  const fixtures = downloads.map((item) => ({...item, url: `https://example.test/${item.id}`}));
+  assert.equal(orderPlatformDownloads(fixtures, 'windows')[0].id, 'windows');
+  assert.deepEqual(orderPlatformDownloads(fixtures, null).map((item) => item.id), fixtures.map((item) => item.id));
 });
