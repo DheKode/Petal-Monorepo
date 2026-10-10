@@ -1,0 +1,105 @@
+/* Home (Today) layout. Same rule as app.css: every appearance value is a --petal-* token. The only literals are the
+   rem breakpoints and grid column counts, which are layout, not brand values. Status is always text plus a mark, never color alone. */
+.app-home { display: grid; gap: var(--petal-space-section); }
+
+/* Week strip: seven days around today. Selected day is the tablet being recorded. */
+.app-strip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--petal-space-related); }
+.app-day, .app-cell {
+  display: grid; justify-items: center; align-content: center; gap: var(--petal-space-inline);
+  min-width: 0; min-height: var(--petal-size-touch-target); padding: var(--petal-space-related);
+  color: var(--petal-color-text-primary); background: var(--petal-color-surface);
+  border: var(--petal-border-width) solid var(--petal-color-border-subtle); border-radius: var(--petal-radius-container);
+  font: inherit; text-align: center;
+  transition: background-color var(--petal-motion-duration-fast) var(--petal-motion-easing), border-color var(--petal-motion-duration-fast) var(--petal-motion-easing);
+}
+.app-day:hover, .app-cell:hover { background: var(--petal-color-surface-subtle); }
+.app-day-weekday, .app-day-status, .app-cell-tablet, .app-cell-status { font-size: var(--petal-type-caption-font-size); line-height: var(--petal-type-caption-line-height); color: var(--petal-color-text-secondary); overflow-wrap: normal; }
+.app-day { padding-inline: var(--petal-space-inline); }
+.app-day-number { font-size: var(--petal-type-title-font-size); line-height: var(--petal-type-title-line-height); font-weight: var(--petal-type-title-font-weight); }
+
+/* Hero: one dominant status and the primary action. */
+.app-grid { display: grid; gap: var(--petal-space-section); align-items: start; }
+@media (min-width: 56rem) { .app-grid { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); } }
+.app-hero { display: grid; gap: var(--petal-space-group); align-content: start; padding: var(--petal-space-page); border-radius: var(--petal-radius-sheet); background: var(--petal-color-surface-subtle); }
+.app-hero-body { display: grid; gap: var(--petal-space-group); align-content: start; min-width: 0; }
+.app-hero-body > * { margin: 0; }
+.app-eyebrow { font-size: var(--petal-type-caption-font-size); line-height: var(--petal-type-caption-line-height); color: var(--petal-color-text-secondary); }
+.app-hero-title { font-size: var(--petal-type-display-font-size); line-height: var(--petal-type-display-line-height); font-weight: var(--petal-type-display-font-weight); letter-spacing: var(--petal-type-display-letter-spacing); }
+.app-hero-meta { font-size: var(--petal-type-body-large-font-size); line-height: var(--petal-type-body-large-line-height); color: var(--petal-color-text-secondary); }
+.app-hero .petal-status { background: var(--petal-color-surface); }
+.app-hero-actions .petal-button { width: 100%; max-width: 24rem; }
+.app-side { display: grid; gap: var(--petal-space-group); }
+.app-card-text { margin: 0; }
+
+/* Pack: 28 tablets as a grid. Each cell says its number, date, and status in words. */
+.app-pack { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--petal-space-related); }
+.app-pack li { display: grid; }
+
+/* Illustrations (decorative) and icon spacing. */
+.app-art-right { float: right; width: 6rem; height: auto; margin: 0 0 var(--petal-space-related) var(--petal-space-group); }
+.app-hero-meta { display: flex; align-items: center; flex-wrap: wrap; gap: var(--petal-space-inline); }
+.app-day-status { display: inline-flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: var(--petal-space-inline); }
+.app .petal-card::after { content: ""; display: block; clear: both; }
+
+/* Pack page: the grid beside the record card for the chosen tablet. */
+.app-split { display: grid; gap: var(--petal-space-section); align-items: start; }
+@media (min-width: 64rem) { .app-split { grid-template-columns: minmax(0, 1fr) minmax(18rem, 22rem); } }
+.app-split-side { display: grid; gap: var(--petal-space-group); position: sticky; top: var(--petal-space-group); }
+.app-hero[data-compact] { padding: var(--petal-space-section); }
+.app-hero[data-compact] .app-hero-title { font-size: var(--petal-type-heading-font-size); line-height: var(--petal-type-heading-line-height); }
+
+/* Characters: large and given their own space, never covering text. Decorative (alt=""). */
+@media (min-width: 60rem) { .app-hero:not([data-compact]) { grid-template-columns: minmax(0, 1fr) auto; align-items: end; } }
+/* The artwork has transparent margin around it, so negative margins let the figure itself fill the corner. */
+.app-hero-art { display: block; width: clamp(12rem, 22vw, 19rem); height: auto; justify-self: end; margin: calc(-1 * var(--petal-space-section)) calc(-1 * var(--petal-space-section)) calc(-1 * var(--petal-space-page)) calc(-1 * var(--petal-space-group)); }
+@media (max-width: 60rem) { .app-hero-art { width: 9rem; justify-self: center; margin-bottom: 0; } }
+.app-review { display: grid; gap: var(--petal-space-group); }
+.app-review-art { order: -1; display: block; justify-self: center; width: clamp(9rem, 14vw, 13rem); height: auto; margin-block: calc(-1 * var(--petal-space-group)); }
+.app-art-large { width: clamp(10rem, 18vw, 15rem); }
+
+/* Pack calendar: weekday header over a 7-column month-style grid. Each day reads date, tablet number, and status (icon over
+   a word). Unknown days use a dashed outline matching the dashed "no entry" icon; taken days are tinted. Neither relies on color alone. */
+.app-calendar { display: grid; gap: var(--petal-space-related); }
+.app-calendar-head { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--petal-space-related); text-align: center; color: var(--petal-color-text-secondary); font-size: var(--petal-type-caption-font-size); line-height: var(--petal-type-caption-line-height); font-weight: var(--petal-type-label-font-weight); }
+.app-cell { justify-items: center; align-content: start; gap: var(--petal-space-inline); min-height: 6.5rem; padding: var(--petal-space-related) var(--petal-space-inline); }
+.app-cell-day { display: inline-flex; align-items: baseline; gap: var(--petal-space-inline); font-size: var(--petal-type-title-font-size); line-height: var(--petal-type-title-line-height); font-weight: var(--petal-type-title-font-weight); white-space: nowrap; }
+.app-cell-month { font-size: var(--petal-type-caption-font-size); line-height: var(--petal-type-caption-line-height); font-weight: var(--petal-type-label-font-weight); color: var(--petal-color-text-secondary); }
+.app-cell-tablet { white-space: nowrap; }
+.app-cell-today { color: var(--petal-color-text-link); font-weight: var(--petal-type-title-font-weight); }
+.app-cell-status { display: grid; justify-items: center; gap: var(--petal-space-inline); text-align: center; color: var(--petal-color-text-primary); }
+.app-cell-status > span { white-space: nowrap; }
+.app-cell[data-status="no-entry"] { border-style: dashed; border-color: var(--petal-color-border-control); }
+.app-cell[data-status="no-entry"] .app-cell-status { color: var(--petal-color-text-secondary); }
+.app-cell[aria-current="date"] { border-style: solid; border-color: var(--petal-color-action-primary); }
+.app-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--petal-space-related) var(--petal-space-section); color: var(--petal-color-text-secondary); font-size: var(--petal-type-caption-font-size); line-height: var(--petal-type-caption-line-height); }
+.app-legend li { display: inline-flex; align-items: center; gap: var(--petal-space-inline); }
+@media (max-width: 48rem) {
+  .app-cell { min-height: 5rem; }
+  .app-cell-tablet { display: none; }
+}
+
+/* One visual language for the strip and the calendar:
+   - taken: solid rose fill with white text and icon (the strongest highlight; white on rose is 5.33:1)
+   - today: rose outline and a "Today" label
+   - selected (the tablet being recorded): a rose ring outside the cell, so it still shows on a filled day
+   Each state is also stated in words and icons, never by color alone. */
+.app-day[aria-current="date"] { border-color: var(--petal-color-action-primary); }
+:is(.app-day, .app-cell)[data-status="taken"] { color: var(--petal-color-text-on-action); background: var(--petal-color-action-primary); border-style: solid; border-color: var(--petal-color-action-primary); }
+:is(.app-day, .app-cell)[data-status="taken"]:hover { background: var(--petal-color-action-hover); }
+:is(.app-day, .app-cell)[data-status="taken"] :is(.app-day-weekday, .app-day-status, .app-cell-month, .app-cell-tablet, .app-cell-status, .app-cell-today, .petal-icon) { color: var(--petal-color-text-on-action); }
+:is(.app-day, .app-cell)[aria-pressed="true"] {
+  box-shadow: 0 0 0 var(--petal-focus-offset) var(--petal-color-background), 0 0 0 calc(var(--petal-focus-offset) + var(--petal-focus-width)) var(--petal-color-action-primary);
+}
+
+/* Taste pass: compact label, grouped meta, an even grid for the secondary actions, a quiet "next" line, press feedback. */
+.app-eyebrow { font-weight: var(--petal-type-label-font-weight); }
+.app-hero-meta { gap: var(--petal-space-group); }
+.app-hero-meta > span { display: inline-flex; align-items: center; gap: var(--petal-space-inline); white-space: nowrap; }
+/* Labels never wrap inside a button; whole buttons wrap to the next line instead. In the narrow Pack column they stack. */
+.app-hero-more { display: grid; gap: var(--petal-space-related); max-width: 24rem; }
+.app-hero-more .petal-button { width: 100%; justify-content: flex-start; white-space: nowrap; }
+.app-hero[data-compact] .app-hero-more { max-width: none; }
+.app-hero-next { color: var(--petal-color-text-secondary); font-size: var(--petal-type-caption-font-size); line-height: var(--petal-type-caption-line-height); padding-top: var(--petal-space-related); border-top: var(--petal-border-width) solid var(--petal-color-border-subtle); }
+.app-day:active, .app-cell:active { transform: scale(var(--petal-motion-press-scale)); }
+@media (prefers-reduced-motion: reduce) { .app-day:active, .app-cell:active { transform: none; } }
+:is(.app-day, .app-cell) { transition: background-color var(--petal-motion-duration-fast) var(--petal-motion-easing), border-color var(--petal-motion-duration-fast) var(--petal-motion-easing), transform var(--petal-motion-duration-fast) var(--petal-motion-easing); }

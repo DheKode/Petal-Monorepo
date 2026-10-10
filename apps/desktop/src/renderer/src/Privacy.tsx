@@ -1,12 +1,11 @@
 import type { AppInfo } from '../../shared/ipc';
 
-// Functional screen only. Visual direction belongs to the designer (#11); do not add styling decisions here.
 // Every statement here must stay true of the code (see test/privacy.test.ts). Do not add claims that are not verified.
 export function Privacy({ info }: { info: AppInfo | null }) {
   return (
-    <details>
-      <summary>Privacy: where your records are kept</summary>
-      <ul>
+    <section className="petal-card" aria-labelledby="privacy-heading">
+      <h2 id="privacy-heading">Privacy</h2>
+      <ul className="app-list">
         <li>
           <strong>Where your records are:</strong> in a file on this device
           {info ? <> (<code>petal.db</code> in <code>{info.dataFolder}</code>)</> : null}. Petal needs no account.
@@ -29,6 +28,6 @@ export function Privacy({ info }: { info: AppInfo | null }) {
           the kind of failure.
         </li>
       </ul>
-    </details>
+    </section>
   );
 }

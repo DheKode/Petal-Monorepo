@@ -3,6 +3,9 @@ import { localDateIn } from '@petal/domain';
 import { deriveFromSetupInput, type DerivedSetup } from '../../shared/setup';
 import type { PetalState, SetupInput } from '../../shared/ipc';
 import { errorText, tabletTypeLabel, doseTime } from './format';
+import { Feedback } from '@petal/ui/components';
+import { IconLabelButton } from './IconLabelButton';
+import { art } from './art';
 
 type Kind = 'first-pack' | 'mid-pack';
 
@@ -44,7 +47,7 @@ export function Setup({ onSaved }: { onSaved: (state: PetalState) => void }) {
 
   if (review) {
     return (
-      <section aria-labelledby="review-heading">
+      <section className="petal-card" aria-labelledby="review-heading">
         <h2 id="review-heading">Review your schedule</h2>
         <p>
           Tablets are scheduled daily at {usualTime} ({timeZone}), starting {review.pack.startDate}.
@@ -66,17 +69,18 @@ export function Setup({ onSaved }: { onSaved: (state: PetalState) => void }) {
             ))}
           </tbody>
         </table>
-        {error && <p role="alert">{error}</p>}
+        {error && <Feedback kind="error" message={error} />}
         <p>
-          <button type="button" onClick={() => setReview(null)} disabled={saving}>Back</button>{' '}
-          <button type="button" onClick={save} disabled={saving}>Save schedule</button>
+          <IconLabelButton icon="back" label="Back" variant="secondary" onPress={() => setReview(null)} disabled={saving} />{' '}
+          <IconLabelButton icon="check" label="Save schedule" onPress={save} disabled={saving} />
         </p>
       </section>
     );
   }
 
   return (
-    <section aria-labelledby="setup-heading">
+    <section className="petal-card" aria-labelledby="setup-heading">
+      <img className="app-art-right app-art-large" src={art.welcome} alt="" />
       <h2 id="setup-heading">Set up your pack</h2>
       <p>Petal supports one product: the Trust 28-tablet pack (21 active and 7 non-hormonal tablets).</p>
       <form onSubmit={event => { event.preventDefault(); showReview(); }}>
@@ -89,27 +93,27 @@ export function Setup({ onSaved }: { onSaved: (state: PetalState) => void }) {
 
         {kind === 'first-pack' ? (
           <p>
-            <label>Date of tablet 1 <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} required /></label>
+            <label>Date of tablet 1 <input className="petal-input" type="date" value={startDate} onChange={e => setStartDate(e.target.value)} required /></label>
           </p>
         ) : (
           <>
             <p>
-              <label>Which tablet is scheduled today? (1 to 28) <input type="number" min={1} max={28} value={position} onChange={e => setPosition(e.target.value)} required /></label>
+              <label>Which tablet is scheduled today? (1 to 28) <input className="petal-input" type="number" min={1} max={28} value={position} onChange={e => setPosition(e.target.value)} required /></label>
             </p>
             <p>
-              <label>On this date <input type="date" value={anchorDate} onChange={e => setAnchorDate(e.target.value)} required /></label>
+              <label>On this date <input className="petal-input" type="date" value={anchorDate} onChange={e => setAnchorDate(e.target.value)} required /></label>
             </p>
           </>
         )}
 
         <p>
-          <label>Usual time to take your tablet <input type="time" value={usualTime} onChange={e => setUsualTime(e.target.value)} required /></label>
+          <label>Usual time to take your tablet <input className="petal-input" type="time" value={usualTime} onChange={e => setUsualTime(e.target.value)} required /></label>
         </p>
         <p>
-          <label>Time zone <input type="text" value={timeZone} onChange={e => setTimeZone(e.target.value)} required /></label>
+          <label>Time zone <input className="petal-input" type="text" value={timeZone} onChange={e => setTimeZone(e.target.value)} required /></label>
         </p>
-        {error && <p role="alert">{error}</p>}
-        <button type="submit">Review schedule</button>
+        {error && <Feedback kind="error" message={error} />}
+        <IconLabelButton icon="next" label="Review schedule" submit />
       </form>
     </section>
   );

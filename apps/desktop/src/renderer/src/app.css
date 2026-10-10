@@ -1,0 +1,112 @@
+/* Desktop shell styling. Every value comes from the shared @petal/ui theme tokens (--petal-*); no raw brand values here.
+   Control and card appearance come from @petal/ui/styles.css (petal-button, petal-card, petal-input, ...). This file only
+   lays out the desktop shell and styles plain elements (tables, lists, details) that the shared package has no class for. */
+body { margin: 0; background: var(--petal-color-background); }
+
+/* Heavier text for readability on the desktop. Only existing weight primitives are used (regular 400 -> medium 500,
+   medium 500 -> semibold 600). Component tokens are resolved at :root, so they are restated here too. If the designer keeps
+   this, move it into libs/ui/src/themes/petal.tokens.json and delete this block. */
+.app {
+  --petal-type-body-font-weight: var(--petal-primitive-font-weight-medium);
+  --petal-type-body-large-font-weight: var(--petal-primitive-font-weight-medium);
+  --petal-type-caption-font-weight: var(--petal-primitive-font-weight-medium);
+  --petal-type-label-font-weight: var(--petal-primitive-font-weight-semibold);
+  --petal-component-button-type-font-weight: var(--petal-primitive-font-weight-semibold);
+  --petal-component-field-type-font-weight: var(--petal-primitive-font-weight-medium);
+  --petal-component-field-label-type-font-weight: var(--petal-primitive-font-weight-semibold);
+  --petal-component-field-helper-type-font-weight: var(--petal-primitive-font-weight-medium);
+  --petal-component-status-type-font-weight: var(--petal-primitive-font-weight-semibold);
+  --petal-component-feedback-type-font-weight: var(--petal-primitive-font-weight-medium);
+  --petal-component-navigation-type-font-weight: var(--petal-primitive-font-weight-semibold);
+}
+
+/* Shell: a side rail beside one scrolling page, on the soft-white background. */
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--petal-space-section);
+  padding: var(--petal-space-group);
+}
+.app-rail {
+  position: sticky; top: var(--petal-space-group);
+  height: calc(100vh - 2 * var(--petal-space-group));
+  display: flex; flex-direction: column; align-items: center; gap: var(--petal-space-section);
+  padding: var(--petal-space-section) var(--petal-space-related);
+  background: var(--petal-color-surface);
+  border: var(--petal-border-width) solid var(--petal-color-border-subtle);
+  border-radius: var(--petal-radius-sheet);
+}
+.app-rail-logo { width: var(--petal-size-touch-target); height: auto; }
+.app-rail-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--petal-space-related); }
+.app-rail-foot { margin-top: auto; }
+.app-rail-item {
+  display: grid; justify-items: center; gap: var(--petal-space-inline);
+  min-width: calc(var(--petal-size-touch-target) + var(--petal-space-group));
+  padding: var(--petal-space-related);
+  border: 0; border-radius: var(--petal-radius-container);
+  color: var(--petal-component-navigation-foreground); background: transparent;
+  font-size: var(--petal-type-caption-font-size); line-height: var(--petal-type-caption-line-height);
+  font-weight: var(--petal-component-navigation-type-font-weight);
+  transition: background-color var(--petal-component-navigation-transition) var(--petal-motion-easing);
+}
+.app-rail-item:hover:not(:disabled) { background: var(--petal-color-surface-subtle); }
+.app-rail-item[aria-current="page"] { color: var(--petal-color-text-on-action); background: var(--petal-color-action-primary); }
+.app-rail-item:disabled { color: var(--petal-color-action-disabled-text); }
+.app-main { width: 100%; max-width: var(--petal-layout-content-max); display: grid; gap: var(--petal-space-section); align-content: start; padding-block: var(--petal-space-related); }
+.app-page-header { display: grid; gap: var(--petal-space-inline); }
+.app-page-header h1 { margin: 0; font-size: var(--petal-type-heading-font-size); line-height: var(--petal-type-heading-line-height); font-weight: var(--petal-type-heading-font-weight); }
+.app-page-header h1:focus { outline: none; }
+/* Focus moves to the heading on navigation only to orient screen readers; it is not a control, so no focus ring. */
+.app .app-page-header h1:focus-visible { outline: none; }
+.app-page-header p { margin: 0; }
+.app-settings { display: grid; gap: var(--petal-space-section); }
+.app-list { margin: 0; padding-inline-start: var(--petal-space-section); display: grid; gap: var(--petal-space-related); }
+
+/* Narrow windows: the rail becomes a bar across the top. */
+@media (max-width: 40rem) {
+  .app-shell { grid-template-columns: minmax(0, 1fr); }
+  .app-rail { position: static; height: auto; flex-direction: row; justify-content: space-between; padding: var(--petal-space-related) var(--petal-space-group); }
+  .app-rail-list { grid-auto-flow: column; }
+  .app-rail-foot { margin-top: 0; }
+}
+
+.app-form { display: grid; gap: var(--petal-space-group); justify-items: start; }
+.app-field { display: grid; gap: var(--petal-component-field-gap); }
+
+/* Plain-element styling inside cards and the shell. */
+.app :is(h1, h2, h3) { margin: 0 0 var(--petal-space-related); }
+.app .petal-card > h2 { font-size: var(--petal-component-card-title-type-font-size); line-height: var(--petal-component-card-title-type-line-height); font-weight: var(--petal-component-card-title-type-font-weight); letter-spacing: var(--petal-component-card-title-type-letter-spacing); margin-bottom: var(--petal-component-card-gap); }
+/* Headings that receive focus on navigation (tabindex=-1) are not controls, so they get no focus ring. */
+.app [tabindex="-1"]:focus, .app [tabindex="-1"]:focus-visible { outline: none; }
+/* `hidden` must win over the layout rules that set display. */
+.app [hidden] { display: none; }
+.app h3 { font-size: var(--petal-type-label-font-size); line-height: var(--petal-type-label-line-height); font-weight: var(--petal-type-label-font-weight); }
+.app .petal-card > p, .app .petal-card > form, .app .petal-card > details, .app .petal-card > ol, .app .petal-card > ul, .app .petal-card > fieldset { margin: 0 0 var(--petal-space-group); }
+.app .petal-card > :last-child { margin-bottom: 0; }
+.app fieldset { padding: var(--petal-space-group); border: var(--petal-border-width) solid var(--petal-color-border-subtle); border-radius: var(--petal-radius-container); }
+.app legend { padding-inline: var(--petal-space-inline); font-weight: var(--petal-type-label-font-weight); }
+.app label { min-height: var(--petal-size-touch-target); }
+.app input[type="radio"] { accent-color: var(--petal-color-action-primary); width: var(--petal-size-icon); height: var(--petal-size-icon); margin-inline-end: var(--petal-space-inline); }
+.app summary { cursor: pointer; font-weight: var(--petal-type-label-font-weight); min-height: var(--petal-size-touch-target); display: flex; align-items: center; }
+.app a { color: var(--petal-color-text-link); }
+.app blockquote { margin: var(--petal-space-related) 0; padding-inline-start: var(--petal-space-group); border-inline-start: var(--petal-space-inline) solid var(--petal-color-border-subtle); }
+.app code { font-family: var(--petal-type-body-font-family); background: var(--petal-color-surface-subtle); padding-inline: var(--petal-space-inline); border-radius: var(--petal-radius-control); }
+
+/* Tables scroll inside their card on narrow windows instead of widening the page. */
+.app table {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  background: var(--petal-color-surface);
+  border: var(--petal-border-width) solid var(--petal-color-border-subtle); border-radius: var(--petal-radius-container);
+  overflow: hidden;
+  font-size: var(--petal-type-label-font-size); line-height: var(--petal-type-label-line-height);
+}
+.app caption { caption-side: top; text-align: start; padding-bottom: var(--petal-space-related); color: var(--petal-color-text-secondary); font-size: var(--petal-type-caption-font-size); line-height: var(--petal-type-caption-line-height); }
+.app th, .app td { padding: var(--petal-space-related) var(--petal-space-group); text-align: start; vertical-align: middle; border-bottom: var(--petal-border-width) solid var(--petal-color-border-subtle); }
+.app thead th { background: var(--petal-color-surface-subtle); color: var(--petal-color-text-secondary); font-size: var(--petal-type-caption-font-size); line-height: var(--petal-type-caption-line-height); font-weight: var(--petal-type-label-font-weight); white-space: nowrap; }
+.app tbody th { font-weight: var(--petal-type-label-font-weight); white-space: nowrap; }
+.app tbody tr:last-child > * { border-bottom: 0; }
+.app tbody tr { transition: background-color var(--petal-motion-duration-fast) var(--petal-motion-easing); }
+.app tbody tr:hover { background: var(--petal-color-background); }
+.app tr[aria-current="date"] { background: var(--petal-color-surface-subtle); }
+.app .petal-card > table { margin-bottom: var(--petal-space-group); }

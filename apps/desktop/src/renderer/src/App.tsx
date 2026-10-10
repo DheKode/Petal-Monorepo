@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import logo from '../../../../../libs/assets/brands/svg/petal-logo-horizontal-primary.svg';
+import { Rail, type Page } from './Rail';
 import type { AppInfo, PetalState } from '../../shared/ipc';
 import { Backup } from './Backup';
 import { Chat } from './Chat';
@@ -10,8 +10,6 @@ import { UsualTime } from './UsualTime';
 import { Today } from './Today';
 import { ZoneNotice } from './ZoneNotice';
 
-type Page = 'today' | 'journal' | 'ask' | 'settings';
-
 const PAGES: { page: Page; label: string; needsPack: boolean }[] = [
   { page: 'today', label: 'Today', needsPack: false },
   { page: 'journal', label: 'Journal', needsPack: true },
@@ -19,8 +17,6 @@ const PAGES: { page: Page; label: string; needsPack: boolean }[] = [
   { page: 'settings', label: 'Settings', needsPack: false },
 ];
 
-/* Minimal brand shell (DESIGN.md: desktop side rail with Today, Journal, Ask Petal, Settings). Appearance comes only from
-   @petal/ui tokens in shell.css; the fuller redesign in draft #57 can replace this shell. */
 export function App() {
   const [state, setState] = useState<PetalState | null>(null);
   const [info, setInfo] = useState<AppInfo | null>(null);
@@ -49,32 +45,11 @@ export function App() {
   const title = shown === 'today' ? (hasPack ? 'Today' : 'Welcome to Petal') : PAGES.find(p => p.page === shown)!.label;
 
   return (
-    <div data-petal-ui className="shell">
-      <nav className="shell-rail" aria-label="Main">
-        <img className="shell-logo" src={logo} alt="Petal" />
-        <ul>
-          {PAGES.map(item => (
-            <li key={item.page}>
-              <button
-                type="button"
-                aria-current={shown === item.page ? 'page' : undefined}
-                disabled={item.needsPack && !hasPack}
-                onClick={() => setPage(item.page)}
-              >
-                {item.label}
-              </button>
-            </li>
-          ))}
-        </ul>
-        <p className="shell-rail-note">
-          {state.persistence === 'memory'
-            ? 'Temporary storage: your records are lost when the app closes.'
-            : 'Saved on this device only. Not encrypted.'}
-        </p>
-      </nav>
+    <div data-petal-ui className="app app-shell">
+      <Rail page={shown} hasPack={hasPack} onGo={setPage} />
 
-      <main className="shell-main" aria-labelledby="page-heading">
-        <header className="shell-header">
+      <main className="app-main" aria-labelledby="page-heading">
+        <header className="app-page-header">
           <h1 id="page-heading" ref={heading} tabIndex={-1}>{title}</h1>
           {shown === 'today' && hasPack && (
             <p className="petal-muted">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
@@ -91,7 +66,7 @@ export function App() {
         {shown === 'today' && (
           <>
             <ZoneNotice state={state} />
-            {hasPack ? <Today state={state} onState={setState} /> : <Setup onSaved={setState} />}
+            {hasPack ? <Today view="today" state={state} onState={setState} /> : <Setup onSaved={setState} />}
           </>
         )}
         {shown === 'journal' && <Journal state={state} onState={setState} />}
