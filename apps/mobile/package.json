@@ -1,0 +1,34 @@
+{
+  "name": "@petal/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Petal Mobile Companion App (React Native + Local Preview)",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "vite preview/ --config preview/vite.config.ts",
+    "preview": "vite preview preview/ --config preview/vite.config.ts",
+    "build:preview": "vite build preview/ --config preview/vite.config.ts",
+    "build:apk": "vite build preview/ --config preview/vite.config.ts && rm -rf android/app/src/main/assets/web && cp -r preview/dist android/app/src/main/assets/web && cd android && ./gradlew assembleRelease && mkdir -p ../release && cp app/build/outputs/apk/release/app-release.apk ../release/petal-v0.1.0.apk && cp app/build/outputs/apk/release/app-release.apk ../../../petal-v0.1.0.apk",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test test/*.test.ts"
+  },
+  "dependencies": {
+    "@petal/domain": "workspace:*",
+    "@petal/ui": "workspace:*"
+  },
+  "devDependencies": {
+    "@animateicons/react": "0.12.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "5.2.0",
+    "lucide-react-native": "1.52.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.86.3",
+    "react-native-svg": "15.15.5",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vite": "7.3.6"
+  }
+}

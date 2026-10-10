@@ -1,0 +1,10 @@
+<resources>
+    <style name="Theme.Petal" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:statusBarColor">#FFF7FA</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">#FFFFFF</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowBackground">@color/petal_soft_white</item>
+        <item name="colorPrimary">@color/petal_rose</item>
+    </style>
+</resources>
