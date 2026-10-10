@@ -12,8 +12,8 @@
 @media (max-width:47.999rem) {
   .container { padding-inline:var(--petal-layout-gutter-compact); }
   .section { padding-block:var(--petal-primitive-spacing-s64); }
-  .header-inner { min-height:var(--petal-primitive-spacing-s64); }
-  .home-link img { width:calc(var(--petal-primitive-spacing-s64) * 2); }
+  .header-inner { min-height:calc(var(--petal-size-touch-target) + var(--petal-primitive-spacing-s8)); }
+  .home-link img,.site-header .home-link img { width:calc(var(--petal-primitive-spacing-s64) * 2); }
   .nav-list { gap:var(--petal-primitive-spacing-s4); }
   .nav-list a { padding-inline:var(--petal-primitive-spacing-s8); }
   .nav-list .nav-download { padding-inline:var(--petal-space-related); }

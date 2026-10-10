@@ -64,3 +64,9 @@ Every deploy must include **all** currently published builds, because a deploy r
 - `tooling/`: local Vite HTML-partial composition; no runtime template engine or new dependency.
 
 HTML partials use `<!-- @include ./relative/file.html -->`, relative to the including file. Vite expands them before serving or building the document, so page copy remains static HTML. Editing a partial reloads the development page. Change section content in `components/`, section order in `pages/home.html`, and the shared shell in `layouts/site.html`.
+
+## Navigation refinement
+
+The header uses a 64px content row (56px on small screens) plus its border, quieter plum text links with a fine rose underline for hover/focus, and a 40px visible primary-action fill inside the shared 48px touch target. Its optical logo width is 144px on desktop and 128px on mobile; supplied outlines, proportions and clearspace are preserved. Footer logo sizing stays independent. Hover effects apply only to fine pointers; keyboard focus remains visible and reduced motion disables transitions.
+
+Study references: [Linear](https://linear.app/) for restrained link/action hierarchy and [Headspace](https://www.headspace.com/) for straightforward wellness navigation. This is original Petal styling using existing shared tokens, with no downloaded component or reference identity.

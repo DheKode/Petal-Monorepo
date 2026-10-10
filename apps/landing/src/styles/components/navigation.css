@@ -1,11 +1,80 @@
 .skip-link { position: absolute; left: var(--petal-space-group); top: calc(var(--petal-primitive-spacing-s96) * -1); z-index: var(--petal-layer-toast); background: var(--petal-color-surface); padding: var(--petal-space-related) var(--petal-space-group); }
 .skip-link:focus { top: var(--petal-space-group); }
-.site-header { position: sticky; top: 0; z-index: var(--petal-layer-sticky); background: var(--petal-color-surface); border-bottom: var(--petal-border-width) solid var(--petal-color-border-subtle); }
-.header-inner { display:flex; align-items:center; justify-content:space-between; gap:var(--petal-space-group); min-height:calc(var(--petal-primitive-spacing-s64) + var(--petal-primitive-spacing-s8)); }
-.home-link { display:inline-flex; align-items:center; flex-shrink:0; min-height:var(--petal-size-touch-target); }
-.home-link img { width:calc(var(--petal-primitive-spacing-s64) * 2.5); }
-.nav-list { display:flex; align-items:center; gap:var(--petal-primitive-spacing-s24); padding:0; list-style:none; }
-.nav-list a { display:inline-flex; align-items:center; justify-content:center; gap:var(--petal-space-related); min-height:var(--petal-size-touch-target); padding-inline:var(--petal-space-related); color:var(--petal-color-text-primary); font-size:var(--petal-type-label-font-size); font-weight:var(--petal-type-label-font-weight); border-radius:var(--petal-radius-control); text-decoration:none; }
-.nav-list a:hover { color:var(--petal-color-text-link); background:var(--petal-color-background); }
-.nav-list .nav-download { background:var(--petal-color-action-primary); color:var(--petal-color-text-on-action); padding-inline:var(--petal-primitive-spacing-s24); }
-.nav-list .nav-download:hover { background:var(--petal-color-action-hover); }
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--petal-layer-sticky);
+  background: var(--petal-color-surface);
+  border-bottom: var(--petal-border-width) solid var(--petal-color-border-subtle);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--petal-space-group);
+  min-height: var(--petal-primitive-spacing-s64);
+}
+.home-link { display: inline-flex; align-items: center; flex-shrink: 0; min-height: var(--petal-size-touch-target); }
+.home-link img { width: calc(var(--petal-primitive-spacing-s64) * 2.5); }
+/* Optical header sizing only; the supplied artwork and footer stay intact. */
+.site-header .home-link img { width: calc(var(--petal-primitive-spacing-s96) + var(--petal-primitive-spacing-s48)); }
+.nav-list {
+  display: flex;
+  align-items: center;
+  gap: var(--petal-primitive-spacing-s24);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nav-list a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--petal-space-inline);
+  min-height: var(--petal-size-touch-target);
+  padding-inline: var(--petal-space-inline);
+  color: var(--petal-color-text-secondary);
+  font-size: var(--petal-type-label-font-size);
+  font-weight: var(--petal-type-label-font-weight);
+  border-radius: var(--petal-radius-control);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--petal-motion-duration-fast) var(--petal-motion-easing);
+}
+.nav-list a:not(.nav-download)::after {
+  content: '';
+  position: absolute;
+  inset-inline: var(--petal-space-inline);
+  bottom: var(--petal-space-inline);
+  height: var(--petal-border-width);
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--petal-motion-duration-fast) var(--petal-motion-easing);
+}
+.nav-list a:not(.nav-download):focus-visible { color: var(--petal-color-text-link); }
+.nav-list a:not(.nav-download):focus-visible::after { transform: scaleX(1); }
+.nav-list .nav-download {
+  isolation: isolate;
+  color: var(--petal-color-text-on-action);
+  padding-inline: var(--petal-space-group);
+  transition: transform var(--petal-motion-duration-fast) var(--petal-motion-easing);
+}
+/* A 40px visible fill within the shared 48px target keeps the action compact. */
+.nav-download::before {
+  content: '';
+  position: absolute;
+  inset: var(--petal-primitive-spacing-s4) 0;
+  z-index: -1;
+  border-radius: var(--petal-radius-control);
+  background: var(--petal-color-action-primary);
+  transition: background-color var(--petal-motion-duration-fast) var(--petal-motion-easing);
+}
+.nav-download:active::before { background: var(--petal-color-action-pressed); }
+@media (hover: hover) and (pointer: fine) {
+  .nav-list a:not(.nav-download):hover { color: var(--petal-color-text-link); }
+  .nav-list a:not(.nav-download):hover::after { transform: scaleX(1); }
+  .nav-download:hover::before { background: var(--petal-color-action-hover); }
+  .nav-download:hover:active::before { background: var(--petal-color-action-pressed); }
+}
