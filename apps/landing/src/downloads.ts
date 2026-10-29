@@ -37,9 +37,9 @@ export const downloads: readonly PlatformDownload[] = [
     name: 'Windows',
     fileType: '.exe',
     requirement: 'Windows, 64-bit',
-    url: null,
-    sizeLabel: null,
-    sha256: null,
+    url: 'https://petal.necookie.dev/download/petal-0.1.0.exe',
+    sizeLabel: '1190.2 MB',
+    sha256: '8e299ac1eb3c4e65b90e6077a2d0996a9c3e46c4c979e5f46a672a7665177c15',
     installNote: 'Unsigned installer. Windows may show a SmartScreen warning.',
   },
   {

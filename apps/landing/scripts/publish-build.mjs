@@ -3,6 +3,7 @@
 //   pnpm --filter @petal/landing publish-build -- \
 //     --platform android|windows|macos --file <path/to/build> \
 //     --tested-on "<device, OS, date>" [--name petal-0.1.0.apk] [--dry-run]
+//     [--restage-origin https://<verified recovery host>]
 //
 // 1. Checks the file type matches the platform, then computes size and SHA-256.
 // 2. Updates that platform's entry in src/downloads.ts (url, sizeLabel, sha256).
@@ -35,6 +36,7 @@ const {values: args} = parseArgs({
         file: {type: 'string'},
         'tested-on': {type: 'string'},
         name: {type: 'string'},
+        'restage-origin': {type: 'string'},
         'dry-run': {type: 'boolean', default: false},
     },
 });
@@ -43,6 +45,18 @@ const fail = (message) => {
     console.error(`publish-build: ${message}`);
     process.exit(1);
 };
+
+let restageOrigin = null;
+if (args['restage-origin']) {
+    try {
+        const origin = new URL(args['restage-origin']);
+        if (origin.protocol !== 'https:' || origin.username || origin.password || origin.href !== `${origin.origin}/`)
+            fail('--restage-origin must be an HTTPS origin without credentials, path, query or fragment');
+        restageOrigin = origin.origin;
+    } catch {
+        fail('--restage-origin must be a valid HTTPS origin');
+    }
+}
 
 const extension = EXTENSIONS[args.platform];
 if (!extension) fail('--platform must be android, windows or macos');
@@ -74,7 +88,10 @@ function sha256File(file) {
 }
 
 function run(command, commandArgs, options = {}) {
-    execFileSync(command, commandArgs, {cwd: landingDir, stdio: 'inherit', shell: process.platform === 'win32', ...options});
+    // Launch Node directly so an executable under "Program Files" is not split by cmd.exe.
+    // Only the Windows package-manager shims require a shell.
+    const shell = process.platform === 'win32' && /^(npx|pnpm)(\.cmd)?$/i.test(command);
+    execFileSync(command, commandArgs, {cwd: landingDir, stdio: 'inherit', shell, ...options});
 }
 
 function pnpm(commandArgs) {
@@ -127,8 +144,9 @@ try {
     for (const other of others) {
         const otherName = decodeURIComponent(new URL(other.url).pathname.split('/').pop());
         const file = path.join(tmp, otherName);
-        console.log(`Re-staging published ${other.platform} build ${otherName} from the live site…`);
-        await fetchVerified(other.url, other.sha256, file);
+        const source = restageOrigin ? new URL(new URL(other.url).pathname, restageOrigin).href : other.url;
+        console.log(`Re-staging published ${other.platform} build ${otherName} from ${source}…`);
+        await fetchVerified(source, other.sha256, file);
         stage(file, otherName);
     }
 

@@ -67,7 +67,12 @@ try {
   const todayAnswer = await evaluate('window.petal.askAi({question:"Did I take my pill today?"})');
   assert.equal(todayAnswer.ok, true); assert.equal(todayAnswer.value.fallback, unavailable);
   assert.ok(todayAnswer.value.text.includes(today.localDate), 'today question uses today rather than yesterday');
-  if (phase === 'restart') assert.equal(state.events[0].status, 'unsure');
+  if (phase === 'restart') {
+    assert.equal(state.events[0].status, 'unsure');
+    assert.equal(state.events.find(e => e.doseId === today.id)?.status, 'taken');
+    assert.match(todayAnswer.value.text, /recorded as taken/);
+  }
+  let recordedTodayAnswer = null;
   if (phase === 'fresh') {
     const doseId = state.doses[10].id;
     const proposal = await evaluate(`window.petal.previewAiCorrection(${JSON.stringify({ doseId, status: 'unsure' })})`);
@@ -78,6 +83,12 @@ try {
     const next = await evaluate(`window.petal.previewAiCorrection(${JSON.stringify({ doseId, status: 'unsure' })})`);
     const saved = await evaluate(`window.petal.confirmAiCorrection(${JSON.stringify(next.value.token)})`);
     assert.equal(saved.ok, true); assert.equal(saved.value.state.events[0].status, 'unsure');
+    const logged = await evaluate(`window.petal.recordIntake(${JSON.stringify({doseId: today.id, status: 'taken'})})`);
+    assert.equal(logged.ok, true);
+    recordedTodayAnswer = await evaluate('window.petal.askAi({question:"Did I take my pill today?"})');
+    assert.equal(recordedTodayAnswer.ok, true); assert.equal(recordedTodayAnswer.value.fallback, false);
+    assert.ok(recordedTodayAnswer.value.text.includes(today.localDate));
+    assert.match(recordedTodayAnswer.value.text, /recorded as taken/);
   }
   await evaluate('[...document.querySelectorAll("nav button")].find(b=>b.textContent==="Ask Petal").click()');
   await new Promise(resolve => setTimeout(resolve, 1000));
@@ -85,7 +96,7 @@ try {
   assert.equal(controls.some(s=>s.includes('Choose recovery Gemma')), unavailable);
   const shot = await rpc('Page.captureScreenshot', { format: 'png' });
   await writeFile(join(folder, `screen-${phase}.png`), Buffer.from(shot.data, 'base64'));
-  await writeFile(join(folder, `report-${phase}.json`), JSON.stringify({ phase, info, greeting, faq, history, todayAnswer, platform: process.platform, arch: process.arch }, null, 2));
+  await writeFile(join(folder, `report-${phase}.json`), JSON.stringify({ phase, info, greeting, faq, history, todayAnswer, recordedTodayAnswer, platform: process.platform, arch: process.arch }, null, 2));
   console.log(`${phase}: bundled selection, greeting, native/fallback answers, citations and persistence checks passed (${faq.value.generationMs} ms FAQ).`);
 } finally {
   if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify({ id: ++sequence, method: 'Page.close' }));

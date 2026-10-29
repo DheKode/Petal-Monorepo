@@ -35,7 +35,7 @@ Everything is invented. Do not put real records in this folder.
 
 ## Windows release verification — October 30, 2026
 
-P02 / #12, source `a5cf78c`, tested on an Acer Predator PH315-55, Intel Core i5-12500H,
+P02 / #12 and A06 / #9, based on source `a5cf78c`, tested on an Acer Predator PH315-55, Intel Core i5-12500H,
 8 GB RAM, Windows 11 Home Single Language 10.0.26300. This is different hardware
 from the plan's VivoBook; no VivoBook check is claimed.
 
@@ -50,18 +50,36 @@ from the plan's VivoBook; no VivoBook check is claimed.
 - The missing-model phase passed 2 checks, including a useful fixed history
   answer. The harness now isolates the model lookup from `.model-bundle` and
   waits for Chromium to paint before taking its screenshot.
-- Generated `release/Petal-Setup-0.1.0-x64.exe`: 1,190,242,521 bytes, SHA-256
-  `204637e002116da0f58476bcf8c12039787979b4f6ee0e091ce37ebc3c052b40`.
+- Fixed an installed-app bug where "Did I take my pill today?" inspected
+  yesterday's scheduled records. Regression tests cover today, yesterday, explicit
+  dates, unavailable inference and the schedule's date after UTC midnight.
+- Windows packaging uses `build/icon.ico`, exported from the existing
+  `build/icon.png`, avoiding the icon converter's WASM memory-allocation failure.
+  Artwork, dependencies and shared interfaces are unchanged.
+- Generated `release/Petal-Setup-0.1.0-x64.exe`: 1,190,242,528 bytes, SHA-256
+  `8e299ac1eb3c4e65b90e6077a2d0996a9c3e46c4c979e5f46a672a7665177c15`.
   It contains the pinned Gemma model and Windows native dependencies; the older
   114 MB size above predates bundled inference. Build outputs remain ignored.
-- Authenticode status: `NotSigned`. Attempting silent installation was rejected
-  by Windows: "An Application Control policy has blocked this file." This is
-  separate from the older SmartScreen warning described above. No security
-  policy was changed and no installation success is claimed.
+- Authenticode status: `NotSigned`. The initial installer was rejected once
+  with "An Application Control policy has blocked this file"; a retry of that
+  same file installed successfully (exit 0), without security-policy changes.
+  Its installed setup review/save and Taken now flow worked with fictional data.
+  This does not establish that unsigned installers run on all Windows policies.
+- The corrected EXE also installed silently with exit 0. Its installed
+  `ai-bundled-smoke.mjs` fresh and restart phases passed in hidden Windows
+  processes: automatic bundled-model verification, fresh native replies and
+  readable citations, correction cancellation/confirmation, logging today's dose
+  and preserving both records across restart. Asking about today after logging
+  returned today's tablet as taken. Native FAQ answers took 15.0 seconds fresh
+  and 13.4 seconds after restart on this machine.
 
-**Build not published: device test pending.** The Windows download remains
-disabled. Next steps are to configure the owner's trusted code-signing identity,
-rebuild/sign, install the exact resulting EXE on the release test device, verify
-the installed core flow and restart, then run the existing `publish-build`
-command and verify the live checksum. Source-build smoke tests do not replace
-installed-executable verification. No Windows offline-generation claim is made.
+The installed test runner supports both `.exe` and `.app` paths, isolates its data
+folder, starts Windows tests hidden and uses no native keyboard/mouse input.
+No physical-network-disconnection or clean-machine compatibility claim is made.
+
+The release also corrects Windows publisher executable-path quoting and aligns
+the configured Worker name with the live `petal-monorepo` custom-domain target.
+The original macOS artifact is recovered from the legacy `petal-landing` Worker
+only after matching its existing SHA-256. Wrangler's pre-deploy hook verifies or
+restores every published artifact so future fresh-checkout Workers Builds cannot
+erase download assets; missing or mismatched originals stop deployment.

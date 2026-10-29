@@ -52,7 +52,7 @@ Use the [download page](https://petal.necookie.dev/#download) for published file
 | Target | Current repository/distribution boundary |
 | --- | --- |
 | macOS Apple Silicon | A `0.1.0` DMG is listed on the landing page. The desktop build includes the verified Gemma 3 model. No Developer ID signing/notarization is claimed. |
-| Windows x64 | Electron/NSIS build scripts and recorded installer smoke checks exist. No Windows download is currently listed; the latest AI integration still needs Windows verification. |
+| Windows x64 | Unsigned Electron/NSIS installer tested on an Acer Predator running Windows 11: setup/logging, bundled Gemma, corrections and restart persistence. See [Windows verification](docs/desktop-install.md#windows-release-verification--october-30-2026) and the [download page](https://petal.necookie.dev/#download). |
 | Android | Kotlin/WebView APK sources and React mobile UI exist. No Android download is currently listed. Native inference integration and real-device acceptance remain separate checks. |
 | iOS / Intel Mac | Outside this release's scope. |
 

@@ -1,9 +1,10 @@
 // Cloudflare Worker + static assets for the landing page (L01, #11).
 // Deploy: build, stage downloads, then `npx wrangler@4.139.0 deploy` from this directory.
 {
-  "name": "petal-landing",
+  "name": "petal-monorepo",
   "main": "worker/index.js",
   "compatibility_date": "2026-09-01",
+  "build": {"command": "node scripts/preserve-downloads.mjs"},
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",

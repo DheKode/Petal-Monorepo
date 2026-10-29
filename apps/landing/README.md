@@ -21,7 +21,7 @@ Still pending for L01: real tested release links, the final model-download size 
 
 ## Deploy (Cloudflare Worker: petal.necookie.dev)
 
-The page is served by the `petal-landing` Worker with static assets (`wrangler.jsonc`, `worker/index.js`) on the Custom Domain **petal.necookie.dev** (Cloudflare manages its DNS record and certificate). Also reachable at `petal-landing.dheyn-main.workers.dev`.
+The page is served by the `petal-monorepo` Worker with static assets (`wrangler.jsonc`, `worker/index.js`) on the Custom Domain **petal.necookie.dev** (Cloudflare manages its DNS record and certificate). The older `petal-landing.dheyn-main.workers.dev` service is a separate legacy deployment, not the current custom-domain target.
 
 ### Where downloadable builds are stored
 
@@ -34,6 +34,20 @@ Use the one-step command (rules in [AGENTS.md](AGENTS.md)):
 ```sh
 pnpm --filter @petal/landing publish-build -- --platform android|windows|macos --file <path/to/build> --tested-on "<device, OS, date>"
 ```
+
+If a published download is unavailable on the custom domain but its original
+bytes remain on a verified recovery host, pass `--restage-origin https://<host>`.
+This changes only where existing builds are recovered before deployment. Their
+stored SHA-256 values must still match; visible URLs and final verification stay
+on `petal.necookie.dev`. Never replace a checksum to accept an unknown artifact.
+The October 30 Windows release recovered the original macOS installer from the
+legacy `https://petal-landing.dheyn-main.workers.dev` origin this way.
+
+Wrangler's pre-deploy build hook also verifies every staged published build and
+restores missing/corrupt chunks from the live URL before uploading assets. This
+protects downloads during automatic Workers Builds on a fresh checkout. An
+unavailable or mismatched binary stops deployment instead of removing a working
+download. The hook neither builds native apps nor changes their recorded hashes.
 
 Manual equivalent:
 

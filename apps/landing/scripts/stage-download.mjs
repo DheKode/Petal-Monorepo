@@ -18,20 +18,20 @@ export function sizeLabel(bytes) {
     return `${(bytes / 1e6).toFixed(1)} MB`;
 }
 
-export function stage(source, name) {
+export function stage(source, name, destination = outDir) {
     if (!BUILD_NAME.test(name)) throw new Error(`Invalid published name "${name}" (expected lowercase *.apk, *.exe or *.dmg)`);
-    mkdirSync(outDir, {recursive: true});
+    mkdirSync(destination, {recursive: true});
 
     const bytes = readFileSync(source);
     const parts = [];
     for (let offset = 0, index = 0; offset < bytes.length; offset += PART_BYTES, index++) {
         const part = `${name}.part${index}`;
-        writeFileSync(path.join(outDir, part), bytes.subarray(offset, offset + PART_BYTES));
+        writeFileSync(path.join(destination, part), bytes.subarray(offset, offset + PART_BYTES));
         parts.push(part);
     }
 
     const sha256 = createHash('sha256').update(bytes).digest('hex');
-    writeFileSync(path.join(outDir, `${name}.json`), JSON.stringify({name, size: bytes.length, sha256, parts}, null, 2));
+    writeFileSync(path.join(destination, `${name}.json`), JSON.stringify({name, size: bytes.length, sha256, parts}, null, 2));
     return {url: `${SITE}/download/${name}`, name, size: bytes.length, sizeLabel: sizeLabel(bytes.length), sha256, parts: parts.length};
 }
 
