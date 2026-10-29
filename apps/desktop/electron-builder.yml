@@ -19,6 +19,8 @@ extraResources:
       - NOTICE
       - license.txt
 win:
+  # Pre-exported from build/icon.png; avoids the WASM converter's memory reservation on small Windows machines.
+  icon: build/icon.ico
   target:
     - target: nsis
       arch: x64

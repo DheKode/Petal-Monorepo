@@ -117,7 +117,7 @@ export function planResponse(c) {
     if (/yellow/.test(q)) ask('pack-clarification', 'Which scheduled tablet position and date do you mean? Colour alone does not identify it.');
   } else if (/forgot|check|last night|did i take|taken.*\d{4}-/.test(q)) {
     mode = 'history'; const explicit = q.match(/\b\d{4}-\d{2}-\d{2}\b/)?.[0];
-    const matching = explicit ? c.doses.filter(d => d.localDate === explicit) : yesterday;
+    const matching = explicit ? c.doses.filter(d => d.localDate === explicit) : /\btoday\b/.test(q) ? today : yesterday;
     if (matching.length) matching.forEach(d => add(`history-${d.id}`, summary(d)));
     else add('window-limit', 'No matching scheduled dose is in the retrieved window. A missing schedule is not proof of a missed intake.');
     if (matching.some(d => ['no-entry', 'unsure'].includes(d.status))) ask('remember-taking', 'Do you remember taking that scheduled dose? If you are unsure, it can remain unknown.');

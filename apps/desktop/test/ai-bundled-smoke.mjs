@@ -1,5 +1,5 @@
-// A12 (#15): install the exact DMG to a scratch folder first, then test that copy on a real Mac.
-// node test/ai-bundled-smoke.mjs /absolute/Petal.app /tmp/petal-bundle-smoke fresh|restart|missing|corrupt
+// P02/A12 (#12/#15): install the exact installer first, then test that copy on the target device.
+// node test/ai-bundled-smoke.mjs <absolute Petal.app or Petal.exe> <absolute petal-bundle-smoke folder> fresh|restart|missing|corrupt
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { mkdir, writeFile, realpath, access } from 'node:fs/promises';
@@ -9,9 +9,10 @@ assert.ok(isAbsolute(app) && isAbsolute(folder) && folder.includes('petal-bundle
 assert.ok(['fresh', 'restart', 'missing', 'corrupt'].includes(phase));
 const unavailable = ['missing', 'corrupt'].includes(phase);
 await mkdir(folder, { recursive: true });
-await access(join(app, 'Contents/MacOS/Petal'));
+const executable = process.platform === 'win32' ? app : join(app, 'Contents/MacOS/Petal');
+await access(executable);
 const port = 20000 + Math.floor(Math.random() * 10000);
-const child = spawn(join(app, 'Contents/MacOS/Petal'), [`--user-data-dir=${folder}`, `--remote-debugging-port=${port}`], { stdio: 'ignore' });
+const child = spawn(executable, [`--user-data-dir=${folder}`, `--remote-debugging-port=${port}`], { stdio: 'ignore', windowsHide: true });
 let socket;
 let sequence = 0;
 const pending = new Map();
@@ -61,6 +62,11 @@ try {
   assert.ok(faq.value.citations.length > 0);
   const history = await evaluate('window.petal.askAi({question:"Did I take my pill yesterday?"})');
   assert.equal(history.ok, true); assert.equal(history.value.fallback, unavailable);
+  const today = state.doses.find(d => d.localDate === new Intl.DateTimeFormat('en-CA', { timeZone: state.settings.timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()));
+  assert.ok(today, 'today is present in the saved schedule');
+  const todayAnswer = await evaluate('window.petal.askAi({question:"Did I take my pill today?"})');
+  assert.equal(todayAnswer.ok, true); assert.equal(todayAnswer.value.fallback, unavailable);
+  assert.ok(todayAnswer.value.text.includes(today.localDate), 'today question uses today rather than yesterday');
   if (phase === 'restart') assert.equal(state.events[0].status, 'unsure');
   if (phase === 'fresh') {
     const doseId = state.doses[10].id;
@@ -79,7 +85,7 @@ try {
   assert.equal(controls.some(s=>s.includes('Choose recovery Gemma')), unavailable);
   const shot = await rpc('Page.captureScreenshot', { format: 'png' });
   await writeFile(join(folder, `screen-${phase}.png`), Buffer.from(shot.data, 'base64'));
-  await writeFile(join(folder, `report-${phase}.json`), JSON.stringify({ phase, info, greeting, faq, history, platform: process.platform, arch: process.arch }, null, 2));
+  await writeFile(join(folder, `report-${phase}.json`), JSON.stringify({ phase, info, greeting, faq, history, todayAnswer, platform: process.platform, arch: process.arch }, null, 2));
   console.log(`${phase}: bundled selection, greeting, native/fallback answers, citations and persistence checks passed (${faq.value.generationMs} ms FAQ).`);
 } finally {
   if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify({ id: ++sequence, method: 'Page.close' }));

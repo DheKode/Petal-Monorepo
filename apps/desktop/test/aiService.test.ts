@@ -28,6 +28,29 @@ test('live history is queried anew; blank differs from missed and no model keeps
   value(await service.recordIntake({doseId:yesterday.id,status:'confirmed-missed'}));
   const changed=value(await ai.ask({question:'Did I take my pill yesterday?'}));assert.match(changed.text,/confirmed-missed/);assert.notEqual(changed.text,blank.text);
 });
+
+test('today, yesterday and explicit dates use distinct stored doses with and without inference',async t=>{
+  for (const generator of [unavailable, selecting]) {
+    const {ai,service,state}=await open(t,generator);
+    value(await service.recordIntake({doseId:state.doses[10].id,status:'confirmed-missed'}));
+    value(await service.recordIntake({doseId:state.doses[11].id,status:'taken'}));
+    const today=value(await ai.ask({question:'Did I take my pill today?'}));
+    assert.match(today.text,/2026-10-10.*recorded as taken/);
+    assert.doesNotMatch(today.text,/2026-10-09|confirmed-missed/);
+    assert.match(value(await ai.ask({question:'Did I take my pill yesterday?'})).text,/2026-10-09.*confirmed-missed/);
+    assert.match(value(await ai.ask({question:'Did I take my pill on 2026-10-09?'})).text,/2026-10-09.*confirmed-missed/);
+  }
+});
+
+test('today follows the schedule time zone across the UTC date boundary',async t=>{
+  const {store}=await open(t,selecting);
+  const ai=new AiService(store,selecting,()=>new Date('2026-10-10T17:30:00Z'));
+  try {
+    const answer=value(await ai.ask({question:'Did I take my pill today?'}));
+    assert.match(answer.text,/2026-10-11.*unknown/);
+    assert.doesNotMatch(answer.text,/2026-10-10/);
+  } finally { ai.close(); }
+});
 test('correct constrained output is accepted; model prose and fake citations never display',async t=>{
   const a=await open(t,selecting);assert.equal(value(await a.ai.ask({question:'What does an empty intake record mean?'})).fallback,false);
   const bad=await open(t,{generate:async()=>'{"text":"You are safe to have sex","evidenceIds":["fake-CDC"]}'});
