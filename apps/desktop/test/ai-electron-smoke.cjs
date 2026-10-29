@@ -21,6 +21,10 @@ const phase = app.commandLine.getSwitchValue('petal-phase') || 'first';
 if (!folder || !folder.includes('petal-ai-smoke')) throw new Error('Use a petal-ai-smoke scratch folder');
 if (!['first', 'restart', 'missing'].includes(phase)) throw new Error('Unknown phase');
 mkdirSync(folder, { recursive: true });
+// Keep these no-model/recovery tests independent of a developer's .model-bundle.
+// The production main/renderer still load from out/; only the app-owned model
+// lookup uses this empty fixture root. Restart verifies the remembered selection.
+app.setAppPath(folder);
 if (phase === 'missing') writeFileSync(join(folder, 'ai-model.json'), JSON.stringify({ version: 1, path: join(folder, 'moved-away.gguf') }) + '\n');
 
 let pickResult = model;
@@ -249,6 +253,8 @@ app.whenReady().then(async () => {
     }
 
     await evaluate(`window.__smoke.section().scrollIntoView(); true`);
+    // A fixed fallback can finish before Chromium has painted its first frame.
+    await evaluate('new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve(true))))');
     const image = await win.webContents.capturePage();
     writeFileSync(join(folder, `screen-${phase}.png`), image.toPNG());
     report.pass = true;
