@@ -1,6 +1,6 @@
 // Cloudflare Worker for petal.necookie.dev: static landing page (dist/) plus
 // one-click downloads. Workers static assets cap each file at 25 MiB, so
-// scripts/stage-download.mjs splits each build into parts under
+// scripts/stage-download.mjs splits each build into 24 MiB parts under
 // dist/downloads/ with a manifest; GET /download/<file> streams the parts back
 // as one attachment with an exact Content-Length. Integrity is the SHA-256
 // of the whole file, published on the page. Builds are never committed.
@@ -26,6 +26,9 @@ async function download(request, env, name, withBody) {
         manifest = null;
     }
     if (manifest?.name !== name || !Array.isArray(manifest.parts) || !Number.isInteger(manifest.size)) return notFound();
+    // Fail before sending headers rather than aborting a 200 response after exhausting subrequests.
+    if (manifest.parts.length > 49)
+        return new Response('This download is temporarily unavailable.', {status: 503});
 
     const headers = {
         'Content-Type': CONTENT_TYPES[name.split('.').pop()],

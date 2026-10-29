@@ -25,7 +25,7 @@ The page is served by the `petal-monorepo` Worker with static assets (`wrangler.
 
 ### Where downloadable builds are stored
 
-Builds are uploaded **with each deploy as Worker static assets**, never committed to Git. Static assets cap each file at 25 MiB, so `scripts/stage-download.mjs` splits a build into <20 MiB parts in `dist/downloads/` with a manifest. `GET /download/<name>` streams the parts back as one attachment with an exact `Content-Length`. The parts are not directly reachable, and unknown names return 404. Supported: `.apk`, `.exe`, `.dmg`.
+Builds are uploaded **with each deploy as Worker static assets**, never committed to Git. Static assets cap each file at 25 MiB, so `scripts/stage-download.mjs` splits a build into 24 MiB parts in `dist/downloads/` with a manifest. A build may use at most 49 parts: its manifest plus those parts must fit the default 50-subrequest budget. Oversized builds fail staging and oversized manifests return 503 before streaming begins. `GET /download/<name>` streams the parts back as one attachment with an exact `Content-Length`. The parts are not directly reachable, and unknown names return 404. Supported: `.apk`, `.exe`, `.dmg`.
 
 ### Publishing a tested build
 

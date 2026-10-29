@@ -83,3 +83,12 @@ The original macOS artifact is recovered from the legacy `petal-landing` Worker
 only after matching its existing SHA-256. Wrangler's pre-deploy hook verifies or
 restores every published artifact so future fresh-checkout Workers Builds cannot
 erase download assets; missing or mismatched originals stop deployment.
+
+Full live streaming exposed a delivery limit that HEAD checks missed: the old
+20 MiB split required 57 Windows chunks, and the response aborted after exactly
+49 chunks (1,027,604,480 bytes), following its manifest lookup. The release uses
+24 MiB chunks, below the 25 MiB static-asset limit, so Windows needs 48 chunks and
+one manifest request. This updates the earlier under-20-MiB recipe to fit the
+observed 50-subrequest budget. Staging rejects builds exceeding 49 chunks and
+the Worker refuses oversized manifests before sending a partial successful
+download. Byte-boundary, request-budget and refusal tests cover this behavior.

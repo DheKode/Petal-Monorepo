@@ -24,7 +24,7 @@ After you build a new `.apk` (`apps/mobile`), `.exe` or `.dmg` (`apps/desktop`),
 
 ## Rules
 
-- **Never commit build files.** Builds live only as deployed Worker static assets. They are split into parts under 20 MiB, because Cloudflare allows 25 MiB per file, and streamed back as one file from `/download/<name>`.
+- **Never commit build files.** Builds live only as deployed Worker static assets. They are split into 24 MiB parts, below Cloudflare's 25 MiB per-file limit, and streamed back as one file from `/download/<name>`. A build may have at most 49 parts so its manifest plus chunks fit the default 50-subrequest budget. Staging and the Worker enforce this limit; never publish an oversized manifest.
 - **A deploy replaces every asset.** Only deploy with `publish-build` (or the manual steps in [README.md](README.md)), so the already-published builds are carried over. If re-staging a published build fails its SHA-256 check, stop and report it; do not deploy without it.
 - **Label builds honestly.** A build published for a platform must be the Petal app for that platform. Test builds or previews need a clearly different `name`/`installNote` in `src/downloads.ts`, agreed with the human owner first. Keep the existing unsigned-installer notes.
 - **File names** default to `petal-<release.version>.<apk|exe|dmg>`. Bump `release.version` in `src/downloads.ts` when the app version changes. Use `--name` only for agreed exceptions.

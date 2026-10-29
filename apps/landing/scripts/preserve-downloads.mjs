@@ -38,7 +38,7 @@ async function stagedMatches(directory, build) {
     try {
         const manifest = JSON.parse(await readFile(path.join(directory, `${build.name}.json`), 'utf8'));
         if (manifest.name !== build.name || manifest.sha256 !== build.sha256 || !Number.isSafeInteger(manifest.size) ||
-            manifest.size <= 0 || !Array.isArray(manifest.parts) || !manifest.parts.length || manifest.parts.length > 1000 ||
+            manifest.size <= 0 || !Array.isArray(manifest.parts) || !manifest.parts.length || manifest.parts.length > 49 ||
             !manifest.parts.every((part, i) => part === `${build.name}.part${i}`)) return false;
         const hash = createHash('sha256');
         let size = 0;
